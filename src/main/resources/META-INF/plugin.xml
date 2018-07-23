@@ -1,0 +1,40 @@
+<idea-plugin>
+    <id>com.damoguyansi.all-format</id>
+    <name>All Format</name>
+    <vendor email="damoguyansi@163.com">damoguyansi</vendor>
+    <version>1.0.0</version>
+
+    <description><![CDATA[
+    Formatting your JSON, XML, HTML and map printing.<br>
+    <em>格式化JSON，XML,HTML和map.toString()打印的字符串!</em>
+    ]]></description>
+    <change-notes>
+        &lt;p&gt;
+        1.0.0
+        &lt;ul&gt;
+        &lt;li&gt;New: format json string&lt;/li&gt;
+        &lt;li&gt;New: format xml string&lt;/li&gt;
+        &lt;li&gt;New: format map string&lt;/li&gt;
+        &lt;li&gt;New: format html string&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;/p&gt;
+    </change-notes>
+
+    <!--<actions>
+        <group id="MyPlugin.AllFormat" text="Format" description="All Format">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="Myplugin.Textboxes" class="com.damoguyansi.all.format.FormatAction" text="AllFormat"
+                    description="All Format"/>
+        </group>
+    </actions>-->
+    <actions>
+        <action id="AllFormat" class="com.damoguyansi.all.format.FormatAction" text="AllFormat">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt f"/>
+        </action>
+        <action class="com.damoguyansi.all.format.FormatAction" id="run.damoguyansi.AllFormat" text="AllFormat"
+                description="AllFormat" icon="/icons/AllFormat.png">
+            <add-to-group group-id="ToolbarRunGroup" anchor="after" relative-to-action="Stop"/>
+        </action>
+    </actions>
+</idea-plugin>
