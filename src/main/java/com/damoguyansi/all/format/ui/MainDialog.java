@@ -23,7 +23,7 @@ public class MainDialog extends JFrame {
 	private JPanel contentPane;
 	private JButton jsonOK;
 	private JButton xmlOK;
-	private JEditorPane editorPane1;
+	private JTextPane editorPane1;
 	private JLabel msgLabel;
 	private JScrollPane scrollPanel;
 	private JButton htmlOK;
