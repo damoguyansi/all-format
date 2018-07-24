@@ -77,7 +77,9 @@ public class MainDialog extends JFrame {
 				editorPane1.setSize(scrollPanel.getSize().width - 2, editorPane1.getHeight());
 			}
 		});
-		editorPane1.setBackground(this.editorBK);
+		if (this.editorBK != null) {
+			editorPane1.setBackground(this.editorBK);
+		}
 		editorPane1.setText(getSysClipboardText());
 	}
 

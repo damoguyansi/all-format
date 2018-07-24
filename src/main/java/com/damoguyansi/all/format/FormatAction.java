@@ -1,7 +1,6 @@
 package com.damoguyansi.all.format;
 
 import java.awt.*;
-import javax.swing.*;
 
 import com.damoguyansi.all.format.ui.MainDialog;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -22,7 +21,7 @@ public class FormatAction extends AnAction {
 		Application application = ApplicationManager.getApplication();
 		Editor editor = event.getData(PlatformDataKeys.EDITOR);
 
-		MainDialog dialog = new MainDialog(editor.getComponent().getBackground());
+		MainDialog dialog = new MainDialog(editor == null ? null : editor.getComponent().getBackground());
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		int sWidth = (int) screensize.getWidth();
 		int sHeight = (int) screensize.getHeight();

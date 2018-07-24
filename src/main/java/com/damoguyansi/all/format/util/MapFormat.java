@@ -10,7 +10,7 @@ public class MapFormat {
 	private static String getLevelStr(int level) {
 		StringBuffer levelStr = new StringBuffer();
 		for (int levelI = 0; levelI < level; levelI++) {
-			levelStr.append("\t");
+			levelStr.append(Constant.PER_SPACE);
 		}
 		return levelStr.toString();
 	}
@@ -26,15 +26,16 @@ public class MapFormat {
 			switch (c) {
 				case '{':
 				case '[':
-					resStr.append(c + Constant.PER_SPACE);
+					resStr.append(c + "\n");
 					level++;
 					break;
+				case '&':
 				case ',':
-					resStr.append(c + Constant.PER_SPACE);
+					resStr.append(c + "\n");
 					break;
 				case '}':
 				case ']':
-					resStr.append(Constant.PER_SPACE);
+					resStr.append("\n");
 					level--;
 					resStr.append(getLevelStr(level));
 					resStr.append(c);
