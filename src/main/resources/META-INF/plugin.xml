@@ -2,15 +2,15 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <description><![CDATA[
-    Formatting your JSON, XML, HTML and map printing.<br>
-    <em>格式化JSON，XML,HTML和map.toString()打印的字符串!</em>
+    AllFormat is formatting your JSON, XML, HTML and map printing.<br>
+    <em>all-format格式化JSON，XML,HTML和map.toString()打印的字符串!</em>
     ]]></description>
     <change-notes>
         &lt;p&gt;
-        1.0.0
+        1.0.1
         &lt;ul&gt;
         &lt;li&gt;New: format json string&lt;/li&gt;
         &lt;li&gt;New: format xml string&lt;/li&gt;

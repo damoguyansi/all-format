@@ -13,7 +13,7 @@ import com.intellij.openapi.project.Project;
 
 public class FormatAction extends AnAction {
 	public FormatAction() {
-		super("AllFormat v1.0");
+		super("AllFormat");
 	}
 
 	public void actionPerformed(AnActionEvent event) {
@@ -33,7 +33,7 @@ public class FormatAction extends AnAction {
 		dialog.pack();
 		Rectangle rectangle = new Rectangle(x, y, w, h);
 		dialog.setBounds(rectangle);
-		dialog.setTitle("AllFormat v1.0 (damoguyansi@163.com)");
+		dialog.setTitle("AllFormat (damoguyansi@163.com)");
 		dialog.setAlwaysOnTop(true);
 		dialog.setVisible(true);
 	}
