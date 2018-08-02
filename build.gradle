@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.damoguyansi'
-version '1.0.1'
+version '1.0.2'
 
 sourceCompatibility = 1.8
 
@@ -22,7 +22,7 @@ dependencies {
 }
 
 intellij {
-    version '2018.1.5'
+    version '2018.2'
 }
 
 //-----------------------------------change xml file encoding---------------------------------------------

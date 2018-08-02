@@ -2,7 +2,7 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <description><![CDATA[
     AllFormat is formatting your JSON, XML, HTML and map printing.<br>
@@ -10,8 +10,9 @@
     ]]></description>
     <change-notes>
         &lt;p&gt;
-        1.0.1
+        1.0.2
         &lt;ul&gt;
+        &lt;li&gt;New: 新版本支持&lt;/li&gt;
         &lt;li&gt;New: format json string&lt;/li&gt;
         &lt;li&gt;New: format xml string&lt;/li&gt;
         &lt;li&gt;New: format map string&lt;/li&gt;
@@ -20,13 +21,8 @@
         &lt;/p&gt;
     </change-notes>
 
-    <!--<actions>
-        <group id="MyPlugin.AllFormat" text="Format" description="All Format">
-            <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Myplugin.Textboxes" class="com.damoguyansi.all.format.FormatAction" text="AllFormat"
-                    description="All Format"/>
-        </group>
-    </actions>-->
+    <idea-version since-build="182"/>
+
     <actions>
         <action id="AllFormat" class="com.damoguyansi.all.format.FormatAction" text="AllFormat">
             <add-to-group group-id="GenerateGroup" anchor="last"/>

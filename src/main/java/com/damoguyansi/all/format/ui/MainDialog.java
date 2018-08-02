@@ -28,6 +28,7 @@ public class MainDialog extends JFrame {
 	private JScrollPane scrollPanel;
 	private JButton htmlOK;
 	private JButton md5OK;
+	private JLabel noticeLabel;
 
 	private Color editorBK;
 
@@ -81,6 +82,20 @@ public class MainDialog extends JFrame {
 			editorPane1.setBackground(this.editorBK);
 		}
 		editorPane1.setText(getSysClipboardText());
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					String msg = null;//HttpClientUtils.get("");
+					if (null != msg && !"".equals(msg)) {
+						noticeLabel.setText(msg);
+					}
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
 	}
 
 	private void jsonOK() {
