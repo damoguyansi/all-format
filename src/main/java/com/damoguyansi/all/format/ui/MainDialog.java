@@ -14,10 +14,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import com.damoguyansi.all.format.util.HtmlFormat;
+import com.damoguyansi.all.format.util.IpUtil;
 import com.damoguyansi.all.format.util.JsonFormat;
 import com.damoguyansi.all.format.util.MD5Util;
 import com.damoguyansi.all.format.util.MapFormat;
 import com.damoguyansi.all.format.util.XmlFormat;
+import sun.net.util.IPAddressUtil;
 
 public class MainDialog extends JFrame {
 	private JPanel contentPane;
@@ -87,7 +89,7 @@ public class MainDialog extends JFrame {
 			@Override
 			public void run() {
 				try {
-					String msg = null;//HttpClientUtils.get("");
+					String msg = IpUtil.INTERNET_IP;//HttpClientUtils.get("");
 					if (null != msg && !"".equals(msg)) {
 						noticeLabel.setText(msg);
 					}

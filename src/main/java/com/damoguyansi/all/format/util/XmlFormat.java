@@ -11,7 +11,7 @@ public class XmlFormat {
 
 	public static String format(String src) throws Exception {
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(new ByteArrayInputStream(src.getBytes()));
+		Document doc = builder.build(new ByteArrayInputStream(src.getBytes("UTF-8")));
 		XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 		String s = outputter.outputString(doc);
 		return s;
