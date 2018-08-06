@@ -89,7 +89,7 @@ public class MainDialog extends JFrame {
 			@Override
 			public void run() {
 				try {
-					String msg = IpUtil.INTERNET_IP;//HttpClientUtils.get("");
+					String msg = null;//HttpClientUtils.get("");
 					if (null != msg && !"".equals(msg)) {
 						noticeLabel.setText(msg);
 					}
