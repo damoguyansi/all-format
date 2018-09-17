@@ -14,12 +14,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import com.damoguyansi.all.format.util.HtmlFormat;
-import com.damoguyansi.all.format.util.IpUtil;
+import com.damoguyansi.all.format.util.HttpClientUtils;
 import com.damoguyansi.all.format.util.JsonFormat;
 import com.damoguyansi.all.format.util.MD5Util;
 import com.damoguyansi.all.format.util.MapFormat;
+import com.damoguyansi.all.format.util.QrCodeCreateUtil;
 import com.damoguyansi.all.format.util.XmlFormat;
-import sun.net.util.IPAddressUtil;
 
 public class MainDialog extends JFrame {
 	private JPanel contentPane;
@@ -31,6 +31,7 @@ public class MainDialog extends JFrame {
 	private JButton htmlOK;
 	private JButton md5OK;
 	private JLabel noticeLabel;
+	private JButton qrCodeOK;
 
 	private Color editorBK;
 
@@ -58,6 +59,11 @@ public class MainDialog extends JFrame {
 		md5OK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				md5OK();
+			}
+		});
+		qrCodeOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				qrCodeOK();
 			}
 		});
 
@@ -89,7 +95,7 @@ public class MainDialog extends JFrame {
 			@Override
 			public void run() {
 				try {
-					String msg = null;//HttpClientUtils.get("");
+					String msg = HttpClientUtils.get("http://b.javams.com:8888/msg");
 					if (null != msg && !"".equals(msg)) {
 						noticeLabel.setText(msg);
 					}
@@ -162,6 +168,22 @@ public class MainDialog extends JFrame {
 			editorPane1.setText(md5Str);
 		} catch (Throwable t) {
 			String eStr = "md5 error [" + t.getMessage() + "]";
+			msgLabel.setText(eStr);
+			msgLabel.setToolTipText(eStr);
+		}
+	}
+
+	private void qrCodeOK() {
+		String text = editorPane1.getText();
+		if (null == text || "".equalsIgnoreCase(text))
+			return;
+
+		try {
+			editorPane1.setText(text.trim() + "\r\n");
+			editorPane1.setCaretPosition(editorPane1.getStyledDocument().getLength()); // 设置插入位置
+			editorPane1.insertIcon(new ImageIcon(QrCodeCreateUtil.createQrCode(text.trim(), 250))); // 插入图片
+		} catch (Exception e) {
+			String eStr = "create qrCode excpeiont [" + e.getMessage() + "]";
 			msgLabel.setText(eStr);
 			msgLabel.setToolTipText(eStr);
 		}

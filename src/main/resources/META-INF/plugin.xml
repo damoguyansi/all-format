@@ -2,17 +2,19 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <description><![CDATA[
     AllFormat is formatting your JSON, XML, HTML and map printing.<br>
-    <em>all-format格式化JSON，XML,HTML和map.toString()打印的字符串!</em>
+    <em>all-format,JSON格式化JSON字符串，XML格式化XML字符串,HTML格式化HTML字符串和map.toString()打印的字符串!
+    MD5生成！,新增加二维码生成QR CODE,使用Zxing。</em>
     ]]></description>
     <change-notes>
         &lt;p&gt;
-        1.0.2
+        1.0.3
         &lt;ul&gt;
         &lt;li&gt;New: 新版本支持&lt;/li&gt;
+        &lt;li&gt;New: qr code string&lt;/li&gt;
         &lt;li&gt;New: format json string&lt;/li&gt;
         &lt;li&gt;New: format xml string&lt;/li&gt;
         &lt;li&gt;New: format map string&lt;/li&gt;
