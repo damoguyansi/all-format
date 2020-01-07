@@ -1,25 +1,13 @@
 package com.damoguyansi.all.format.ui;
 
+import com.damoguyansi.all.format.util.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.*;
-
-import com.damoguyansi.all.format.util.HtmlFormat;
-import com.damoguyansi.all.format.util.HttpClientUtils;
-import com.damoguyansi.all.format.util.JsonFormat;
-import com.damoguyansi.all.format.util.MD5Util;
-import com.damoguyansi.all.format.util.MapFormat;
-import com.damoguyansi.all.format.util.QrCodeCreateUtil;
-import com.damoguyansi.all.format.util.XmlFormat;
+import java.awt.event.*;
 
 public class MainDialog extends JFrame {
 	private JPanel contentPane;
@@ -95,7 +83,7 @@ public class MainDialog extends JFrame {
 			@Override
 			public void run() {
 				try {
-					String msg = HttpClientUtils.get("http://b.javams.com:8888/msg");
+					String msg = HttpClientUtils.get("http://www.javams.com/format/msg");
 					if (null != msg && !"".equals(msg)) {
 						noticeLabel.setText(msg);
 					}
@@ -114,7 +102,7 @@ public class MainDialog extends JFrame {
 		String json = text.replaceAll("\t", "");
 		String resStr = null;
 		try {
-			resStr = JsonFormat.format(json);
+			resStr = JsonFormatTool.format(json);
 			msgLabel.setText("json format");
 			editorPane1.setText(resStr);
 		} catch (Throwable e) {
@@ -180,8 +168,8 @@ public class MainDialog extends JFrame {
 
 		try {
 			editorPane1.setText(text.trim() + "\r\n");
-			editorPane1.setCaretPosition(editorPane1.getStyledDocument().getLength()); // 设置插入位置
-			editorPane1.insertIcon(new ImageIcon(QrCodeCreateUtil.createQrCode(text.trim(), 250))); // 插入图片
+			editorPane1.setCaretPosition(editorPane1.getStyledDocument().getLength());
+			editorPane1.insertIcon(new ImageIcon(QrCodeCreateUtil.createQrCode(text.trim(), 250)));
 		} catch (Exception e) {
 			String eStr = "create qrCode excpeiont [" + e.getMessage() + "]";
 			msgLabel.setText(eStr);

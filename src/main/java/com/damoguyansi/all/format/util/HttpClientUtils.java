@@ -1,28 +1,7 @@
 package com.damoguyansi.all.format.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.UnknownHostException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -38,11 +17,7 @@ import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.conn.ssl.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -54,6 +29,22 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.*;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Http
@@ -409,23 +400,20 @@ public final class HttpClientUtils {
 				result += line;
 			}
 		} catch (SocketTimeoutException e) {
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> errorData = new HashMap<String, Object>();
-			errorData.put("rtn", -1);
-			errorData.put("message", "Time out");
-			result = mapper.writeValueAsString(errorData);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("rtn", -1);
+			jsonObject.addProperty("message", "Time out");
+			result = jsonObject.toString();
 		} catch (UnknownHostException e) {
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> errorData = new HashMap<String, Object>();
-			errorData.put("rtn", -1);
-			errorData.put("message", "Wrong url");
-			result = mapper.writeValueAsString(errorData);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("rtn", -1);
+			jsonObject.addProperty("message", "Wrong url");
+			result = jsonObject.toString();
 		} catch (Exception e) {
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> errorData = new HashMap<String, Object>();
-			errorData.put("rtn", -1);
-			errorData.put("message", "Unknow error");
-			result = mapper.writeValueAsString(errorData);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("rtn", -1);
+			jsonObject.addProperty("message", "Unknow error");
+			result = jsonObject.toString();
 		} finally {
 			try {
 				if (out != null) {

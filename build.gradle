@@ -1,10 +1,15 @@
+buildscript {
+    repositories {
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+}
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.3.4'
+   id 'java'
+   id 'org.jetbrains.intellij' version '0.4.15'
 }
 
 group 'com.damoguyansi'
-version '1.0.3'
+version '1.0.5'
 
 sourceCompatibility = 1.8
 
@@ -16,7 +21,9 @@ dependencies {
 }
 
 intellij {
-    version '2018.2'
+    version 'IC-2019.3'
+    pluginName 'com.damoguyansi.all-format'
+    updateSinceUntilBuild false
 }
 
 //-----------------------------------change xml file encoding---------------------------------------------
@@ -43,6 +50,7 @@ void loopFileDirectoryChangeFileEncoding(File xmlFileDirectory) {
  * Modifying the xml file to utf - 8
  */
 void changeFileEncodingToUtf8(String xmlPath) {
+    System.out.println("change..." + xmlPath);
     try {
         //read xml file
         BufferedReader bfr = new BufferedReader(new FileReader(xmlPath))
@@ -55,7 +63,7 @@ void changeFileEncodingToUtf8(String xmlPath) {
         }
         bfr.close()
         //write xml file
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmlPath, false), "UTF-8"))
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmlPath, false), "GBK"))
         writer.write(sb.toString())
         writer.flush()
         writer.close()

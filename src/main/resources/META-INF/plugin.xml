@@ -2,32 +2,36 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.0.3</version>
+    <version>1.0.5</version>
 
-    <description><![CDATA[
-    AllFormat is formatting your JSON, XML, HTML and map printing.<br>
-    <em>all-format,JSON格式化JSON字符串，XML格式化XML字符串,HTML格式化HTML字符串和map.toString()打印的字符串!
-    MD5生成！,新增加二维码生成QR CODE,使用Zxing。</em>
-    ]]></description>
+    <description>
+        <![CDATA[
+        AllFormat is formatting your JSON, XML, HTML and map printing.<br>
+        <em>all-format，JSON格式化JSON字符串，XML格式化XML字符串，HTML格式化HTML字符串和map.toString()打印的字符串!
+        MD5生成！，新增加二维码生成QR CODE，使用Zxing.</em>
+        ]]>
+    </description>
     <change-notes>
-        &lt;p&gt;
-        1.0.3
-        &lt;ul&gt;
-        &lt;li&gt;New: 新版本支持&lt;/li&gt;
-        &lt;li&gt;New: qr code string&lt;/li&gt;
-        &lt;li&gt;New: format json string&lt;/li&gt;
-        &lt;li&gt;New: format xml string&lt;/li&gt;
-        &lt;li&gt;New: format map string&lt;/li&gt;
-        &lt;li&gt;New: format html string&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;/p&gt;
+        <![CDATA[
+        <p>
+        1.0.5
+        <ul>
+        <li>New: new version support</li>
+        <li>New: qr code string</li>
+        <li>New: format json string</li>
+        <li>New: format xml string</li>
+        <li>New: format map string</li>
+        <li>New: format html string</li>
+        </ul>
+        </p>
+        ]]>
     </change-notes>
 
-    <idea-version since-build="182"/>
+    <idea-version since-build="193"/>
 
     <actions>
         <action id="AllFormat" class="com.damoguyansi.all.format.FormatAction" text="AllFormat">
-            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt f"/>
         </action>
         <action class="com.damoguyansi.all.format.FormatAction" id="run.damoguyansi.AllFormat" text="AllFormat"
