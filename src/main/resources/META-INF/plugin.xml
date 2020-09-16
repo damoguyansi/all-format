@@ -1,22 +1,25 @@
-<idea-plugin>
+<idea-plugin require-restart="false">
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
+
+    <depends>com.intellij.java</depends>
 
     <description>
         <![CDATA[
         AllFormat is formatting your JSON, XML, HTML and map printing.<br>
         <em>all-format，JSON格式化JSON字符串，XML格式化XML字符串，HTML格式化HTML字符串和map.toString()打印的字符串!
-        MD5生成！，新增加二维码生成QR CODE，使用Zxing.</em>
+        MD5生成！，新增加二维码生成QR CODE,Unicode转换，Base64生成.</em>
         ]]>
     </description>
     <change-notes>
         <![CDATA[
         <p>
-        1.0.5
+        1.1.0
         <ul>
-        <li>New: new version support</li>
+        <li>New: Base64 generate</li>
+        <li>New: Unicode conversion</li>
         <li>New: qr code string</li>
         <li>New: format json string</li>
         <li>New: format xml string</li>
