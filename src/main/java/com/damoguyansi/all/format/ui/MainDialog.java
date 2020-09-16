@@ -6,9 +6,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 
 public class MainDialog extends JFrame {
@@ -80,7 +77,7 @@ public class MainDialog extends JFrame {
         if (this.editorBK != null) {
             editorPane1.setBackground(this.editorBK);
         }
-        editorPane1.setText(getSysClipboardText());
+        editorPane1.setText(ClipboardUtil.getSysClipboardText());
 
         new Thread(new Runnable() {
             @Override
@@ -199,21 +196,5 @@ public class MainDialog extends JFrame {
             msgLabel.setText(eStr);
             msgLabel.setToolTipText(eStr);
         }
-    }
-
-    public static String getSysClipboardText() {
-        String ret = "";
-        Clipboard sysClip = Toolkit.getDefaultToolkit().getSystemClipboard();
-        Transferable clipTf = sysClip.getContents(null);
-        if (clipTf != null) {
-            if (clipTf.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                try {
-                    ret = (String) clipTf.getTransferData(DataFlavor.stringFlavor);
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return ret;
     }
 }

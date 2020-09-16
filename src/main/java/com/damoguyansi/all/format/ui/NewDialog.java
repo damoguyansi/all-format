@@ -61,6 +61,8 @@ public class NewDialog extends JFrame {
 
         createRSyntaxTextArea();
 
+        jsonText.setText(ClipboardUtil.getSysClipboardText());
+
         showDia();
     }
 
