@@ -42,29 +42,41 @@ public class TextPanelMouseListener extends MouseAdapter {
         return null;
     }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            menuItemInit(e);
+        }
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
-            JPopupMenu popMenu = new JPopupMenu();
-            JMenuItem mtCopy = new JMenuItem("\u590d\u5236");
-            JMenuItem mtPaste = new JMenuItem("\u7c98\u5e16");
-            JMenuItem mtSelAll = new JMenuItem("\u5168\u9009");
-            JMenuItem mtClean = new JMenuItem("\u6e05\u7a7a");
-
-            popMenu.add(mtCopy);
-            popMenu.add(mtPaste);
-            popMenu.add(mtSelAll);
-            popMenu.add(mtClean);
-            JTextComponent ta = getTextPane();
-            if (ta.getSelectedText() == null || ta.getSelectedText().length() == 0) {
-                mtCopy.setEnabled(false);
-            }
-
-            mtCopy.addActionListener(new TextPanelMenuItemActionListener(1));
-            mtPaste.addActionListener(new TextPanelMenuItemActionListener(2));
-            mtSelAll.addActionListener(new TextPanelMenuItemActionListener(3));
-            mtClean.addActionListener(new TextPanelMenuItemActionListener(4));
-            popMenu.show(e.getComponent(), e.getX(), e.getY());
+            menuItemInit(e);
         }
+    }
+
+    private void menuItemInit(MouseEvent e) {
+        JPopupMenu popMenu = new JPopupMenu();
+        JMenuItem mtCopy = new JMenuItem("\u590d\u5236");
+        JMenuItem mtPaste = new JMenuItem("\u7c98\u5e16");
+        JMenuItem mtSelAll = new JMenuItem("\u5168\u9009");
+        JMenuItem mtClean = new JMenuItem("\u6e05\u7a7a");
+
+        popMenu.add(mtCopy);
+        popMenu.add(mtPaste);
+        popMenu.add(mtSelAll);
+        popMenu.add(mtClean);
+        JTextComponent ta = getTextPane();
+        if (ta.getSelectedText() == null || ta.getSelectedText().length() == 0) {
+            mtCopy.setEnabled(false);
+        }
+
+        mtCopy.addActionListener(new TextPanelMenuItemActionListener(1));
+        mtPaste.addActionListener(new TextPanelMenuItemActionListener(2));
+        mtSelAll.addActionListener(new TextPanelMenuItemActionListener(3));
+        mtClean.addActionListener(new TextPanelMenuItemActionListener(4));
+        popMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
     private class TextPanelMenuItemActionListener implements ActionListener {

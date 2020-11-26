@@ -8,11 +8,24 @@
 
     <description>
         <![CDATA[
-        AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，会持续更新增加新功.<br>
+        AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，会持续更新增加新功,也欢迎提出新功能，发邮件给我！<br>
+        <h3>Features:</h3>
+            <ul>
+                <li>格式化JSON字符串。</li>
+                <li>格式化日志打印字符串，按大括号小括号逗号进行格式化，方便阅读。</li>
+                <li>格式化HTML文本。</li>
+                <li>格式化SQL语句。</li>
+                <li>MD5值生成。</li>
+                <li>二维码生成，识别二维码图片。</li>
+                <li>Base64值生成与解密。</li>
+                <li>Unicode值生成与转换。</li>
+            </ul>
+        </h3>
         <em>all-format，JSON格式化JSON字符串，XML格式化XML字符串，HTML格式化HTML字符串和map.toString()打印的字符串!
-        新增加SQL格式,MD5生,QRCODE二维码生成,Unicode转换,Base64生成转换.</em>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23549.png'/>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23550.png'/>
+        新增加SQL格式,MD5生,QRCODE二维码生成,Unicode转换,Base64生成转换.</em><br/>
+        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23549.png' width='500'/>
+        <br/>
+        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23550.png' width='500'/>
         ]]>
     </description>
     <change-notes>
@@ -26,8 +39,6 @@
                 <li>修改默认窗体大小.</li>
                 <li>增加上传二维码图片识别.</li>
                 <li>增加置顶、换行设置缓存.</li>
-                <li>New: format map string</li>
-                <li>New: format html string</li>
             </ul>
         </p>
         ]]>

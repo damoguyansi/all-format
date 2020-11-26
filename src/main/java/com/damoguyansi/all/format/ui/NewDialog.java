@@ -106,17 +106,8 @@ public class NewDialog extends JFrame {
     }
 
     private void showMainDia() {
-        Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        int sWidth = (int) screensize.getWidth();
-        int sHeight = (int) screensize.getHeight();
-        int w = 750;
-        int h = 450;
-        int x = (sWidth - w) / 2;
-        int y = (sHeight - h) / 2;
-
-        this.pack();
-        Rectangle rectangle = new Rectangle(x, y, w, h);
-        this.setBounds(rectangle);
+        this.setSize(750, 450);
+        this.setLocationRelativeTo(null);
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
@@ -367,7 +358,7 @@ public class NewDialog extends JFrame {
             jsonText.setText(resStr);
         } catch (Throwable e) {
             resStr = MapFormat.format(text);
-            msgLabel.setText("map format " + e.getMessage());
+            msgLabel.setText("map format!");
             jsonText.setText(resStr);
         }
     }
@@ -565,7 +556,6 @@ public class NewDialog extends JFrame {
             scheme.getStyle(Token.OPERATOR).foreground = Color.BLACK;
             area.revalidate();
         }
-        area.addMouseListener(tpml);
         return area;
     }
 

@@ -8,17 +8,12 @@ import com.google.gson.JsonParser;
 public class JsonFormatTool {
 
     public static String format(String text) throws Exception {
-        try {
-            JsonElement je = JsonParser.parseString(text);
-            if (!je.isJsonObject()) throw new Exception("非法json格式");
-            GsonBuilder gb = new GsonBuilder();
-            gb.setPrettyPrinting();
-            gb.serializeNulls();
-            Gson gson = gb.create();
-            return gson.toJson(je);
-        } catch (java.lang.IllegalStateException e) {
-            e.printStackTrace();
-            return text;
-        }
+        JsonElement je = JsonParser.parseString(text);
+        if (!je.isJsonObject()) throw new Exception("非法json格式");
+        GsonBuilder gb = new GsonBuilder();
+        gb.setPrettyPrinting();
+        gb.serializeNulls();
+        Gson gson = gb.create();
+        return gson.toJson(je);
     }
 }
