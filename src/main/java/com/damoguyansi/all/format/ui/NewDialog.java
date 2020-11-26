@@ -1,21 +1,28 @@
 package com.damoguyansi.all.format.ui;
 
+import com.damoguyansi.all.format.cache.CacheName;
+import com.damoguyansi.all.format.cache.ParamCache;
+import com.damoguyansi.all.format.event.TextPanelMouseListener;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
-import org.fife.ui.rsyntaxtextarea.Token;
+import com.google.zxing.NotFoundException;
+import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.net.URI;
 
 public class NewDialog extends JFrame {
+    private final static String CODE_GITHUB_URL = "https://github.com/damoguyansi/all-format";
     private JTabbedPane tabbedPane1;
     private JPanel contentPane;
     private JButton exeBtn;
@@ -32,6 +39,11 @@ public class NewDialog extends JFrame {
     private JPanel xmlPanel;
     private JPanel htmlPanel;
     private JPanel sqlPanel;
+    private JScrollPane md5Panel;
+    private JScrollPane qrcodePanel;
+    private JScrollPane base64Panel;
+    private JScrollPane unicodePanel;
+    private JLabel zczzLable;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -43,12 +55,20 @@ public class NewDialog extends JFrame {
     private static final String HTML = "HTML";
     private static final String SQL = "SQL";
     private static final String MD5 = "MD5";
-    private static final String QRCODE = "QRCODE";
+    private static final String QRCODE = "QRCode";
     private static final String Base64 = "Base64";
     private static final String Unicode = "Unicode";
+    private Color backgroudColor;
 
+    private ParamCache pc;
 
-    public NewDialog() {
+    private TextPanelMouseListener tpml = null;
+
+    public NewDialog(Color color) {
+        this.backgroudColor = color;
+
+        pc = new ParamCache();
+
         setContentPane(contentPane);
         getRootPane().setDefaultButton(exeBtn);
 
@@ -62,16 +82,35 @@ public class NewDialog extends JFrame {
         createRSyntaxTextArea();
 
         jsonText.setText(ClipboardUtil.getSysClipboardText());
+        zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        showDia();
+        showMainDia();
     }
 
-    private void showDia() {
+    private void initCacheParam() {
+        Boolean onTopPar = pc.readAsBoolean(CacheName.ON_TOP);
+        if (null == onTopPar || true == onTopPar) {
+            this.topCheckBox.setSelected(true);
+            this.setAlwaysOnTop(true);
+        } else {
+            this.topCheckBox.setSelected(false);
+            this.setAlwaysOnTop(false);
+        }
+
+        Boolean newLinePar = pc.readAsBoolean(CacheName.NEW_LINE);
+        if (null != newLinePar && true == newLinePar) {
+            this.newLineCheckBox.setSelected(true);
+        } else {
+            this.newLineCheckBox.setSelected(false);
+        }
+    }
+
+    private void showMainDia() {
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
         int sWidth = (int) screensize.getWidth();
         int sHeight = (int) screensize.getHeight();
-        int w = 600;
-        int h = 400;
+        int w = 750;
+        int h = 450;
         int x = (sWidth - w) / 2;
         int y = (sHeight - h) / 2;
 
@@ -79,11 +118,18 @@ public class NewDialog extends JFrame {
         Rectangle rectangle = new Rectangle(x, y, w, h);
         this.setBounds(rectangle);
         this.setTitle("AllFormat (damoguyansi@163.com)");
-        this.setAlwaysOnTop(true);
+        this.initCacheParam();
         this.setVisible(true);
 
         jsonText.requestFocus();
         jsonText.grabFocus();
+    }
+
+    private void hideMainDia() {
+        this.setVisible(false);
+        pc.writeByName(CacheName.NEW_LINE, Boolean.toString(newLineCheckBox.isSelected()));
+        pc.writeByName(CacheName.ON_TOP, Boolean.toString(isAlwaysOnTop()));
+        pc.close();
     }
 
     private void initActionListener() {
@@ -117,17 +163,18 @@ public class NewDialog extends JFrame {
                         zhToUnicode();
                         break;
                 }
+                System.gc();
             }
         });
-        topCheckBox.addActionListener(new ActionListener() {
+        topCheckBox.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 selectTop(topCheckBox.isSelected());
             }
         });
-        newLineCheckBox.addActionListener(new ActionListener() {
+        newLineCheckBox.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 if (newLineCheckBox.isSelected()) {
                     jsonText.setLineWrap(true);
                     xmlText.setLineWrap(true);
@@ -155,6 +202,9 @@ public class NewDialog extends JFrame {
                     decode();
                 } else if (Unicode.equalsIgnoreCase(tag)) {
                     unicodeToZh();
+                } else if (QRCODE.equalsIgnoreCase(tag)) {
+//                    selectPicture(otherBtn);
+                    openFileAction();
                 }
             }
         });
@@ -173,6 +223,8 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u7b7e\u540d");
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u751f\u6210");
+                    otherBtn.setText("\u4e0a\u4f20");
+                    otherBtn.setVisible(true);
                 } else if (SQL.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7f8e\u5316");
                 } else if (Unicode.equalsIgnoreCase(tag)) {
@@ -185,18 +237,117 @@ public class NewDialog extends JFrame {
             }
         });
 
+        zczzLable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                new Thread() {
+                    public void run() {
+                        try {
+                            Desktop desktop = Desktop.getDesktop();
+                            desktop.browse(new URI(CODE_GITHUB_URL));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+        });
+
+        tpml = new TextPanelMouseListener(tabbedPane1);
+        qrcodeText.addMouseListener(tpml);
+        md5Text.addMouseListener(tpml);
+        base64Text.addMouseListener(tpml);
+        unicodeText.addMouseListener(tpml);
+
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                hideMainDia();
+                System.gc();
                 dispose();
             }
         });
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                hideMainDia();
+                System.gc();
                 dispose();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void openFileAction() {
+        java.awt.FileDialog openDlg = new java.awt.FileDialog(this, "选择二维码图片", java.awt.FileDialog.LOAD);
+        openDlg.setFile("*.jpg;*.png;*.gif;*.jpeg;");
+        openDlg.setVisible(true);
+        if (null == openDlg.getFile()) return;
+        File file = new File(openDlg.getDirectory(), openDlg.getFile());
+        if (file == null || file.getPath().length() == 0) return;
+
+        if (!file.getName().endsWith(".jpg") && !file.getName().endsWith(".jpeg") && !file.getName().endsWith(".png") && !file.getName().endsWith(".gif")) {
+            JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            String result = QrCodeCreateUtil.decodeImg(file);
+            if (null == result || "".equals(result)) {
+                msgLabel.setText("未解析到图片内容");
+                msgLabel.setToolTipText(msgLabel.getText());
+            } else {
+                qrcodeText.setText(result);
+            }
+        } catch (NotFoundException ne) {
+            JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
+            ne.printStackTrace();
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null, "上传失败！", "提示", JOptionPane.ERROR_MESSAGE);
+            e1.printStackTrace();
+        }
+    }
+
+    public void selectPicture(JButton button) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        JFileChooser chooser = new JFileChooser();
+        chooser.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "png", "gif", "jpeg");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(button);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File arrfiles = chooser.getSelectedFile();
+            if (arrfiles == null) {
+                return;
+            }
+
+            File ff = chooser.getSelectedFile();//判断是否有文件为jpg或者png
+            String fileName = ff.getName();//创建一个fileName得到选择文件的名字
+            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            //判断选择的文件是否是图片文件 必须排除不是的情况 不然后续操作会报错
+            if (!(prefix.equalsIgnoreCase("jpg") || prefix.equalsIgnoreCase("png") || prefix.equalsIgnoreCase("gif") || prefix.equalsIgnoreCase("jpeg"))) {
+                JOptionPane.showMessageDialog(new JDialog(), ":请选择.jpg、.jpeg、gif或 .png格式的图片");
+                return;
+            }
+            try {
+                String result = QrCodeCreateUtil.decodeImg(ff);
+                if (null == result || "".equals(result)) {
+                    msgLabel.setText("未解析到图片内容");
+                    msgLabel.setToolTipText(msgLabel.getText());
+                } else {
+                    qrcodeText.setText(result);
+                }
+            } catch (NotFoundException ne) {
+                JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
+                ne.printStackTrace();
+            } catch (Exception e1) {
+                JOptionPane.showMessageDialog(null, "上传失败！", "提示", JOptionPane.ERROR_MESSAGE);
+                e1.printStackTrace();
+            }
+        }
     }
 
     private void selectTop(boolean flag) {
@@ -205,18 +356,18 @@ public class NewDialog extends JFrame {
 
     private void jsonOK() {
         String text = jsonText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equals(text))
             return;
 
-        String json = text.replaceAll("\t", "");
+        text = text.replaceAll("\t", "");
         String resStr = null;
         try {
-            resStr = JsonFormatTool.format(json);
-            msgLabel.setText("json format");
+            resStr = JsonFormatTool.format(text);
+            msgLabel.setText("json format!");
             jsonText.setText(resStr);
         } catch (Throwable e) {
-            resStr = MapFormat.format(json);
-            msgLabel.setText("map format");
+            resStr = MapFormat.format(text);
+            msgLabel.setText("map format " + e.getMessage());
             jsonText.setText(resStr);
         }
     }
@@ -226,10 +377,10 @@ public class NewDialog extends JFrame {
         if (null == text || "".equalsIgnoreCase(text))
             return;
 
-        String json = text.replaceAll("\t", "");
+        text = text.replaceAll("\t", "");
         try {
-            String resStr = XmlFormat.format(json);
-            msgLabel.setText("xml format success");
+            String resStr = XmlFormat.format(text);
+            msgLabel.setText("xml format success!");
             xmlText.setText(resStr);
         } catch (Throwable e) {
             String eStr = "xml format error [" + e.getMessage() + "]";
@@ -243,10 +394,10 @@ public class NewDialog extends JFrame {
         if (null == text || "".equalsIgnoreCase(text))
             return;
 
-        String json = text.replaceAll("\t", "");
+        text = text.replaceAll("\t", "");
         try {
-            String resStr = HtmlFormat.format(json);
-            msgLabel.setText("html format");
+            String resStr = HtmlFormat.format(text);
+            msgLabel.setText("html format!");
             htmlText.setText(resStr);
         } catch (Throwable e) {
             String eStr = "html format error [" + e.getMessage() + "]";
@@ -260,9 +411,9 @@ public class NewDialog extends JFrame {
         if (null == text || "".equalsIgnoreCase(text))
             return;
         try {
-            String md5Str = MD5Util.encoderByMd5(text);
-            msgLabel.setText("md5 success");
-            md5Text.setText(md5Str);
+            text = MD5Util.encoderByMd5(text);
+            msgLabel.setText("md5 success!");
+            md5Text.setText(text);
         } catch (Throwable t) {
             String eStr = "md5 error [" + t.getMessage() + "]";
             msgLabel.setText(eStr);
@@ -279,8 +430,9 @@ public class NewDialog extends JFrame {
             qrcodeText.setText(text.trim() + "\r\n");
             qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
             qrcodeText.insertIcon(new ImageIcon(QrCodeCreateUtil.createQrCode(text.trim(), 250)));
+            msgLabel.setText("qrcode create!");
         } catch (Exception e) {
-            String eStr = "create qrCode excpeiont [" + e.getMessage() + "]";
+            String eStr = "qrcode create exception [" + e.getMessage() + "]";
             msgLabel.setText(eStr);
             msgLabel.setToolTipText(eStr);
         }
@@ -290,34 +442,46 @@ public class NewDialog extends JFrame {
         String text = base64Text.getText();
         if (null == text || "".equalsIgnoreCase(text))
             return;
-        String result = BaseEncoding.base64().encode(text.getBytes());
-        base64Text.setText(result);
-        msgLabel.setText("base64 encode");
-        msgLabel.setToolTipText("base64 encode");
+        try {
+            text = BaseEncoding.base64().encode(text.getBytes());
+            base64Text.setText(text);
+            msgLabel.setText("base64 encode!");
+            msgLabel.setToolTipText("base64 encode!");
+        } catch (Exception e) {
+            String eStr = "base64 encode exception [" + e.getMessage() + "]";
+            msgLabel.setText(eStr);
+            msgLabel.setToolTipText(eStr);
+        }
     }
 
     private void decode() {
         String text = base64Text.getText();
         if (null == text || "".equalsIgnoreCase(text))
             return;
-        String result = new String(BaseEncoding.base64().decode(text));
-        base64Text.setText(result);
-        msgLabel.setText("base64 decode");
-        msgLabel.setToolTipText("base64 decode");
+        try {
+            text = new String(BaseEncoding.base64().decode(text));
+            base64Text.setText(text);
+            msgLabel.setText("base64 decode!");
+            msgLabel.setToolTipText("base64 decode!");
+        } catch (Exception e) {
+            String eStr = "base64 decode exception [" + e.getMessage() + "]";
+            msgLabel.setText(eStr);
+            msgLabel.setToolTipText(eStr);
+        }
     }
 
     private void sqlFormat() {
         String text = sqlText.getText();
         if (null == text || "".equalsIgnoreCase(text))
             return;
-        String result = SqlFormat.format(text);
-        if (null == result) {
+        text = SqlFormat.format(text);
+        if (null == text) {
             msgLabel.setText("sql format error!");
             return;
         }
-        sqlText.setText(result);
-        msgLabel.setText("sql format");
-        msgLabel.setToolTipText("sql format");
+        sqlText.setText(text);
+        msgLabel.setText("sql format!");
+        msgLabel.setToolTipText("sql format!");
     }
 
     private void zhToUnicode() {
@@ -352,123 +516,82 @@ public class NewDialog extends JFrame {
         jsonText = createArea(JSON);
         RTextScrollPane jsonSp = new RTextScrollPane(jsonText);
         jsonSp.setBorder(new EmptyBorder(new Insets(0, 0, 0, 0)));
-        jsPanel.add(jsonSp);
 
         xmlText = createArea(XML);
         RTextScrollPane xmlSp = new RTextScrollPane(xmlText);
         xmlSp.setBorder(new EmptyBorder(new Insets(0, 0, 0, 0)));
-        xmlPanel.add(xmlSp);
 
         htmlText = createArea(HTML);
         RTextScrollPane htmlSp = new RTextScrollPane(htmlText);
         htmlSp.setBorder(new EmptyBorder(new Insets(0, 0, 0, 0)));
-        htmlPanel.add(htmlSp);
 
         sqlText = createArea(SQL);
         RTextScrollPane sqlSp = new RTextScrollPane(sqlText);
         sqlSp.setBorder(new EmptyBorder(new Insets(0, 0, 0, 0)));
+
+        jsPanel.add(jsonSp);
+        xmlPanel.add(xmlSp);
+        htmlPanel.add(htmlSp);
         sqlPanel.add(sqlSp);
     }
 
     private RSyntaxTextArea createArea(String type) {
         RSyntaxTextArea area = new RSyntaxTextArea();
-        if ("JSON".equalsIgnoreCase(type))
+        area.setDocument(new MaxLengthDocument(5000000));
+        if (JSON.equalsIgnoreCase(type))
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        else if ("XML".equalsIgnoreCase(type))
+        else if (XML.equalsIgnoreCase(type))
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
-        else if ("HTML".equalsIgnoreCase(type))
+        else if (HTML.equalsIgnoreCase(type))
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
-        else if ("SQL".equalsIgnoreCase(type))
+        else if (SQL.equalsIgnoreCase(type))
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
         area.setCodeFoldingEnabled(true);
         area.setAntiAliasingEnabled(true);
         area.setAutoscrolls(true);
-
-        SyntaxScheme scheme = area.getSyntaxScheme();
-        scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = Color.BLUE;
-        scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground = new Color(164, 0, 0);
-        scheme.getStyle(Token.LITERAL_NUMBER_FLOAT).foreground = new Color(164, 0, 0);
-        scheme.getStyle(Token.LITERAL_BOOLEAN).foreground = Color.RED;
-        scheme.getStyle(Token.OPERATOR).foreground = Color.BLACK;
-        area.revalidate();
-        area.addMouseListener(new TextAreaMouseListener());
+        if (null != this.backgroudColor) {
+            try {
+                Theme theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
+                theme.apply(area);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            SyntaxScheme scheme = area.getSyntaxScheme();
+            scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = Color.BLUE;
+            scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground = new Color(164, 0, 0);
+            scheme.getStyle(Token.LITERAL_NUMBER_FLOAT).foreground = new Color(164, 0, 0);
+            scheme.getStyle(Token.LITERAL_BOOLEAN).foreground = Color.RED;
+            scheme.getStyle(Token.OPERATOR).foreground = Color.BLACK;
+            area.revalidate();
+        }
+        area.addMouseListener(tpml);
         return area;
     }
 
-    private JTextArea getTextArea() {
-        int selIndex = tabbedPane1.getSelectedIndex();
-        if (selIndex >= 0) {
-            JPanel sp = (JPanel) tabbedPane1.getComponentAt(selIndex);
-            RTextScrollPane rp = (RTextScrollPane) sp.getComponent(0);
-            JViewport vp = (JViewport) rp.getComponent(0);
-            JTextArea ta = (JTextArea) vp.getComponent(0);
-            System.out.println(ta.getText());
-            return ta;
-        }
-        return null;
-    }
+    public class MaxLengthDocument extends RSyntaxDocument {
+        int maxChars;
 
-    private class TextAreaMouseListener implements MouseListener {
-        public void mouseClicked(MouseEvent e) {
+        public MaxLengthDocument(int max) {
+            super(SYNTAX_STYLE_NONE);
+            maxChars = max;
         }
 
-        public void mousePressed(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                JPopupMenu popMenu = new JPopupMenu();
-                JMenuItem mtCopy = new JMenuItem("\u590d\u5236");
-                JMenuItem mtPaste = new JMenuItem("\u7c98\u5e16");
-                JMenuItem mtSelAll = new JMenuItem("\u5168\u9009");
-                JMenuItem mtClean = new JMenuItem("\u6e05\u7a7a");
-
-                popMenu.add(mtCopy);
-                popMenu.add(mtPaste);
-                popMenu.add(mtSelAll);
-                popMenu.add(mtClean);
-                JTextArea ta = getTextArea();
-                if (ta.getSelectedText() == null || ta.getSelectedText().length() == 0) {
-                    mtCopy.setEnabled(false);
+        public void insertString(int offset, String s, AttributeSet a) throws BadLocationException {
+            try {
+                if (getLength() + s.length() > maxChars) {
+                    Toolkit.getDefaultToolkit().beep();
+                    tipDia("内容过长，最大100万个字符!");
+                    return;
                 }
-
-                mtCopy.addActionListener(new TextAreaMenuItemActionListener(1));
-                mtPaste.addActionListener(new TextAreaMenuItemActionListener(2));
-                mtSelAll.addActionListener(new TextAreaMenuItemActionListener(3));
-                mtClean.addActionListener(new TextAreaMenuItemActionListener(4));
-                popMenu.show(e.getComponent(), e.getX(), e.getY());
+                super.insertString(offset, s, a);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
         }
     }
 
-
-    private class TextAreaMenuItemActionListener implements ActionListener {
-        private int optType;
-        private String str;
-        private JTextArea area;
-
-        //optType 1:复制;2:粘帖;3:全选;4:清空
-        public TextAreaMenuItemActionListener(int optType) {
-            this.optType = optType;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            area = getTextArea();
-            if (optType == 1) {
-                area.copy();
-            } else if (optType == 2) {
-                area.paste();
-            } else if (optType == 3) {
-                area.selectAll();
-            } else if (optType == 4) {
-                area.setText("");
-            }
-        }
+    private void tipDia(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "提示", JOptionPane.WARNING_MESSAGE);
     }
 }

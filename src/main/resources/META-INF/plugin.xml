@@ -2,35 +2,44 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <depends>com.intellij.java</depends>
 
     <description>
         <![CDATA[
-        AllFormat is formatting your JSON, XML, HTML and map printing.<br>
+        AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，会持续更新增加新功.<br>
         <em>all-format，JSON格式化JSON字符串，XML格式化XML字符串，HTML格式化HTML字符串和map.toString()打印的字符串!
-        MD5生成！，新增加二维码生成QR CODE,Unicode转换，Base64生成.</em>
+        新增加SQL格式,MD5生,QRCODE二维码生成,Unicode转换,Base64生成转换.</em>
+        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23549.png'/>
+        <img src='https://plugins.jetbrains.com/files/10962/screenshot_23550.png'/>
         ]]>
     </description>
     <change-notes>
         <![CDATA[
         <p>
-        1.1.0
-        <ul>
-        <li>New: Base64 generate</li>
-        <li>New: Unicode conversion</li>
-        <li>New: qr code string</li>
-        <li>New: format json string</li>
-        <li>New: format xml string</li>
-        <li>New: format map string</li>
-        <li>New: format html string</li>
-        </ul>
+            1.1.1
+            <ul>
+                <li>新增加关于项目连接.</li>
+                <li>优化黑暗主题内容背景颜色.</li>
+                <li>优化SQL格式化.</li>
+                <li>修改默认窗体大小.</li>
+                <li>增加上传二维码图片识别.</li>
+                <li>增加置顶、换行设置缓存.</li>
+                <li>New: format map string</li>
+                <li>New: format html string</li>
+            </ul>
         </p>
         ]]>
     </change-notes>
 
     <idea-version since-build="193"/>
+
+    <application-components>
+    </application-components>
+
+    <project-components>
+    </project-components>
 
     <actions>
         <action id="AllFormat" class="com.damoguyansi.all.format.FormatAction" text="AllFormat">

@@ -3,12 +3,12 @@
   <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="644" height="400"/>
+      <xy x="20" y="20" width="648" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="5b66" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="5b66" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -16,17 +16,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e8c80" class="javax.swing.JButton" binding="exeBtn">
-            <constraints>
-              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="1" use-parent-layout="false">
-                <minimum-size width="60" height="23"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-855310"/>
-              <text value="格式化"/>
-            </properties>
-          </component>
           <hspacer id="75a4a">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -45,7 +34,7 @@
           </component>
           <component id="26a29" class="javax.swing.JButton" binding="otherBtn">
             <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <minimum-size width="60" height="23"/>
               </grid>
             </constraints>
@@ -56,7 +45,7 @@
           </component>
           <component id="72471" class="javax.swing.JCheckBox" binding="topCheckBox">
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <selected value="true"/>
@@ -65,11 +54,28 @@
           </component>
           <component id="acdcc" class="javax.swing.JCheckBox" binding="newLineCheckBox">
             <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <selected value="false"/>
               <text value="换行"/>
+            </properties>
+          </component>
+          <component id="e3a3c" class="javax.swing.JLabel" binding="zczzLable">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-16776961"/>
+              <text value="关于项目"/>
+            </properties>
+          </component>
+          <component id="683e" class="javax.swing.JButton" binding="exeBtn">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="格式化"/>
             </properties>
           </component>
         </children>
@@ -95,7 +101,7 @@
               <tabLayoutPolicy value="0"/>
             </properties>
             <border type="line">
-              <color color="-5987164"/>
+              <color color="-10855846"/>
             </border>
             <children>
               <grid id="bd060" binding="jsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -130,7 +136,7 @@
                 <border type="none"/>
                 <children/>
               </grid>
-              <scrollpane id="5adcd">
+              <scrollpane id="5adcd" binding="md5Panel">
                 <constraints>
                   <tabbedpane title=" MD5  "/>
                 </constraints>
@@ -141,13 +147,14 @@
                     <constraints/>
                     <properties>
                       <background color="-460552"/>
+                      <lineWrap value="true"/>
                     </properties>
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="8073c">
+              <scrollpane id="8073c" binding="qrcodePanel">
                 <constraints>
-                  <tabbedpane title="QRCODE"/>
+                  <tabbedpane title="QRCode"/>
                 </constraints>
                 <properties/>
                 <border type="empty"/>
@@ -158,7 +165,7 @@
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="85b41">
+              <scrollpane id="85b41" binding="base64Panel">
                 <constraints>
                   <tabbedpane title="Base64"/>
                 </constraints>
@@ -171,7 +178,7 @@
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="d36ad">
+              <scrollpane id="d36ad" binding="unicodePanel">
                 <constraints>
                   <tabbedpane title="Unicode"/>
                 </constraints>

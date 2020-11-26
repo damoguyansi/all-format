@@ -79,19 +79,6 @@ public class MainDialog extends JFrame {
         }
         editorPane1.setText(ClipboardUtil.getSysClipboardText());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String msg = HttpClientUtils.get("http://www.javams.com/format/msg");
-                    if (null != msg && !"".equals(msg)) {
-                        noticeLabel.setText(msg);
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-        }).start();
         onTopCheckBox.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
