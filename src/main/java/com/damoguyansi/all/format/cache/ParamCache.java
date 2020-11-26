@@ -11,12 +11,13 @@ import java.io.*;
  * @date 2020.11.24
  */
 public class ParamCache {
-    private static final String BASE_DIR = System.getenv("APPDATA");
+    private static final String BASE_DIR = System.getProperty("java.io.tmpdir");
     private static final String CACHE_FILE_NAME = "allformat.json";
     private JsonObject paramObj = null;
 
     public ParamCache() {
         File file = new File(BASE_DIR, CACHE_FILE_NAME);
+        System.out.println(file.getAbsolutePath());
         if (file.exists()) {
             String params = readFile(file);
             if (null != params && !"".equals(params))
@@ -92,11 +93,11 @@ public class ParamCache {
         paramObj.addProperty(cacheName.getName(), value);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ParamCache pc = new ParamCache();
-        boolean onTop = pc.readAsBoolean(CacheName.ON_TOP);
+        Boolean onTop = pc.readAsBoolean(CacheName.ON_TOP);
         System.out.println(onTop);
-        pc.writeByName(CacheName.ON_TOP, Boolean.toString(!onTop));
+        pc.writeByName(CacheName.ON_TOP, Boolean.toString(null == onTop ? false : !onTop));
 
         pc.close();
     }
