@@ -4,7 +4,7 @@
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
     <version>1.1.1</version>
 
-    <depends>com.intellij.java</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <description>
         <![CDATA[

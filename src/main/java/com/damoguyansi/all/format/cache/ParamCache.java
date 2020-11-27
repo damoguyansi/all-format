@@ -17,7 +17,6 @@ public class ParamCache {
 
     public ParamCache() {
         File file = new File(BASE_DIR, CACHE_FILE_NAME);
-        System.out.println(file.getAbsolutePath());
         if (file.exists()) {
             String params = readFile(file);
             if (null != params && !"".equals(params))
