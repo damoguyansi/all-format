@@ -10,7 +10,7 @@
   [jetbrains](https://plugins.jetbrains.com/plugin/10962-all-format)
   
 
-##一、版本说明
+## 一、版本说明
 
 版本1.1.1
 > 
@@ -22,7 +22,7 @@
 * 增加置顶、换行设置缓存.
 
 
-##二、安装方法   
+## 二、安装方法   
 方法1:
 ~~~
 1.Intellij IDEA 
@@ -38,7 +38,7 @@
      3重启 Intellij IDEA .
 ~~~
 
-##三、使用方法
+## 三、使用方法
 1. 使用右上角图标打开窗口.  
 ![Generate快捷键.png](https://plugins.jetbrains.com/files/10962/screenshot_23730.png)
  
@@ -46,6 +46,6 @@
 默认 Alt + f (win)
 
 
-##四、使用截图
+## 四、使用截图
 ![allformat1.png](https://plugins.jetbrains.com/files/10962/screenshot_23549.png)
 ![allformat2.png](https://plugins.jetbrains.com/files/10962/screenshot_23550.png)
