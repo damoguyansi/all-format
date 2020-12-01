@@ -13,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
@@ -154,7 +153,6 @@ public class NewDialog extends JFrame {
                         zhToUnicode();
                         break;
                 }
-                System.gc();
             }
         });
         topCheckBox.addChangeListener(new ChangeListener() {
@@ -194,7 +192,6 @@ public class NewDialog extends JFrame {
                 } else if (Unicode.equalsIgnoreCase(tag)) {
                     unicodeToZh();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
-//                    selectPicture(otherBtn);
                     openFileAction();
                 }
             }
@@ -295,49 +292,6 @@ public class NewDialog extends JFrame {
         } catch (Exception e1) {
             JOptionPane.showMessageDialog(null, "上传失败！", "提示", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
-        }
-    }
-
-    public void selectPicture(JButton button) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        JFileChooser chooser = new JFileChooser();
-        chooser.setMultiSelectionEnabled(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "png", "gif", "jpeg");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(button);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File arrfiles = chooser.getSelectedFile();
-            if (arrfiles == null) {
-                return;
-            }
-
-            File ff = chooser.getSelectedFile();//判断是否有文件为jpg或者png
-            String fileName = ff.getName();//创建一个fileName得到选择文件的名字
-            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            //判断选择的文件是否是图片文件 必须排除不是的情况 不然后续操作会报错
-            if (!(prefix.equalsIgnoreCase("jpg") || prefix.equalsIgnoreCase("png") || prefix.equalsIgnoreCase("gif") || prefix.equalsIgnoreCase("jpeg"))) {
-                JOptionPane.showMessageDialog(new JDialog(), ":请选择.jpg、.jpeg、gif或 .png格式的图片");
-                return;
-            }
-            try {
-                String result = QrCodeCreateUtil.decodeImg(ff);
-                if (null == result || "".equals(result)) {
-                    msgLabel.setText("未解析到图片内容");
-                    msgLabel.setToolTipText(msgLabel.getText());
-                } else {
-                    qrcodeText.setText(result);
-                }
-            } catch (NotFoundException ne) {
-                JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
-                ne.printStackTrace();
-            } catch (Exception e1) {
-                JOptionPane.showMessageDialog(null, "上传失败！", "提示", JOptionPane.ERROR_MESSAGE);
-                e1.printStackTrace();
-            }
         }
     }
 
@@ -583,5 +537,9 @@ public class NewDialog extends JFrame {
 
     private void tipDia(String msg) {
         JOptionPane.showMessageDialog(this, msg, "提示", JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void gc(){
+
     }
 }
