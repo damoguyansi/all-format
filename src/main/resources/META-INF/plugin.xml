@@ -21,8 +21,7 @@
                 <li>Unicode值生成与转换。</li>
             </ul>
         </h3>
-        <em>all-format，JSON格式化JSON字符串，XML格式化XML字符串，HTML格式化HTML字符串和map.toString()打印的字符串!
-        新增加SQL格式,MD5生,QRCODE二维码生成,Unicode转换,Base64生成转换.</em><br/>
+        all-format,json formatting,html formatting,MySql formatting,xml formatting,MD5 generated,QRCode generated,二维码生成,Unicode conversion,Base64 conversion.<br/>
         <img src='https://plugins.jetbrains.com/files/10962/screenshot_23549.png' width='500'/>
         <br/>
         <img src='https://plugins.jetbrains.com/files/10962/screenshot_23550.png' width='500'/>
