@@ -2,6 +2,7 @@ package com.damoguyansi.all.format.ui;
 
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
+import com.damoguyansi.all.format.event.JTextPaneAdapter;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
@@ -80,10 +81,13 @@ public class NewDialog extends JFrame {
 
         createRSyntaxTextArea();
 
-        jsonText.setText(ClipboardUtil.getSysClipboardText());
         zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         showMainDia();
+
+        setClipboardContent();
+
+        new JTextPaneAdapter(qrcodeText);
     }
 
     private void initCacheParam() {
@@ -120,6 +124,25 @@ public class NewDialog extends JFrame {
         pc.writeByName(CacheName.NEW_LINE, Boolean.toString(newLineCheckBox.isSelected()));
         pc.writeByName(CacheName.ON_TOP, Boolean.toString(isAlwaysOnTop()));
         pc.close();
+    }
+
+    private void setClipboardContent() {
+        String clipText = ClipboardUtil.getSysClipboardText();
+        if (null == clipText || "".equals(clipText)) {
+            try {
+                tabbedPane1.setSelectedIndex(5);
+                Image image = ClipboardUtil.getImageFromClipboard();
+                if (null != image) {
+                    qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
+                    ImageIcon ii = new ImageIcon(image);
+                    qrcodeText.insertIcon(ii);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            jsonText.setText(clipText);
+        }
     }
 
     private void initActionListener() {
@@ -539,7 +562,4 @@ public class NewDialog extends JFrame {
         JOptionPane.showMessageDialog(this, msg, "提示", JOptionPane.WARNING_MESSAGE);
     }
 
-    private void gc(){
-
-    }
 }

@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.event;
 
+import com.damoguyansi.all.format.util.ClipboardUtil;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -94,7 +95,11 @@ public class TextPanelMouseListener extends MouseAdapter {
             if (optType == 1) {
                 textPane.copy();
             } else if (optType == 2) {
-                textPane.paste();
+                if (5 != tabbedPane.getSelectedIndex()) {
+                    textPane.paste();
+                    return;
+                }
+                ClipboardUtil.pasteClipboardContent((JTextPane) textPane);
             } else if (optType == 3) {
                 textPane.selectAll();
             } else if (optType == 4) {
