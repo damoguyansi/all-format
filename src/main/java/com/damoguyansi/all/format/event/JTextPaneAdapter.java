@@ -15,7 +15,6 @@ public class JTextPaneAdapter implements ActionListener {
         textPane = myJTable;
         KeyStroke copy = KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.META_MASK, false);
         textPane.registerKeyboardAction(this, "Paste", copy, JComponent.WHEN_FOCUSED);
-        System.out.println("register keyboard action...");
     }
 
     /**
@@ -30,7 +29,6 @@ public class JTextPaneAdapter implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().compareTo("Paste") == 0) {
-            System.out.println("copy...");
             ClipboardUtil.pasteClipboardContent(textPane);
         }
     }

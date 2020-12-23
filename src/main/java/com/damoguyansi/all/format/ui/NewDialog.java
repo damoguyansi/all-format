@@ -14,10 +14,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 
@@ -131,12 +131,7 @@ public class NewDialog extends JFrame {
         if (null == clipText || "".equals(clipText)) {
             try {
                 tabbedPane1.setSelectedIndex(5);
-                Image image = ClipboardUtil.getImageFromClipboard();
-                if (null != image) {
-                    qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
-                    ImageIcon ii = new ImageIcon(image);
-                    qrcodeText.insertIcon(ii);
-                }
+                ClipboardUtil.pasteClipboardContent(qrcodeText);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -215,7 +210,7 @@ public class NewDialog extends JFrame {
                 } else if (Unicode.equalsIgnoreCase(tag)) {
                     unicodeToZh();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
-                    openFileAction();
+                    decodeQrcode();
                 }
             }
         });
@@ -234,7 +229,7 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u7b7e\u540d");
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u751f\u6210");
-                    otherBtn.setText("\u4e0a\u4f20");
+                    otherBtn.setText("\u89e3\u6790");
                     otherBtn.setVisible(true);
                 } else if (SQL.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7f8e\u5316");
@@ -391,18 +386,50 @@ public class NewDialog extends JFrame {
 
     private void qrCodeOK() {
         String text = qrcodeText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text.trim()))
             return;
 
         try {
             qrcodeText.setText(text.trim() + "\r\n");
             qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
-            qrcodeText.insertIcon(new ImageIcon(QrCodeCreateUtil.createQrCode(text.trim(), 250)));
+            BufferedImage bufferedImage = QrCodeCreateUtil.createQrCode(text.trim(), 250);
+            ImageIcon ii = new ImageIcon(bufferedImage);
+            ImageLabel label = new ImageLabel(qrcodeText, ii);
+            qrcodeText.insertComponent(label);
+
             msgLabel.setText("qrcode create!");
         } catch (Exception e) {
             String eStr = "qrcode create exception [" + e.getMessage() + "]";
             msgLabel.setText(eStr);
             msgLabel.setToolTipText(eStr);
+        }
+    }
+
+    private void decodeQrcode() {
+        try {
+            String results = "";
+            for (int i = 0; i < qrcodeText.getDocument().getLength(); i++) {
+                Element elem = ((StyledDocument) qrcodeText.getDocument()).getCharacterElement(i);
+                AttributeSet as = elem.getAttributes();
+                if (as.containsAttribute(AbstractDocument.ElementNameAttribute, StyleConstants.ComponentElementName)) {
+                    if (StyleConstants.getComponent(as) instanceof JLabel) {
+                        ImageLabel myLabel = (ImageLabel) StyleConstants.getComponent(as);
+                        ImageIcon imageIcon = myLabel.getImageIcon();
+                        results += QrCodeCreateUtil.decodeImg(imageIcon) + "\r\n";
+                    }
+                }
+            }
+            if (null == results || "".equals(results)) {
+                msgLabel.setText("未解析到图片内容");
+                msgLabel.setToolTipText(msgLabel.getText());
+            } else {
+                qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
+                qrcodeText.setText(results);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            msgLabel.setText("未解析到图片内容");
+            msgLabel.setToolTipText(msgLabel.getText());
         }
     }
 

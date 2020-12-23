@@ -1,10 +1,11 @@
 package com.damoguyansi.all.format.event;
 
+import com.damoguyansi.all.format.ui.ImageLabel;
 import com.damoguyansi.all.format.util.ClipboardUtil;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ public class TextPanelMouseListener extends MouseAdapter {
     }
 
     private JTextComponent getTextPane() {
+        if (null == tabbedPane) return null;
         int selIndex = tabbedPane.getSelectedIndex();
         if (selIndex >= 0) {
             Component c = tabbedPane.getComponentAt(selIndex);
@@ -44,16 +46,34 @@ public class TextPanelMouseListener extends MouseAdapter {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            menuItemInit(e);
-        }
+    public void mouseReleased(MouseEvent e) {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
             menuItemInit(e);
+        } else if (e.getSource() instanceof JTextPane) {
+            JTextPane text = (JTextPane) e.getSource();
+            iterateLabelCancelBorder(text);
+        }
+    }
+
+    /**
+     * 清除JLabel边框
+     *
+     * @param tp
+     */
+    private void iterateLabelCancelBorder(JTextPane tp) {
+        for (int i = 0; i < tp.getDocument().getLength(); i++) {
+            Element elem = ((StyledDocument) tp.getDocument()).getCharacterElement(i);
+            AttributeSet as = elem.getAttributes();
+            if (as.containsAttribute(AbstractDocument.ElementNameAttribute, StyleConstants.ComponentElementName)) {
+                if (StyleConstants.getComponent(as) instanceof JLabel) {
+                    ImageLabel myLabel = (ImageLabel) StyleConstants.getComponent(as);
+                    myLabel.setBorder(BorderFactory.createEmptyBorder());
+                }
+            }
         }
     }
 
@@ -69,7 +89,7 @@ public class TextPanelMouseListener extends MouseAdapter {
         popMenu.add(mtSelAll);
         popMenu.add(mtClean);
         JTextComponent ta = getTextPane();
-        if (ta.getSelectedText() == null || ta.getSelectedText().length() == 0) {
+        if (null != ta && (ta.getSelectedText() == null || ta.getSelectedText().length() == 0)) {
             mtCopy.setEnabled(false);
         }
 
@@ -92,6 +112,7 @@ public class TextPanelMouseListener extends MouseAdapter {
 
         public void actionPerformed(ActionEvent e) {
             textPane = getTextPane();
+            if (null == textPane) return;
             if (optType == 1) {
                 textPane.copy();
             } else if (optType == 2) {

@@ -7,6 +7,8 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,15 +22,49 @@ public class QrCodeCreateUtil {
     public static String decodeImg(File file) throws Exception {
         if (!file.exists()) return null;
         BufferedImage imge = ImageIO.read(file);
+        return decodeImg(imge);
+    }
 
-        MultiFormatReader formatReader = new MultiFormatReader();
-        LuminanceSource source = new BufferedImageLuminanceSource(imge);
-        Binarizer binarizer = new HybridBinarizer(source);
-        BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
-        Map map = new HashMap();
-        map.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        Result result = formatReader.decode(binaryBitmap, map);
-        return result.toString();
+    public static String decodeImg(ImageIcon imageIcon) throws Exception {
+        if (null == imageIcon) return null;
+        BufferedImage imge = toBufferedImage(imageIcon);
+        return decodeImg(imge);
+    }
+
+    public static String decodeImg(BufferedImage image) throws Exception {
+        try {
+            MultiFormatReader formatReader = new MultiFormatReader();
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            Binarizer binarizer = new HybridBinarizer(source);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+            Map map = new HashMap();
+            map.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            Result result = formatReader.decode(binaryBitmap, map);
+            return null == result ? "" : result.toString();
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    public static BufferedImage toBufferedImage(ImageIcon imageIcon) {
+        Image image = imageIcon.getImage();
+        BufferedImage bimage = null;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        try {
+            int transparency = Transparency.OPAQUE;
+            GraphicsDevice gs = ge.getDefaultScreenDevice();
+            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+            bimage = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
+        } catch (HeadlessException e) {
+        }
+        if (bimage == null) {
+            int type = BufferedImage.TYPE_INT_RGB;
+            bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+        }
+        Graphics g = bimage.createGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+        return bimage;
     }
 
     public static BufferedImage createQrCode(String text, int qrCodeSize) throws WriterException {

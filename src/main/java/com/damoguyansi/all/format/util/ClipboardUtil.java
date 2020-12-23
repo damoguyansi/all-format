@@ -1,12 +1,10 @@
 package com.damoguyansi.all.format.util;
 
-import javax.imageio.ImageIO;
+import com.damoguyansi.all.format.ui.ImageLabel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -90,34 +88,17 @@ public class ClipboardUtil {
     public static void pasteClipboardContent(JTextPane jTextPane) {
         String clipText = getSysClipboardText();
         if (null != clipText && !"".equals(clipText)) {
-            jTextPane.setText(clipText);
+            jTextPane.paste();
             return;
         }
 
         try {
             Image image = getImageFromClipboard();
             if (null != image) {
-                jTextPane.setCaretPosition(jTextPane.getStyledDocument().getLength());
                 ImageIcon ii = new ImageIcon(image);
-                jTextPane.insertIcon(ii);
+                ImageLabel label = new ImageLabel(jTextPane, ii);
+                jTextPane.insertComponent(label);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            Image image = getImageFromClipboard();
-            File file = new File("/Users/damoguyansi/a.png");
-            //转成jpg
-            //BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-            //转成png
-            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = bufferedImage.createGraphics();
-            g.drawImage(image, null, null);
-            //ImageIO.write((RenderedImage)bufferedImage, "jpg", file);
-            ImageIO.write((RenderedImage) bufferedImage, "png", file);
         } catch (Exception e) {
             e.printStackTrace();
         }

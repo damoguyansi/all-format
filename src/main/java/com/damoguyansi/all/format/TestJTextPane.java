@@ -1,27 +1,16 @@
 package com.damoguyansi.all.format;
 
 import com.damoguyansi.all.format.event.JTextPaneAdapter;
+import com.damoguyansi.all.format.event.TextPanelMouseListener;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import javax.swing.text.*;
 
 public class TestJTextPane extends JFrame {
     private JScrollPane scrollPane = null;
@@ -61,6 +50,7 @@ public class TestJTextPane extends JFrame {
         b_get.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 for (int i = 0; i < doc.getLength(); i++) {//遍历读取的StyledDocument
                     if (doc.getCharacterElement(i).getName().equals("icon")) { //如果发现是icon元素，那么：
                         Element ele = doc.getCharacterElement(i);
@@ -77,6 +67,7 @@ public class TestJTextPane extends JFrame {
                 }
             }
         });
+        text.addMouseListener(new TextPanelMouseListener(null));
 
         b_insert.addActionListener(new ActionListener() { // 插入文字的事件
             public void actionPerformed(ActionEvent e) {
