@@ -24,7 +24,7 @@ dependencies {
     compile group: 'com.google.zxing', name: 'javase', version: '3.3.1'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     compile group: 'com.formdev', name: 'flatlaf', version: '0.43'
-}
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.75'}
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

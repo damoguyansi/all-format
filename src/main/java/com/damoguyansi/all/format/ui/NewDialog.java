@@ -7,6 +7,8 @@ import com.damoguyansi.all.format.event.TextPanelMouseListener;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import com.google.zxing.NotFoundException;
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.ui.components.labels.LinkLabel;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -44,6 +46,8 @@ public class NewDialog extends JFrame {
     private JScrollPane base64Panel;
     private JScrollPane unicodePanel;
     private JLabel zczzLable;
+    private JTextArea tranInputText;
+    private JTextArea tranOutputText;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -58,6 +62,8 @@ public class NewDialog extends JFrame {
     private static final String QRCODE = "QRCode";
     private static final String Base64 = "Base64";
     private static final String Unicode = "Unicode";
+    private static final String Translate = "Translate";
+    private static final boolean TRAN_FLAG = false;
     private Color backgroudColor;
 
     private ParamCache pc;
@@ -114,6 +120,7 @@ public class NewDialog extends JFrame {
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
+        this.setMinimumSize(new Dimension(480,300));
 
         jsonText.requestFocus();
         jsonText.grabFocus();
@@ -169,6 +176,9 @@ public class NewDialog extends JFrame {
                         break;
                     case Unicode:
                         zhToUnicode();
+                        break;
+                    case Translate:
+                        trans();
                         break;
                 }
             }
@@ -237,6 +247,9 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u4e2d\u8f6c\u0055");
                     otherBtn.setText("\u0055\u8f6c\u4e2d");
                     otherBtn.setVisible(true);
+                } else if (Translate.equals(tag)) {
+                    exeBtn.setText("\u7ffb\u8bd1");
+                    otherBtn.setVisible(false);
                 } else {
                     exeBtn.setText("\u683c\u5f0f\u5316");
                 }
@@ -260,6 +273,18 @@ public class NewDialog extends JFrame {
             }
         });
 
+        tranInputText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+            }
+        });
+
         tpml = new TextPanelMouseListener(tabbedPane1);
         qrcodeText.addMouseListener(tpml);
         md5Text.addMouseListener(tpml);
@@ -270,7 +295,6 @@ public class NewDialog extends JFrame {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 hideMainDia();
-                System.gc();
                 dispose();
             }
         });
@@ -278,7 +302,6 @@ public class NewDialog extends JFrame {
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 hideMainDia();
-                System.gc();
                 dispose();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -505,6 +528,15 @@ public class NewDialog extends JFrame {
         unicodeText.setText(result);
         msgLabel.setText("unicode decode!");
         msgLabel.setToolTipText("unicode decode!");
+    }
+
+    private void trans() {
+        String text = tranInputText.getText();
+        if (null == text || "".equals(text.trim())) {
+            return;
+        }
+        text = text.trim();
+        tranOutputText.setText(TranslateUtil.trans(text));
     }
 
     private void createRSyntaxTextArea() {
