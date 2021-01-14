@@ -46,8 +46,9 @@ public class NewDialog extends JFrame {
     private JScrollPane base64Panel;
     private JScrollPane unicodePanel;
     private JLabel zczzLable;
-    private JTextArea tranInputText;
-    private JTextArea tranOutputText;
+    private JTextArea tranInText;
+    private JTextArea tranOutText;
+    private JScrollPane tranOutPane;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -82,6 +83,11 @@ public class NewDialog extends JFrame {
         base64Text.setOpaque(false);
         md5Text.setOpaque(false);
         otherBtn.setVisible(false);
+        tranInText.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        tranInText.setLineWrap(true);
+        tranOutText.setEditable(false);
+        tranOutText.setLineWrap(true);
+        tranOutText.setBackground(tranOutPane.getBackground());
 
         initActionListener();
 
@@ -120,7 +126,7 @@ public class NewDialog extends JFrame {
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
-        this.setMinimumSize(new Dimension(580,300));
+        this.setMinimumSize(new Dimension(602,353));
 
         jsonText.requestFocus();
         jsonText.grabFocus();
@@ -270,18 +276,6 @@ public class NewDialog extends JFrame {
                         }
                     }
                 }.start();
-            }
-        });
-
-        tranInputText.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
             }
         });
 
@@ -531,12 +525,12 @@ public class NewDialog extends JFrame {
     }
 
     private void trans() {
-        String text = tranInputText.getText();
+        String text = tranInText.getText();
         if (null == text || "".equals(text.trim())) {
             return;
         }
         text = text.trim();
-        tranOutputText.setText(TranslateUtil.trans(text));
+        tranOutText.setText(TranslateUtil.trans(text));
     }
 
     private void createRSyntaxTextArea() {

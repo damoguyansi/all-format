@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="886" height="400"/>
+      <xy x="20" y="20" width="609" height="411"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -209,46 +209,40 @@
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <grid id="b4946" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="10" left="10" bottom="10" right="10"/>
+                  <scrollpane id="e14bd">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
-                    <border type="none"/>
+                    <border type="empty"/>
                     <children>
-                      <component id="5f2bc" class="javax.swing.JTextArea" binding="tranInputText">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
+                      <component id="e6f46" class="javax.swing.JTextArea" binding="tranInText">
+                        <constraints/>
                         <properties>
-                          <lineWrap value="true"/>
+                          <lineWrap value="false"/>
+                          <wrapStyleWord value="true"/>
                         </properties>
                       </component>
                     </children>
-                  </grid>
-                  <grid id="edcd1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="10" left="10" bottom="10" right="10"/>
+                  </scrollpane>
+                  <scrollpane id="96d1e" binding="tranOutPane">
                     <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
-                    <border type="none"/>
+                    <border type="empty">
+                      <color color="-16777216"/>
+                    </border>
                     <children>
-                      <component id="e779b" class="javax.swing.JTextArea" binding="tranOutputText">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
+                      <component id="e3db4" class="javax.swing.JTextArea" binding="tranOutText">
+                        <constraints/>
                         <properties>
-                          <lineWrap value="true"/>
+                          <lineWrap value="false"/>
+                          <wrapStyleWord value="true"/>
                         </properties>
                       </component>
                     </children>
-                  </grid>
+                  </scrollpane>
                 </children>
               </grid>
             </children>
