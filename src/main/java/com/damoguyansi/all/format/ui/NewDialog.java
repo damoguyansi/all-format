@@ -236,6 +236,7 @@ public class NewDialog extends JFrame {
                 JTabbedPane pane = (JTabbedPane) e.getSource();
                 String tag = tabbedPane1.getTitleAt(pane.getSelectedIndex()).trim();
                 otherBtn.setVisible(false);
+                newLineCheckBox.setVisible(true);
                 msgLabel.setText("\u70b9\u51fb\u6309\u94ae\u8fdb\u884c\u683c\u5f0f\u5316");
                 if (Base64.equalsIgnoreCase(tag)) {
                     otherBtn.setText("\u89e3\u5bc6");
@@ -256,6 +257,7 @@ public class NewDialog extends JFrame {
                 } else if (Translate.equals(tag)) {
                     exeBtn.setText("\u7ffb\u8bd1");
                     otherBtn.setVisible(false);
+                    newLineCheckBox.setVisible(false);
                 } else {
                     exeBtn.setText("\u683c\u5f0f\u5316");
                 }
