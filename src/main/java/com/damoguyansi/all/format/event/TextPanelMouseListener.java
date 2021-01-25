@@ -42,7 +42,7 @@ public class TextPanelMouseListener extends MouseAdapter {
                     JTextArea ta = (JTextArea) vp.getComponent(0);
                     return ta;
                 } else if (sp.getComponent(0) instanceof JScrollPane) {
-                    JScrollPane jsp = (JScrollPane)sp.getComponent(0);
+                    JScrollPane jsp = (JScrollPane) sp.getComponent(0);
                     JViewport vp = (JViewport) jsp.getComponent(0);
                     Component com = vp.getComponent(0);
                     if (com instanceof JTextPane) {
@@ -58,6 +58,9 @@ public class TextPanelMouseListener extends MouseAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            menuItemInit(e);
+        }
     }
 
     @Override
