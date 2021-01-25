@@ -159,15 +159,11 @@
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <component id="80ee1" class="javax.swing.JTextPane" binding="qrcodeText">
+                  <component id="a77c2" class="com.damoguyansi.all.format.ui.ImageTextPane" binding="qrcodeText">
                     <constraints/>
                     <properties>
                       <background color="-460552"/>
-                      <contentType value="text/plain"/>
                     </properties>
-                    <clientProperties>
-                      <JEditorPane.honorDisplayProperties class="java.lang.Boolean" value="false"/>
-                    </clientProperties>
                   </component>
                 </children>
               </scrollpane>
@@ -220,7 +216,7 @@
                         <constraints/>
                         <properties>
                           <lineWrap value="false"/>
-                          <wrapStyleWord value="true"/>
+                          <wrapStyleWord value="false"/>
                         </properties>
                       </component>
                     </children>

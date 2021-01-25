@@ -2,13 +2,9 @@ package com.damoguyansi.all.format.ui;
 
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
-import com.damoguyansi.all.format.event.JTextPaneAdapter;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
-import com.google.zxing.NotFoundException;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.components.labels.LinkLabel;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -20,7 +16,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URI;
 
 public class NewDialog extends JFrame {
@@ -79,27 +74,45 @@ public class NewDialog extends JFrame {
         setContentPane(contentPane);
         getRootPane().setDefaultButton(exeBtn);
 
-        unicodeText.setOpaque(false);
-        base64Text.setOpaque(false);
-        md5Text.setOpaque(false);
-        otherBtn.setVisible(false);
-        tranInText.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        tranInText.setLineWrap(true);
-        tranOutText.setEditable(false);
-        tranOutText.setLineWrap(true);
-        tranOutText.setBackground(tranOutPane.getBackground());
+        initComponent();
 
         initActionListener();
-
-        createRSyntaxTextArea();
-
-        zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         showMainDia();
 
         setClipboardContent();
+    }
 
-        new JTextPaneAdapter(qrcodeText);
+    private void initComponent() {
+        unicodeText.setOpaque(false);
+        base64Text.setOpaque(false);
+        md5Text.setOpaque(false);
+        qrcodeText.setOpaque(false);
+        otherBtn.setVisible(false);
+        tranInText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tranInText.setLineWrap(true);
+        tranInText.setDocument(new MaxLengthDocument(300));
+
+        tranOutText.setEditable(false);
+        tranOutText.setLineWrap(true);
+        tranOutText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tranOutText.setBackground(tranOutPane.getBackground());
+
+        zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        createRSyntaxTextArea();
+    }
+
+    private void showMainDia() {
+        this.setSize(750, 450);
+        this.setLocationRelativeTo(null);
+        this.setTitle("AllFormat (damoguyansi@163.com)");
+        this.initCacheParam();
+        this.setVisible(true);
+        this.setMinimumSize(new Dimension(602, 353));
+
+        jsonText.requestFocus();
+        jsonText.grabFocus();
     }
 
     private void initCacheParam() {
@@ -118,18 +131,6 @@ public class NewDialog extends JFrame {
         } else {
             this.newLineCheckBox.setSelected(false);
         }
-    }
-
-    private void showMainDia() {
-        this.setSize(750, 450);
-        this.setLocationRelativeTo(null);
-        this.setTitle("AllFormat (damoguyansi@163.com)");
-        this.initCacheParam();
-        this.setVisible(true);
-        this.setMinimumSize(new Dimension(602,353));
-
-        jsonText.requestFocus();
-        jsonText.grabFocus();
     }
 
     private void hideMainDia() {
@@ -286,6 +287,7 @@ public class NewDialog extends JFrame {
         md5Text.addMouseListener(tpml);
         base64Text.addMouseListener(tpml);
         unicodeText.addMouseListener(tpml);
+        tranInText.addMouseListener(tpml);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -301,35 +303,6 @@ public class NewDialog extends JFrame {
                 dispose();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    private void openFileAction() {
-        java.awt.FileDialog openDlg = new java.awt.FileDialog(this, "选择二维码图片", java.awt.FileDialog.LOAD);
-        openDlg.setFile("*.jpg;*.png;*.gif;*.jpeg;");
-        openDlg.setVisible(true);
-        if (null == openDlg.getFile()) return;
-        File file = new File(openDlg.getDirectory(), openDlg.getFile());
-        if (file == null || file.getPath().length() == 0) return;
-
-        if (!file.getName().endsWith(".jpg") && !file.getName().endsWith(".jpeg") && !file.getName().endsWith(".png") && !file.getName().endsWith(".gif")) {
-            JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        try {
-            String result = QrCodeCreateUtil.decodeImg(file);
-            if (null == result || "".equals(result)) {
-                msgLabel.setText("未解析到图片内容");
-                msgLabel.setToolTipText(msgLabel.getText());
-            } else {
-                qrcodeText.setText(result);
-            }
-        } catch (NotFoundException ne) {
-            JOptionPane.showMessageDialog(null, "识别失败，请上传正确的二维码图片！", "提示", JOptionPane.ERROR_MESSAGE);
-            ne.printStackTrace();
-        } catch (Exception e1) {
-            JOptionPane.showMessageDialog(null, "上传失败！", "提示", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
-        }
     }
 
     private void selectTop(boolean flag) {
@@ -603,7 +576,7 @@ public class NewDialog extends JFrame {
             try {
                 if (getLength() + s.length() > maxChars) {
                     Toolkit.getDefaultToolkit().beep();
-                    tipDia("内容过长，最大100万个字符!");
+                    tipDia("内容过长，最大" + maxChars + "个字符!");
                     return;
                 }
                 super.insertString(offset, s, a);

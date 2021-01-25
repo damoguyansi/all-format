@@ -34,7 +34,7 @@ public class TranslateUtil {
         }
         JSONArray sentences = JSONArray.parseArray(data.get("sentences").toString());
         JSONObject trans = JSONObject.parseObject(JSON.toJSONString(sentences.get(0)));
-        return trans.getString("trans").replace(" ", "");
+        return trans.getString("trans");
     }
 
     /**
@@ -48,7 +48,9 @@ public class TranslateUtil {
             text.replace(" ", "%20");
         }
         text = text.replaceAll("\r|\n", "");
-        final String url = "http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=zh_cn&q=";
+        String toLang = isToLang(text);
+        final String url = "http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=auto&tl=" + toLang + "&q=";
+        System.out.println(url);
         String data = null;
         try {
             data = Jsoup.connect(url + text).ignoreContentType(true).execute().body();
@@ -58,4 +60,31 @@ public class TranslateUtil {
         return data;
     }
 
+    private static String isToLang(String text) {
+        if (isConrZN(text))
+            return "en";
+        else if (isConrEn(text)) {
+            return "zh_cn";
+        } else {
+            return "en";
+        }
+    }
+
+    public static boolean isConrEn(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) >= 0x0000 && str.charAt(i) <= 0x00FF)
+                continue;
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isConrZN(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) >= 0x0391 && str.charAt(i) <= 0xFFE5)
+                continue;
+            return false;
+        }
+        return true;
+    }
 }

@@ -36,10 +36,21 @@ public class TextPanelMouseListener extends MouseAdapter {
                 }
             } else if (c instanceof JPanel) {
                 JPanel sp = (JPanel) c;
-                RTextScrollPane rp = (RTextScrollPane) sp.getComponent(0);
-                JViewport vp = (JViewport) rp.getComponent(0);
-                JTextArea ta = (JTextArea) vp.getComponent(0);
-                return ta;
+                if (sp.getComponent(0) instanceof RTextScrollPane) {
+                    RTextScrollPane rp = (RTextScrollPane) sp.getComponent(0);
+                    JViewport vp = (JViewport) rp.getComponent(0);
+                    JTextArea ta = (JTextArea) vp.getComponent(0);
+                    return ta;
+                } else if (sp.getComponent(0) instanceof JScrollPane) {
+                    JScrollPane jsp = (JScrollPane)sp.getComponent(0);
+                    JViewport vp = (JViewport) jsp.getComponent(0);
+                    Component com = vp.getComponent(0);
+                    if (com instanceof JTextPane) {
+                        return (JTextPane) vp.getComponent(0);
+                    } else {
+                        return (JTextArea) vp.getComponent(0);
+                    }
+                }
             }
         }
         return null;
