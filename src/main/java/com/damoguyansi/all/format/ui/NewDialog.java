@@ -240,25 +240,37 @@ public class NewDialog extends JFrame {
                 newLineCheckBox.setVisible(true);
                 msgLabel.setText("\u70b9\u51fb\u6309\u94ae\u8fdb\u884c\u683c\u5f0f\u5316");
                 if (Base64.equalsIgnoreCase(tag)) {
+                    base64Text.requestFocus();
+                    base64Text.grabFocus();
                     otherBtn.setText("\u89e3\u5bc6");
                     otherBtn.setVisible(true);
                     exeBtn.setText("\u52a0\u5bc6");
                 } else if (MD5.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7b7e\u540d");
+                    md5Text.requestFocus();
+                    md5Text.grabFocus();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u751f\u6210");
                     otherBtn.setText("\u89e3\u6790");
                     otherBtn.setVisible(true);
+                    qrcodeText.requestFocus();
+                    qrcodeText.grabFocus();
                 } else if (SQL.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7f8e\u5316");
+                    sqlText.requestFocus();
+                    sqlText.grabFocus();
                 } else if (Unicode.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u4e2d\u8f6c\u0055");
                     otherBtn.setText("\u0055\u8f6c\u4e2d");
                     otherBtn.setVisible(true);
+                    unicodeText.requestFocus();
+                    unicodeText.grabFocus();
                 } else if (Translate.equals(tag)) {
                     exeBtn.setText("\u7ffb\u8bd1");
                     otherBtn.setVisible(false);
                     newLineCheckBox.setVisible(false);
+                    tranInText.requestFocus();
+                    tranInText.grabFocus();
                 } else {
                     exeBtn.setText("\u683c\u5f0f\u5316");
                 }
