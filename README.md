@@ -12,6 +12,14 @@
 
 ## 一、版本说明
 
+版本1.1.2
+>
+* 增加中英文翻译模块.
+* 优化关闭窗口速度.
+* 增加二维码复制粘贴功能.
+* 修改二维码容器.
+* 去除上传二维码图片.
+
 版本1.1.1
 > 
 * 新增加关于项目连接.
@@ -32,9 +40,9 @@
 
 方法2: [下载地址](https://plugins.jetbrains.com/plugin/10962-all-format/versions)
 ~~~
-     1.下载 com.damoguyansi.all-format-1.1.1.zip ,  
+     1.下载 com.damoguyansi.all-format-1.1.2.zip ,  
      2.Intellij IDEA  File->Settings..->Plugins -->
- install plugin from disk..导入下载的 com.damoguyansi.all-format-1.1.1.zip ,
+ install plugin from disk..导入下载的 com.damoguyansi.all-format-1.1.2.zip ,
      3重启 Intellij IDEA .
 ~~~
 

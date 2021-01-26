@@ -2,15 +2,16 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 
     <depends>com.intellij.modules.java</depends>
 
     <description>
         <![CDATA[
-        AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，会持续更新增加新功,也欢迎提出新功能，发邮件给我！<br>
+        AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，中英文翻译等，会持续更新增加新功,也欢迎提出新功能，发邮件给我！<br>
         <h3>Features:</h3>
             <ul>
+                <li>中英文翻译。</li>
                 <li>格式化JSON字符串。</li>
                 <li>格式化日志打印字符串，按大括号小括号逗号进行格式化，方便阅读。</li>
                 <li>格式化HTML文本。</li>
@@ -21,7 +22,7 @@
                 <li>Unicode值生成与转换。</li>
             </ul>
         </h3>
-        all-format,json formatting,html formatting,MySql formatting,xml formatting,MD5 generated,QRCode generated,二维码生成,Unicode conversion,Base64 conversion.<br/>
+        all-format,json formatting,html formatting,MySql formatting,xml formatting,MD5 generated,QRCode generated,二维码生成,Unicode conversion,Base64 conversion,translation.<br/>
         <img src='https://plugins.jetbrains.com/files/10962/screenshot_23549.png' width='500'/>
         <br/>
         <img src='https://plugins.jetbrains.com/files/10962/screenshot_23550.png' width='500'/>
@@ -30,6 +31,14 @@
     <change-notes>
         <![CDATA[
         <p>
+            1.1.2
+            <ul>
+                <li>增加中英文翻译模块.</li>
+                <li>优化关闭窗口速度.</li>
+                <li>增加二维码复制粘贴功能.</li>
+                <li>修改二维码容器.</li>
+                <li>去除上传二维码图片.</li>
+            </ul>
             1.1.1
             <ul>
                 <li>新增加关于项目连接.</li>
