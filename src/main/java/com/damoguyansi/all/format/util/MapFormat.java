@@ -16,6 +16,7 @@ public class MapFormat {
     }
 
     public static String format(String src) {
+        src = src.replaceAll("\n[ ]+", "");
         int level = 0;
         StringBuffer resStr = new StringBuffer();
         for (int index = 0; index < src.length(); index++) {

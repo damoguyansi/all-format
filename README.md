@@ -55,5 +55,6 @@
 
 
 ## 四、使用截图
-![allformat1.png](https://plugins.jetbrains.com/files/10962/screenshot_23549.png)
-![allformat2.png](https://plugins.jetbrains.com/files/10962/screenshot_23550.png)
+![allformat1.png](https://plugins.jetbrains.com/files/10962/screenshot_d47f335d-3139-40b7-89d1-d53bedc87dc3)
+![allformat2.png](https://plugins.jetbrains.com/files/10962/screenshot_e095ad5b-6b14-4d14-9f82-2c8e628af585)
+![allformat3.png](https://plugins.jetbrains.com/files/10962/screenshot_ec49ac84-4232-4949-86df-c55ee8da8af2)
