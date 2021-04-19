@@ -12,6 +12,15 @@
 
 ## 一、版本说明
 
+版本1.2.0
+>
+* 增加加密模块，支持国密，AES,RSA.
+* 支持签名算法MD5、SM3.
+* 支持对称加密AES,SM4.
+* 支持非对称加密RSA,SM2.
+* UI界面调整变化,暗黑主题标签字体颜色调整.
+* UI界面调整变化.
+
 版本1.1.2
 >
 * 增加中英文翻译模块.
@@ -40,9 +49,9 @@
 
 方法2: [下载地址](https://plugins.jetbrains.com/plugin/10962-all-format/versions)
 ~~~
-     1.下载 com.damoguyansi.all-format-1.1.2.zip ,  
+     1.下载 com.damoguyansi.all-format-1.2.0.zip ,  
      2.Intellij IDEA  File->Settings..->Plugins -->
- install plugin from disk..导入下载的 com.damoguyansi.all-format-1.1.2.zip ,
+ install plugin from disk..导入下载的 com.damoguyansi.all-format-1.2.0.zip ,
      3重启 Intellij IDEA .
 ~~~
 

@@ -2,7 +2,7 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
 
     <depends>com.intellij.modules.java</depends>
 
@@ -33,6 +33,15 @@
     <change-notes>
         <![CDATA[
         <p>
+            1.2.0
+            <ul>
+                <li>增加加密模块，支持国密，AES,RSA.</li>
+                <li>支持签名算法MD5、SM3.</li>
+                <li>支持对称加密AES,SM4.</li>
+                <li>支持非对称加密RSA,SM2.</li>
+                <li>增加2进制、8进制、10进制、16进制、32进制转换.</li>
+                <li>UI界面调整变化,暗黑主题标签字体颜色调整.</li>
+            </ul>
             1.1.2
             <ul>
                 <li>增加中英文翻译模块.</li>
@@ -72,4 +81,7 @@
             <add-to-group group-id="ToolbarRunGroup" anchor="after" relative-to-action="Stop"/>
         </action>
     </actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <themeProvider id="f29d5f90-44a3-40b7-8213-3735505d2ea4" path="/com/damoguyansi/all/format/ui/qqqq.theme.json"/>
+    </extensions>
 </idea-plugin>

@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.ui;
 
+import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
@@ -23,7 +24,6 @@ public class NewDialog extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel contentPane;
     private JButton exeBtn;
-    private JTextArea md5Text;
     private JTextPane qrcodeText;
     private JLabel msgLabel;
     private JTextArea base64Text;
@@ -36,7 +36,6 @@ public class NewDialog extends JFrame {
     private JPanel xmlPanel;
     private JPanel htmlPanel;
     private JPanel sqlPanel;
-    private JScrollPane md5Panel;
     private JScrollPane qrcodePanel;
     private JScrollPane base64Panel;
     private JScrollPane unicodePanel;
@@ -44,6 +43,8 @@ public class NewDialog extends JFrame {
     private JTextArea tranInText;
     private JTextArea tranOutText;
     private JScrollPane tranOutPane;
+    private HexConvertPanel hexConvertPanel1;
+    private EncryptionPanel encryptionPanel1;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -57,8 +58,10 @@ public class NewDialog extends JFrame {
     private static final String MD5 = "MD5";
     private static final String QRCODE = "QRCode";
     private static final String Base64 = "Base64";
-    private static final String Unicode = "Unicode";
-    private static final String Translate = "Translate";
+    private static final String UNICODE = "Unicode";
+    private static final String ENCRYPT = "Encrypt";
+    private static final String HEX_CONVERT = "HexConvert";
+    private static final String TRANSLATE = "Translate";
     private static final boolean TRAN_FLAG = false;
     private Color backgroudColor;
 
@@ -86,7 +89,6 @@ public class NewDialog extends JFrame {
     private void initComponent() {
         unicodeText.setOpaque(false);
         base64Text.setOpaque(false);
-        md5Text.setOpaque(false);
         qrcodeText.setOpaque(false);
         otherBtn.setVisible(false);
         tranInText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -101,6 +103,10 @@ public class NewDialog extends JFrame {
         zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         createRSyntaxTextArea();
+
+        if (43 == backgroudColor.getRed()) {
+            tabbedPane1.setForeground(new Color(167, 167, 167));
+        }
     }
 
     private void showMainDia() {
@@ -181,10 +187,16 @@ public class NewDialog extends JFrame {
                     case SQL:
                         sqlFormat();
                         break;
-                    case Unicode:
+                    case UNICODE:
                         zhToUnicode();
                         break;
-                    case Translate:
+                    case ENCRYPT:
+
+                        break;
+                    case HEX_CONVERT:
+                        hexConvertPanel1.setValue();
+                        break;
+                    case TRANSLATE:
                         trans();
                         break;
                 }
@@ -204,7 +216,6 @@ public class NewDialog extends JFrame {
                     xmlText.setLineWrap(true);
                     htmlText.setLineWrap(true);
                     sqlText.setLineWrap(true);
-                    md5Text.setLineWrap(true);
                     base64Text.setLineWrap(true);
                     unicodeText.setLineWrap(true);
                 } else {
@@ -212,7 +223,6 @@ public class NewDialog extends JFrame {
                     xmlText.setLineWrap(false);
                     htmlText.setLineWrap(false);
                     sqlText.setLineWrap(false);
-                    md5Text.setLineWrap(false);
                     base64Text.setLineWrap(false);
                     unicodeText.setLineWrap(false);
                 }
@@ -224,7 +234,7 @@ public class NewDialog extends JFrame {
                 String tag = tabbedPane1.getTitleAt(tabbedPane1.getSelectedIndex()).trim();
                 if (Base64.equalsIgnoreCase(tag)) {
                     decode();
-                } else if (Unicode.equalsIgnoreCase(tag)) {
+                } else if (UNICODE.equalsIgnoreCase(tag)) {
                     unicodeToZh();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     decodeQrcode();
@@ -239,6 +249,7 @@ public class NewDialog extends JFrame {
                 otherBtn.setVisible(false);
                 newLineCheckBox.setVisible(true);
                 msgLabel.setText("\u70b9\u51fb\u6309\u94ae\u8fdb\u884c\u683c\u5f0f\u5316");
+                exeBtn.setText("\u683c\u5f0f\u5316");
                 if (Base64.equalsIgnoreCase(tag)) {
                     base64Text.requestFocus();
                     base64Text.grabFocus();
@@ -247,8 +258,6 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u52a0\u5bc6");
                 } else if (MD5.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7b7e\u540d");
-                    md5Text.requestFocus();
-                    md5Text.grabFocus();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u751f\u6210");
                     otherBtn.setText("\u89e3\u6790");
@@ -259,20 +268,23 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u7f8e\u5316");
                     sqlText.requestFocus();
                     sqlText.grabFocus();
-                } else if (Unicode.equalsIgnoreCase(tag)) {
+                } else if (UNICODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u4e2d\u8f6c\u0055");
                     otherBtn.setText("\u0055\u8f6c\u4e2d");
                     otherBtn.setVisible(true);
                     unicodeText.requestFocus();
                     unicodeText.grabFocus();
-                } else if (Translate.equals(tag)) {
+                } else if (TRANSLATE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7ffb\u8bd1");
                     otherBtn.setVisible(false);
                     newLineCheckBox.setVisible(false);
                     tranInText.requestFocus();
                     tranInText.grabFocus();
-                } else {
-                    exeBtn.setText("\u683c\u5f0f\u5316");
+                } else if (ENCRYPT.equalsIgnoreCase(tag)) {
+                    exeBtn.setText("\u52a0\u5bc6");
+                } else if (HEX_CONVERT.equalsIgnoreCase(tag)) {
+                    hexConvertPanel1.setFocus();
+                    exeBtn.setText("\u8f6c\u6362");
                 }
             }
         });
@@ -296,7 +308,6 @@ public class NewDialog extends JFrame {
 
         tpml = new TextPanelMouseListener(tabbedPane1);
         qrcodeText.addMouseListener(tpml);
-        md5Text.addMouseListener(tpml);
         base64Text.addMouseListener(tpml);
         unicodeText.addMouseListener(tpml);
         tranInText.addMouseListener(tpml);
@@ -374,18 +385,18 @@ public class NewDialog extends JFrame {
     }
 
     private void md5OK() {
-        String text = md5Text.getText();
-        if (null == text || "".equalsIgnoreCase(text))
-            return;
-        try {
-            text = MD5Util.encoderByMd5(text);
-            msgLabel.setText("md5 success!");
-            md5Text.setText(text);
-        } catch (Throwable t) {
-            String eStr = "md5 error [" + t.getMessage() + "]";
-            msgLabel.setText(eStr);
-            msgLabel.setToolTipText(eStr);
-        }
+//        String text = md5Text.getText();
+//        if (null == text || "".equalsIgnoreCase(text))
+//            return;
+//        try {
+//            text = SecureUtil.md5(text).toUpperCase(Locale.ROOT);
+//            msgLabel.setText("md5 success!");
+//            md5Text.setText(text);
+//        } catch (Throwable t) {
+//            String eStr = "md5 error [" + t.getMessage() + "]";
+//            msgLabel.setText(eStr);
+//            msgLabel.setToolTipText(eStr);
+//        }
     }
 
     private void qrCodeOK() {
@@ -396,7 +407,7 @@ public class NewDialog extends JFrame {
         try {
             qrcodeText.setText(text.trim() + "\r\n");
             qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
-            BufferedImage bufferedImage = QrCodeCreateUtil.createQrCode(text.trim(), 250);
+            BufferedImage bufferedImage = QrCodeUtil.generate(text.trim(), 250, 250);
             ImageIcon ii = new ImageIcon(bufferedImage);
             ImageLabel label = new ImageLabel(qrcodeText, ii);
             qrcodeText.insertComponent(label);
@@ -419,7 +430,7 @@ public class NewDialog extends JFrame {
                     if (StyleConstants.getComponent(as) instanceof JLabel) {
                         ImageLabel myLabel = (ImageLabel) StyleConstants.getComponent(as);
                         ImageIcon imageIcon = myLabel.getImageIcon();
-                        results += QrCodeCreateUtil.decodeImg(imageIcon) + "\r\n";
+                        results += QrCodeUtil.decode(imageIcon.getImage()) + "\r\n";
                     }
                 }
             }
@@ -557,7 +568,7 @@ public class NewDialog extends JFrame {
         area.setCodeFoldingEnabled(true);
         area.setAntiAliasingEnabled(true);
         area.setAutoscrolls(true);
-        if (null != this.backgroudColor) {
+        if (43 == this.backgroudColor.getRed()) {
             try {
                 Theme theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
                 theme.apply(area);
@@ -601,5 +612,4 @@ public class NewDialog extends JFrame {
     private void tipDia(String msg) {
         JOptionPane.showMessageDialog(this, msg, "提示", JOptionPane.WARNING_MESSAGE);
     }
-
 }
