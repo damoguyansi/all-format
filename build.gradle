@@ -33,7 +33,7 @@ tasks.withType(JavaCompile) {
 
 intellij {
     plugins 'java'
-    version 'IC-2019.3'
+    version 'IC-2020.1.4'
     pluginName 'com.damoguyansi.all-format'
     updateSinceUntilBuild false
 }

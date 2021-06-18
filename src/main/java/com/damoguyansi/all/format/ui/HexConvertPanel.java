@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.ui;
 
 import com.damoguyansi.all.format.event.NumberTextField;
+import com.damoguyansi.all.format.util.AsciiUtil;
 import com.damoguyansi.all.format.util.NumberUtil;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class HexConvertPanel extends JPanel {
     private JRadioButton thirtyTwoRadioButton;
     private JTextField valueText;
     private JButton convertBtn;
+    private JTextField asciiText;
     private NumberTextField twoNumberDoc;
     private NumberTextField eightNumberDoc;
     private NumberTextField tenNumberDoc;
@@ -83,6 +85,12 @@ public class HexConvertPanel extends JPanel {
         tenText.setText(String.valueOf(t));
         sixteenText.setText(NumberUtil.toHexString(t));
         thirtyTwoText.setText(NumberUtil.toTTString(t));
+
+        if (t >= 0 && t <= 127) {
+            asciiText.setText(AsciiUtil.getAscii(t));
+        } else {
+            asciiText.setText("无");
+        }
     }
 
     public void setFocus() {
@@ -90,10 +98,20 @@ public class HexConvertPanel extends JPanel {
         valueText.requestFocus();
     }
 
+    private void clear() {
+        twoText.setText("");
+        eightText.setText("");
+        tenText.setText("");
+        sixteenText.setText("");
+        thirtyTwoText.setText("");
+        asciiText.setText("");
+    }
+
     class RadioChangeListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent e) {
             valueText.setText("");
+            clear();
             JRadioButton button = (JRadioButton) e.getSource();
             String text = button.getText();
             if (button.isSelected()) {

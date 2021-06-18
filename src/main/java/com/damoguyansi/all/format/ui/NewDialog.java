@@ -1,9 +1,12 @@
 package com.damoguyansi.all.format.ui;
 
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
+import com.damoguyansi.all.format.translate.action.GoogleTranslateResult;
+import com.damoguyansi.all.format.translate.constant.TranslateConstant;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -18,6 +21,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.net.URI;
+import java.util.Locale;
+import java.util.regex.Matcher;
 
 public class NewDialog extends JFrame {
     private final static String CODE_GITHUB_URL = "https://github.com/damoguyansi/all-format";
@@ -44,7 +49,7 @@ public class NewDialog extends JFrame {
     private JTextArea tranOutText;
     private JScrollPane tranOutPane;
     private HexConvertPanel hexConvertPanel1;
-    private EncryptionPanel encryptionPanel1;
+    private JTextArea md5Text;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -63,14 +68,14 @@ public class NewDialog extends JFrame {
     private static final String HEX_CONVERT = "HexConvert";
     private static final String TRANSLATE = "Translate";
     private static final boolean TRAN_FLAG = false;
-    private Color backgroudColor;
+    private boolean isDarcula = false;
 
     private ParamCache pc;
 
     private TextPanelMouseListener tpml = null;
 
-    public NewDialog(Color color) {
-        this.backgroudColor = color;
+    public NewDialog(boolean isDarcula) {
+        this.isDarcula = isDarcula;
 
         pc = new ParamCache();
 
@@ -90,6 +95,7 @@ public class NewDialog extends JFrame {
         unicodeText.setOpaque(false);
         base64Text.setOpaque(false);
         qrcodeText.setOpaque(false);
+        md5Text.setOpaque(false);
         otherBtn.setVisible(false);
         tranInText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         tranInText.setLineWrap(true);
@@ -104,18 +110,18 @@ public class NewDialog extends JFrame {
 
         createRSyntaxTextArea();
 
-        if (43 == backgroudColor.getRed()) {
-            tabbedPane1.setForeground(new Color(167, 167, 167));
+        if (true == isDarcula) {
+            tabbedPane1.setForeground(new Color(181, 181, 181));
         }
     }
 
     private void showMainDia() {
-        this.setSize(750, 450);
+        this.setSize(705, 432);
         this.setLocationRelativeTo(null);
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
-        this.setMinimumSize(new Dimension(602, 353));
+        this.setMinimumSize(new Dimension(705, 410));
 
         jsonText.requestFocus();
         jsonText.grabFocus();
@@ -190,9 +196,6 @@ public class NewDialog extends JFrame {
                     case UNICODE:
                         zhToUnicode();
                         break;
-                    case ENCRYPT:
-
-                        break;
                     case HEX_CONVERT:
                         hexConvertPanel1.setValue();
                         break;
@@ -217,6 +220,7 @@ public class NewDialog extends JFrame {
                     htmlText.setLineWrap(true);
                     sqlText.setLineWrap(true);
                     base64Text.setLineWrap(true);
+                    md5Text.setLineWrap(true);
                     unicodeText.setLineWrap(true);
                 } else {
                     jsonText.setLineWrap(false);
@@ -224,6 +228,7 @@ public class NewDialog extends JFrame {
                     htmlText.setLineWrap(false);
                     sqlText.setLineWrap(false);
                     base64Text.setLineWrap(false);
+                    md5Text.setLineWrap(false);
                     unicodeText.setLineWrap(false);
                 }
             }
@@ -248,6 +253,7 @@ public class NewDialog extends JFrame {
                 String tag = tabbedPane1.getTitleAt(pane.getSelectedIndex()).trim();
                 otherBtn.setVisible(false);
                 newLineCheckBox.setVisible(true);
+                msgLabel.setForeground(Color.BLACK);
                 msgLabel.setText("\u70b9\u51fb\u6309\u94ae\u8fdb\u884c\u683c\u5f0f\u5316");
                 exeBtn.setText("\u683c\u5f0f\u5316");
                 if (Base64.equalsIgnoreCase(tag)) {
@@ -280,6 +286,8 @@ public class NewDialog extends JFrame {
                     newLineCheckBox.setVisible(false);
                     tranInText.requestFocus();
                     tranInText.grabFocus();
+                    msgLabel.setForeground(Color.RED);
+                    msgLabel.setText("选中单词Ctrl+Alt+U 翻译!");
                 } else if (ENCRYPT.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u52a0\u5bc6");
                 } else if (HEX_CONVERT.equalsIgnoreCase(tag)) {
@@ -309,6 +317,7 @@ public class NewDialog extends JFrame {
         tpml = new TextPanelMouseListener(tabbedPane1);
         qrcodeText.addMouseListener(tpml);
         base64Text.addMouseListener(tpml);
+        md5Text.addMouseListener(tpml);
         unicodeText.addMouseListener(tpml);
         tranInText.addMouseListener(tpml);
 
@@ -385,18 +394,18 @@ public class NewDialog extends JFrame {
     }
 
     private void md5OK() {
-//        String text = md5Text.getText();
-//        if (null == text || "".equalsIgnoreCase(text))
-//            return;
-//        try {
-//            text = SecureUtil.md5(text).toUpperCase(Locale.ROOT);
-//            msgLabel.setText("md5 success!");
-//            md5Text.setText(text);
-//        } catch (Throwable t) {
-//            String eStr = "md5 error [" + t.getMessage() + "]";
-//            msgLabel.setText(eStr);
-//            msgLabel.setToolTipText(eStr);
-//        }
+        String text = md5Text.getText();
+        if (null == text || "".equalsIgnoreCase(text))
+            return;
+        try {
+            text = SecureUtil.md5(text).toUpperCase(Locale.ROOT);
+            msgLabel.setText("md5 success!");
+            md5Text.setText(text);
+        } catch (Throwable t) {
+            String eStr = "md5 error [" + t.getMessage() + "]";
+            msgLabel.setText(eStr);
+            msgLabel.setToolTipText(eStr);
+        }
     }
 
     private void qrCodeOK() {
@@ -527,8 +536,15 @@ public class NewDialog extends JFrame {
         if (null == text || "".equals(text.trim())) {
             return;
         }
-        text = text.trim();
-        tranOutText.setText(TranslateUtil.trans(text));
+        Matcher m = TranslateConstant.p.matcher(text.trim());
+        String translateType = m.find() ? TranslateConstant.ZH_CN_TO_EN : TranslateConstant.EN_TO_ZH_CN;
+        try {
+            GoogleTranslateResult result = TranslateUtil.translate(text, translateType);
+
+            tranOutText.setText(null == result ? "未知翻译" : result.getSentences().get(0).getTrans());
+        } catch (Exception e) {
+            tranOutText.setText("未知");
+        }
     }
 
     private void createRSyntaxTextArea() {
@@ -568,7 +584,7 @@ public class NewDialog extends JFrame {
         area.setCodeFoldingEnabled(true);
         area.setAntiAliasingEnabled(true);
         area.setAutoscrolls(true);
-        if (43 == this.backgroudColor.getRed()) {
+        if (true == isDarcula) {
             try {
                 Theme theme = Theme.load(getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
                 theme.apply(area);
