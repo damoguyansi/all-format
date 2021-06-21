@@ -64,22 +64,25 @@
 
     <idea-version since-build="193"/>
 
-    <application-components>
-    </application-components>
+    <application-components></application-components>
 
-    <project-components>
-    </project-components>
+    <project-components></project-components>
 
     <actions>
-        <action id="AllFormat" class="com.damoguyansi.all.format.FormatAction" text="AllFormat">
+        <action id="AllFormat"
+                class="com.damoguyansi.all.format.FormatAction"
+                text="AllFormat">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt f"/>
         </action>
-        <action class="com.damoguyansi.all.format.FormatAction" id="run.damoguyansi.AllFormat" text="AllFormat"
+        <action id="run.damoguyansi.AllFormat"
+                class="com.damoguyansi.all.format.FormatAction"
+                text="AllFormat"
                 description="AllFormat" icon="/icons/AllFormat.png">
             <add-to-group group-id="ToolbarRunGroup" anchor="after" relative-to-action="Stop"/>
         </action>
-        <action id="$EditorTranslateAction" class="com.damoguyansi.all.format.translate.action.GoogleTranslateAction"
+        <action id="run.damoguyansi.GoogleTranslateAction"
+                class="com.damoguyansi.all.format.translate.action.GoogleTranslateAction"
                 text="Translate"
                 description="Translate">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt U"/>
