@@ -1,48 +1,125 @@
 package com.damoguyansi.all.format.translate.action;
 
-import com.damoguyansi.all.format.translate.constant.TranslateConstant;
-import com.damoguyansi.all.format.translate.util.NoticeUtil;
+import com.damoguyansi.all.format.translate.bean.GTResult;
+import com.damoguyansi.all.format.translate.component.BalloonManager;
+import com.damoguyansi.all.format.translate.component.TranslateBalloon;
+import com.damoguyansi.all.format.translate.thread.TranslateBalloonThread;
+import com.damoguyansi.all.format.util.NoticeUtil;
 import com.damoguyansi.all.format.util.TranslateUtil;
+import com.damoguyansi.all.format.util.WordUtil;
+import com.intellij.codeInsight.editorActions.SelectWordUtil;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.BalloonBuilder;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.util.ui.JBUI;
+import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
+ * Google翻译
+ *
  * @author damoguyansi
  */
-public class GoogleTranslateAction extends AbstractTranslateAction {
+public class GoogleTranslateAction extends AnAction {
+
+    public static Editor editor;
+    public static Project project;
+    public static SelectionModel selectionModel;
 
     @Override
-    protected void doTranslate(String selectText) {
-        Matcher m = TranslateConstant.p.matcher(selectText.trim());
-        String translateType = m.find() ? TranslateConstant.ZH_CN_TO_EN : TranslateConstant.EN_TO_ZH_CN;
-        try {
-            GoogleTranslateResult googleTranslateResult = TranslateUtil.translate(selectText, translateType);
-            if (googleTranslateResult == null) {
-                NoticeUtil.error("翻译错误,请重试!");
-                return;
-            }
-            showPopupBalloon(googleTranslateResult, translateType);
-            //NoticeUtil.info(translateType, googleTranslateResult.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void update(AnActionEvent e) {
+        project = e.getData(CommonDataKeys.PROJECT);
+        editor = e.getData(CommonDataKeys.EDITOR);
+        e.getPresentation().setVisible(project != null && editor != null && editor.getSelectionModel().hasSelection());
     }
 
     @Override
-    protected void showPopupBalloon(GoogleTranslateResult result, String translateType) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
+        if (BalloonManager.instance().get() != null) {
+            return;
+        }
+
+        try {
+            selectionModel = editor.getSelectionModel();
+            String selectedText = selectionModel.getSelectedText();
+
+            if (StringUtils.isEmpty(selectedText)) {
+                selectedText = getSelectText();
+            }
+            if (StringUtils.isEmpty(selectedText)) {
+                return;
+            }
+            NoticeUtil.init(this.getClass().getSimpleName(), 1);
+            doTranslate(WordUtil.textToWords(selectedText));
+        } catch (Exception e) {
+            NoticeUtil.error(e);
+        }
+    }
+
+    public String getSelectText() {
+        List<TextRange> ranges = new ArrayList<>();
+        SelectWordUtil.addWordOrLexemeSelection(true, editor, editor.getCaretModel().getOffset(), ranges, SelectWordUtil.JAVA_IDENTIFIER_PART_CONDITION);
+        if (null == ranges || ranges.isEmpty()) return null;
+
+        return editor.getDocument().getText(ranges.get(0));
+    }
+
+    protected void doTranslate(String selectText) {
+        Matcher m = TranslateUtil.p.matcher(selectText.trim());
+        String translateType = m.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
+
+        showPopupBalloons(selectText, translateType);
+    }
+
+    /**
+     * 2个气泡交替显示
+     *
+     * @param selectText
+     * @param translateType
+     */
+    private void showPopupBalloons(String selectText, String translateType) {
+        final JBPopupFactory factory = JBPopupFactory.getInstance();
+        TranslateBalloon translateBalloon = new TranslateBalloon(selectText, translateType);
+        Balloon balloon = translateBalloon.createBalloon();
+
         ApplicationManager.getApplication().invokeLater((Runnable) new Runnable() {
             @Override
             public void run() {
-                Color jbColor = JBUI.CurrentTheme.CustomFrameDecorations.paneBackground();//new JBColor(0xE4E6EB, 0x45494B);
+                balloon.show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
+            }
+        });
+
+        TranslateBalloonThread tbt = new TranslateBalloonThread(translateBalloon);
+        tbt.start();
+    }
+
+    /**
+     * 直接显示汽泡
+     *
+     * @param result
+     * @param translateType
+     */
+    protected void showPopupBalloon(GTResult result, String translateType) {
+        ApplicationManager.getApplication().invokeLater((Runnable) new Runnable() {
+            @Override
+            public void run() {
+                Color jbColor = JBUI.CurrentTheme.CustomFrameDecorations.paneBackground();
                 final JBPopupFactory factory = JBPopupFactory.getInstance();
                 BalloonBuilder balloonBuilder = factory.createHtmlTextBalloonBuilder(result.toString(), null, (Color) jbColor, null);
-                balloonBuilder
+                Balloon balloon = balloonBuilder
                         .setShadow(true)
                         .setShowCallout(true)
                         .setHideOnAction(true)
@@ -58,8 +135,8 @@ public class GoogleTranslateAction extends AbstractTranslateAction {
                         .setHideOnCloseClick(true)
                         .setBlockClicksThroughBalloon(true)
                         .setCloseButtonEnabled(false)
-                        .createBalloon()
-                        .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
+                        .createBalloon();
+                balloon.show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
             }
         });
     }

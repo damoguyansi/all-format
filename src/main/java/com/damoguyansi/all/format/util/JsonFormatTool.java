@@ -1,23 +1,68 @@
 package com.damoguyansi.all.format.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 public class JsonFormatTool {
+    public static Gson gson;
+    public static Gson prettyGson;
 
-    public static String format(String text) throws Exception {
-        if (null == text || "".equals(text.trim())) {
-            return text;
+    static {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+        gson = gsonBuilder.create();
+        GsonBuilder prettyGsonBuilder = new GsonBuilder();
+        prettyGsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+        prettyGson = prettyGsonBuilder.setPrettyPrinting().create();
+    }
+
+    /**
+     * json 转对象，可以兼容不认识的属性
+     *
+     * @param json
+     * @param objectType
+     * @param <T>
+     * @return
+     */
+    public static <T> T jsonToObject(String json, Class<T> objectType) {
+        return gson.fromJson(json, objectType);
+    }
+
+    /**
+     * 格式化
+     *
+     * @param json
+     * @return
+     */
+    public static String format(String json) {
+        json = unescape(json);
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(json);
+        if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonParser.parse(json).getAsJsonArray();
+            return prettyGson.toJson(jsonArray);
+        } else if (jsonElement.isJsonObject()) {
+            JsonObject jsonObject = jsonParser.parse(json).getAsJsonObject();
+            return prettyGson.toJson(jsonObject);
+        } else {
+            throw new RuntimeException("Json 格式有误");
         }
-        JsonElement je = JsonParser.parseString(text);
-        if (!je.isJsonObject() && !je.isJsonArray()) throw new Exception("非法json格式");
-        GsonBuilder gb = new GsonBuilder();
-        gb.setPrettyPrinting();
-        gb.serializeNulls();
-        Gson gson = gb.create();
+    }
+
+    /**
+     * 压缩
+     */
+    public static String compress(String json) {
+        json = unescape(json);
+        JsonParser parser = new JsonParser();
+        JsonElement je = parser.parse(json);
         return gson.toJson(je);
     }
 
+    public static String escape(String json) {
+        return json.replaceAll("\"", "\\\\\"");
+    }
+
+    public static String unescape(String json) {
+        return json.replaceAll("\\\\\"", "\"");
+    }
 }

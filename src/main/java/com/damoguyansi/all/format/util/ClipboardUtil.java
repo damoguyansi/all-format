@@ -1,6 +1,6 @@
 package com.damoguyansi.all.format.util;
 
-import com.damoguyansi.all.format.ui.ImageLabel;
+import com.damoguyansi.all.format.component.ImageLabel;
 
 import javax.swing.*;
 import java.awt.*;

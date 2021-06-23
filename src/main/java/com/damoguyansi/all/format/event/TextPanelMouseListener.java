@@ -1,6 +1,6 @@
 package com.damoguyansi.all.format.event;
 
-import com.damoguyansi.all.format.ui.ImageLabel;
+import com.damoguyansi.all.format.component.ImageLabel;
 import com.damoguyansi.all.format.util.ClipboardUtil;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -12,6 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * 右键菜单事件
+ *
+ * @author damoguyansi
+ */
 public class TextPanelMouseListener extends MouseAdapter {
 
     private JTabbedPane tabbedPane;

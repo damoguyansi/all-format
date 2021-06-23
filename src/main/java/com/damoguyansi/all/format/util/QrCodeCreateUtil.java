@@ -47,7 +47,10 @@ public class QrCodeCreateUtil {
     }
 
     public static BufferedImage toBufferedImage(ImageIcon imageIcon) {
-        Image image = imageIcon.getImage();
+        return toBufferedImage(imageIcon.getImage());
+    }
+
+    public static BufferedImage toBufferedImage(Image image) {
         BufferedImage bimage = null;
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         try {
@@ -100,6 +103,37 @@ public class QrCodeCreateUtil {
             }
         }
         return resMatrix;
+    }
+
+    public static String decode(Image image) throws Exception {
+        boolean isTryHarder = true;
+        boolean isPureBarcode = false;
+        final MultiFormatReader formatReader = new MultiFormatReader();
+
+        final LuminanceSource source = new BufferedImageLuminanceSource(toBufferedImage(image));
+        final Binarizer binarizer = new HybridBinarizer(source);
+        final BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+
+        final HashMap<DecodeHintType, Object> hints = new HashMap<>();
+        hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
+        // 优化精度
+        hints.put(DecodeHintType.TRY_HARDER, isTryHarder);
+        // 复杂模式，开启PURE_BARCODE模式
+        hints.put(DecodeHintType.PURE_BARCODE, isPureBarcode);
+        Result result;
+        try {
+            result = formatReader.decode(binaryBitmap, hints);
+        } catch (NotFoundException e) {
+            // 报错尝试关闭复杂模式
+            hints.remove(DecodeHintType.PURE_BARCODE);
+            try {
+                result = formatReader.decode(binaryBitmap, hints);
+            } catch (NotFoundException e1) {
+                throw new Exception(e1);
+            }
+        }
+
+        return result.getText();
     }
 
     static class MatrixToImageWriter {

@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="756" height="493"/>
+      <xy x="20" y="20" width="691" height="463"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -101,7 +101,7 @@
               <tabLayoutPolicy value="0"/>
             </properties>
             <border type="line">
-              <color color="-10460570"/>
+              <color color="-15197926"/>
             </border>
             <children>
               <grid id="bd060" binding="jsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
@@ -158,7 +158,7 @@
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <component id="a77c2" class="com.damoguyansi.all.format.ui.ImageTextPane" binding="qrcodeText">
+                  <component id="a77c2" class="com.damoguyansi.all.format.component.ImageTextPane" binding="qrcodeText">
                     <constraints/>
                     <properties>
                       <background color="-460552"/>
@@ -204,7 +204,7 @@
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <nested-form id="1d963" form-file="com/damoguyansi/all/format/ui/HexConvertPanel.form" binding="hexConvertPanel1" default-binding="true">
+                  <nested-form id="1d963" form-file="com/damoguyansi/all/format/component/HexConvertPanel.form" binding="hexConvertPanel1" default-binding="true">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                         <preferred-size width="200" height="200"/>

@@ -23,8 +23,6 @@ dependencies {
     compile group: 'com.google.zxing', name: 'core', version: '3.4.0'
     compile group: 'com.google.zxing', name: 'javase', version: '3.3.1'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.75'
-    compile 'cn.hutool:hutool-all:5.6.1'
 }
 
 tasks.withType(JavaCompile) {

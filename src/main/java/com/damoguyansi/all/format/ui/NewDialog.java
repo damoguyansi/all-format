@@ -1,12 +1,11 @@
 package com.damoguyansi.all.format.ui;
 
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
+import com.damoguyansi.all.format.component.HexConvertPanel;
+import com.damoguyansi.all.format.component.ImageLabel;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
-import com.damoguyansi.all.format.translate.action.GoogleTranslateResult;
-import com.damoguyansi.all.format.translate.constant.TranslateConstant;
+import com.damoguyansi.all.format.translate.bean.GTResult;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -64,7 +63,6 @@ public class NewDialog extends JFrame {
     private static final String QRCODE = "QRCode";
     private static final String Base64 = "Base64";
     private static final String UNICODE = "Unicode";
-    private static final String ENCRYPT = "Encrypt";
     private static final String HEX_CONVERT = "HexConvert";
     private static final String TRANSLATE = "Translate";
     private static final boolean TRAN_FLAG = false;
@@ -111,7 +109,7 @@ public class NewDialog extends JFrame {
         createRSyntaxTextArea();
 
         if (true == isDarcula) {
-            tabbedPane1.setForeground(new Color(181, 181, 181));
+            tabbedPane1.setForeground(new Color(213, 212, 212));
         }
     }
 
@@ -288,8 +286,6 @@ public class NewDialog extends JFrame {
                     tranInText.grabFocus();
                     msgLabel.setForeground(Color.RED);
                     msgLabel.setText("选中单词Ctrl+Alt+U 翻译!");
-                } else if (ENCRYPT.equalsIgnoreCase(tag)) {
-                    exeBtn.setText("\u52a0\u5bc6");
                 } else if (HEX_CONVERT.equalsIgnoreCase(tag)) {
                     hexConvertPanel1.setFocus();
                     exeBtn.setText("\u8f6c\u6362");
@@ -352,7 +348,7 @@ public class NewDialog extends JFrame {
             resStr = JsonFormatTool.format(text);
             msgLabel.setText("json format!");
             jsonText.setText(resStr);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             resStr = MapFormat.format(text);
             msgLabel.setText("map format!");
             jsonText.setText(resStr);
@@ -398,7 +394,7 @@ public class NewDialog extends JFrame {
         if (null == text || "".equalsIgnoreCase(text))
             return;
         try {
-            text = SecureUtil.md5(text).toUpperCase(Locale.ROOT);
+            text = MD5Util.md5(text).toUpperCase(Locale.ROOT);
             msgLabel.setText("md5 success!");
             md5Text.setText(text);
         } catch (Throwable t) {
@@ -416,7 +412,7 @@ public class NewDialog extends JFrame {
         try {
             qrcodeText.setText(text.trim() + "\r\n");
             qrcodeText.setCaretPosition(qrcodeText.getStyledDocument().getLength());
-            BufferedImage bufferedImage = QrCodeUtil.generate(text.trim(), 250, 250);
+            BufferedImage bufferedImage = QrCodeCreateUtil.createQrCode(text.trim(), 250);
             ImageIcon ii = new ImageIcon(bufferedImage);
             ImageLabel label = new ImageLabel(qrcodeText, ii);
             qrcodeText.insertComponent(label);
@@ -439,7 +435,7 @@ public class NewDialog extends JFrame {
                     if (StyleConstants.getComponent(as) instanceof JLabel) {
                         ImageLabel myLabel = (ImageLabel) StyleConstants.getComponent(as);
                         ImageIcon imageIcon = myLabel.getImageIcon();
-                        results += QrCodeUtil.decode(imageIcon.getImage()) + "\r\n";
+                        results += QrCodeCreateUtil.decode(imageIcon.getImage()) + "\r\n";
                     }
                 }
             }
@@ -536,10 +532,10 @@ public class NewDialog extends JFrame {
         if (null == text || "".equals(text.trim())) {
             return;
         }
-        Matcher m = TranslateConstant.p.matcher(text.trim());
-        String translateType = m.find() ? TranslateConstant.ZH_CN_TO_EN : TranslateConstant.EN_TO_ZH_CN;
+        Matcher m = TranslateUtil.p.matcher(text.trim());
+        String translateType = m.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
         try {
-            GoogleTranslateResult result = TranslateUtil.translate(text, translateType);
+            GTResult result = TranslateUtil.translate(text, translateType);
 
             tranOutText.setText(null == result ? "未知翻译" : result.getSentences().get(0).getTrans());
         } catch (Exception e) {

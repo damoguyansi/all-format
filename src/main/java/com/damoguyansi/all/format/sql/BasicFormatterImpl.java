@@ -185,7 +185,6 @@ public class BasicFormatterImpl implements Formatter {
                     ++this.indent;
                 }
             }
-
         }
 
         private void white() {
@@ -205,7 +204,6 @@ public class BasicFormatterImpl implements Formatter {
             if ("insert".equals(this.lcToken)) {
                 this.afterInsert = true;
             }
-
         }
 
         private void select() {

@@ -3,6 +3,11 @@ package com.damoguyansi.all.format.event;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.PlainDocument;
 
+/**
+ * 数字根据进制限制
+ *
+ * @author damoguyansi
+ */
 public class NumberTextField extends PlainDocument {
     private int type = 10;
 
