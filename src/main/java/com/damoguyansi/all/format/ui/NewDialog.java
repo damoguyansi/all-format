@@ -288,6 +288,7 @@ public class NewDialog extends JFrame {
                     msgLabel.setText("选中单词Ctrl+Alt+U 翻译!");
                 } else if (HEX_CONVERT.equalsIgnoreCase(tag)) {
                     hexConvertPanel1.setFocus();
+                    newLineCheckBox.setVisible(false);
                     exeBtn.setText("\u8f6c\u6362");
                 }
             }

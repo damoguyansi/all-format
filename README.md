@@ -59,7 +59,8 @@
 ![Generate快捷键.png](https://plugins.jetbrains.com/files/10962/screenshot_23730.png)
  
 2. 使用 All Fommat 的快捷键.  
-默认 Alt + f (win)
+打开窗口： Alt + f
+选中翻译： Ctrl + Alt + U
 
 
 ### 使用截图
