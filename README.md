@@ -47,10 +47,10 @@
 
 方法2: [下载地址](https://plugins.jetbrains.com/plugin/10962-all-format/versions)
 ~~~
-     1.下载 com.damoguyansi.all-format-1.2.0.zip 
+     1.下载 com.damoguyansi.all-format-x.x.x.zip 
      2.Intellij IDEA  File->Settings..->Plugins
        --> install plugin from disk..
-       导入下载的 com.damoguyansi.all-format-1.2.0.zip
+       导入下载的 com.damoguyansi.all-format-x.x.x.zip
      3重启 Intellij IDEA .
 ~~~
 
@@ -59,7 +59,7 @@
 ![Generate快捷键.png](https://plugins.jetbrains.com/files/10962/screenshot_23730.png)
  
 2. 使用 All Fommat 的快捷键.  
-打开窗口： Alt + f
+打开窗口： Alt + f  
 选中翻译： Ctrl + Alt + U
 
 
