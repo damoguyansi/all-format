@@ -52,6 +52,9 @@ public class GoogleTranslateAction extends AnAction {
             return;
         }
 
+        if (null == editor) {
+            return;
+        }
         try {
             selectionModel = editor.getSelectionModel();
             String selectedText = selectionModel.getSelectedText();
