@@ -38,7 +38,7 @@ public class TranslateUtil {
     /**
      * 谷歌翻译地址
      */
-    public static final String GOOGLE_TRANSLATE_URL = "https://translate.google.cn/translate_a/single?client=gtx&dt=t&dt=bd&dt=rm&dj=1&ie=UTF-8&oe=UTF-8&sl=%s&tl=%s&hl=zh-CN&tk=%s&q=%s";
+    public static final String GOOGLE_TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=rm&dj=1&ie=UTF-8&oe=UTF-8&sl=%s&tl=%s&hl=zh-CN&tk=%s&q=%s";
 
     private static final RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(5000)
             .setSocketTimeout(5000).setConnectTimeout(5000).build();
