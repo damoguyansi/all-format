@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class BDTransApiUtil {
     private static final String TRANS_API_HOST = "https://api.fanyi.baidu.com/api/trans/vip/translate";
-    private static final String APPID = "xxxxxxxxxxxx";
-    private static final String SECURITYKEY = "xxxxxxxxxxxx";
+    private static final String APPID = "xxxxxxxxxxxxxx";
+    private static final String SECURITYKEY = "xxxxxxxxxxxxxxxxxx";
 
     public static GTResult translate(String word, String translateType) throws Exception {
         long salt = System.currentTimeMillis();
