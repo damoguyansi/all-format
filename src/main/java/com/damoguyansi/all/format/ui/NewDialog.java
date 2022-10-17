@@ -1,10 +1,12 @@
 package com.damoguyansi.all.format.ui;
 
+import cn.hutool.core.util.URLUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
 import com.damoguyansi.all.format.component.HexConvertPanel;
 import com.damoguyansi.all.format.component.ImageLabel;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
+import com.damoguyansi.all.format.translate.baidu.BDTransApiUtil;
 import com.damoguyansi.all.format.translate.bean.GTResult;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
@@ -34,7 +36,7 @@ public class NewDialog extends JFrame {
     private JCheckBox topCheckBox;
     private JButton otherBtn;
     private JCheckBox newLineCheckBox;
-    private JTextArea unicodeText;
+    private JTextArea encodeText;
 
     private JPanel jsPanel;
     private JPanel xmlPanel;
@@ -42,13 +44,15 @@ public class NewDialog extends JFrame {
     private JPanel sqlPanel;
     private JScrollPane qrcodePanel;
     private JScrollPane base64Panel;
-    private JScrollPane unicodePanel;
+    private JScrollPane encodePanel;
     private JLabel zczzLable;
     private JTextArea tranInText;
     private JTextArea tranOutText;
     private JScrollPane tranOutPane;
     private HexConvertPanel hexConvertPanel1;
-    private JTextArea md5Text;
+    private JButton urlDecodeBtn;
+    private JButton urlEncodeBtn;
+    private JButton md5Btn;
 
     private RSyntaxTextArea jsonText;
     private RSyntaxTextArea xmlText;
@@ -59,10 +63,9 @@ public class NewDialog extends JFrame {
     private static final String XML = "XML";
     private static final String HTML = "HTML";
     private static final String SQL = "SQL";
-    private static final String MD5 = "MD5";
     private static final String QRCODE = "QRCode";
     private static final String Base64 = "Base64";
-    private static final String UNICODE = "Unicode";
+    private static final String ENCODE = "Encode";
     private static final String HEX_CONVERT = "HexConvert";
     private static final String TRANSLATE = "Translate";
     private static final boolean TRAN_FLAG = false;
@@ -90,10 +93,9 @@ public class NewDialog extends JFrame {
     }
 
     private void initComponent() {
-        unicodeText.setOpaque(false);
+        encodeText.setOpaque(false);
         base64Text.setOpaque(false);
         qrcodeText.setOpaque(false);
-        md5Text.setOpaque(false);
         otherBtn.setVisible(false);
         tranInText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         tranInText.setLineWrap(true);
@@ -106,6 +108,10 @@ public class NewDialog extends JFrame {
 
         zczzLable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        urlEncodeBtn.setVisible(false);
+        urlDecodeBtn.setVisible(false);
+        md5Btn.setVisible(false);
+
         createRSyntaxTextArea();
 
         if (true == isDarcula) {
@@ -114,7 +120,7 @@ public class NewDialog extends JFrame {
     }
 
     private void showMainDia() {
-        this.setSize(705, 432);
+        this.setSize(800, 432);
         this.setLocationRelativeTo(null);
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
@@ -150,17 +156,23 @@ public class NewDialog extends JFrame {
         pc.close();
     }
 
-    private void setClipboardContent() {
+    private void setClipboardContent() {//http://weasdfasdfa.sdfadsf.com
         String clipText = ClipboardUtil.getSysClipboardText();
         if (null == clipText || "".equals(clipText)) {
             try {
-                tabbedPane1.setSelectedIndex(5);
+                tabbedPane1.setSelectedIndex(4);
                 ClipboardUtil.pasteClipboardContent(qrcodeText);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            jsonText.setText(clipText);
+            clipText = clipText.trim();
+            if (clipText.startsWith("http:") || clipText.startsWith("https:")) {
+                tabbedPane1.setSelectedIndex(6);
+                encodeText.setText(clipText);
+            } else {
+                jsonText.setText(clipText);
+            }
         }
     }
 
@@ -179,9 +191,6 @@ public class NewDialog extends JFrame {
                     case HTML:
                         htmlOK();
                         break;
-                    case MD5:
-                        md5OK();
-                        break;
                     case QRCODE:
                         qrCodeOK();
                         break;
@@ -191,7 +200,7 @@ public class NewDialog extends JFrame {
                     case SQL:
                         sqlFormat();
                         break;
-                    case UNICODE:
+                    case ENCODE:
                         zhToUnicode();
                         break;
                     case HEX_CONVERT:
@@ -218,16 +227,14 @@ public class NewDialog extends JFrame {
                     htmlText.setLineWrap(true);
                     sqlText.setLineWrap(true);
                     base64Text.setLineWrap(true);
-                    md5Text.setLineWrap(true);
-                    unicodeText.setLineWrap(true);
+                    encodeText.setLineWrap(true);
                 } else {
                     jsonText.setLineWrap(false);
                     xmlText.setLineWrap(false);
                     htmlText.setLineWrap(false);
                     sqlText.setLineWrap(false);
                     base64Text.setLineWrap(false);
-                    md5Text.setLineWrap(false);
-                    unicodeText.setLineWrap(false);
+                    encodeText.setLineWrap(false);
                 }
             }
         });
@@ -237,7 +244,7 @@ public class NewDialog extends JFrame {
                 String tag = tabbedPane1.getTitleAt(tabbedPane1.getSelectedIndex()).trim();
                 if (Base64.equalsIgnoreCase(tag)) {
                     decode();
-                } else if (UNICODE.equalsIgnoreCase(tag)) {
+                } else if (ENCODE.equalsIgnoreCase(tag)) {
                     unicodeToZh();
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     decodeQrcode();
@@ -254,14 +261,15 @@ public class NewDialog extends JFrame {
                 msgLabel.setForeground(Color.BLACK);
                 msgLabel.setText("\u70b9\u51fb\u6309\u94ae\u8fdb\u884c\u683c\u5f0f\u5316");
                 exeBtn.setText("\u683c\u5f0f\u5316");
+                urlEncodeBtn.setVisible(false);
+                urlDecodeBtn.setVisible(false);
+                md5Btn.setVisible(false);
                 if (Base64.equalsIgnoreCase(tag)) {
                     base64Text.requestFocus();
                     base64Text.grabFocus();
                     otherBtn.setText("\u89e3\u5bc6");
                     otherBtn.setVisible(true);
                     exeBtn.setText("\u52a0\u5bc6");
-                } else if (MD5.equalsIgnoreCase(tag)) {
-                    exeBtn.setText("\u7b7e\u540d");
                 } else if (QRCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u751f\u6210");
                     otherBtn.setText("\u89e3\u6790");
@@ -272,12 +280,15 @@ public class NewDialog extends JFrame {
                     exeBtn.setText("\u7f8e\u5316");
                     sqlText.requestFocus();
                     sqlText.grabFocus();
-                } else if (UNICODE.equalsIgnoreCase(tag)) {
+                } else if (ENCODE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u4e2d\u8f6c\u0055");
                     otherBtn.setText("\u0055\u8f6c\u4e2d");
                     otherBtn.setVisible(true);
-                    unicodeText.requestFocus();
-                    unicodeText.grabFocus();
+                    urlEncodeBtn.setVisible(true);
+                    urlDecodeBtn.setVisible(true);
+                    md5Btn.setVisible(true);
+                    encodeText.requestFocus();
+                    encodeText.grabFocus();
                 } else if (TRANSLATE.equalsIgnoreCase(tag)) {
                     exeBtn.setText("\u7ffb\u8bd1");
                     otherBtn.setVisible(false);
@@ -299,6 +310,7 @@ public class NewDialog extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 new Thread() {
+                    @Override
                     public void run() {
                         try {
                             Desktop desktop = Desktop.getDesktop();
@@ -311,11 +323,40 @@ public class NewDialog extends JFrame {
             }
         });
 
+        md5Btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                md5OK();
+            }
+        });
+        urlEncodeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = encodeText.getText();
+                if (null == text || "".equalsIgnoreCase(text)) {
+                    return;
+                }
+                encodeText.setText(URLUtil.encode(text));
+                msgLabel.setText("url encode success!");
+            }
+        });
+
+        urlDecodeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = encodeText.getText();
+                if (null == text || "".equalsIgnoreCase(text)) {
+                    return;
+                }
+                encodeText.setText(URLUtil.decode(text));
+                msgLabel.setText("url decode success!");
+            }
+        });
+
         tpml = new TextPanelMouseListener(tabbedPane1);
         qrcodeText.addMouseListener(tpml);
         base64Text.addMouseListener(tpml);
-        md5Text.addMouseListener(tpml);
-        unicodeText.addMouseListener(tpml);
+        encodeText.addMouseListener(tpml);
         tranInText.addMouseListener(tpml);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -327,6 +368,7 @@ public class NewDialog extends JFrame {
         });
 
         contentPane.registerKeyboardAction(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 hideMainDia();
                 dispose();
@@ -340,13 +382,14 @@ public class NewDialog extends JFrame {
 
     private void jsonOK() {
         String text = jsonText.getText();
-        if (null == text || "".equals(text))
+        if (null == text || "".equals(text)) {
             return;
+        }
 
         text = text.replaceAll("\t", "");
         String resStr = null;
         try {
-            resStr = JsonFormatTool.format(text);
+            resStr = FormatUtil.format(text);
             msgLabel.setText("json format!");
             jsonText.setText(resStr);
         } catch (Exception e) {
@@ -354,12 +397,14 @@ public class NewDialog extends JFrame {
             msgLabel.setText("map format!");
             jsonText.setText(resStr);
         }
+        jsonText.setCaretPosition(0);
     }
 
     private void xmlOK() {
         String text = xmlText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
 
         text = text.replaceAll("\t", "");
         try {
@@ -375,8 +420,9 @@ public class NewDialog extends JFrame {
 
     private void htmlOK() {
         String text = htmlText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
 
         text = text.replaceAll("\t", "");
         try {
@@ -391,13 +437,14 @@ public class NewDialog extends JFrame {
     }
 
     private void md5OK() {
-        String text = md5Text.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        String text = encodeText.getText();
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         try {
             text = MD5Util.md5(text).toUpperCase(Locale.ROOT);
             msgLabel.setText("md5 success!");
-            md5Text.setText(text);
+            encodeText.setText(text);
         } catch (Throwable t) {
             String eStr = "md5 error [" + t.getMessage() + "]";
             msgLabel.setText(eStr);
@@ -407,8 +454,9 @@ public class NewDialog extends JFrame {
 
     private void qrCodeOK() {
         String text = qrcodeText.getText();
-        if (null == text || "".equalsIgnoreCase(text.trim()))
+        if (null == text || "".equalsIgnoreCase(text.trim())) {
             return;
+        }
 
         try {
             qrcodeText.setText(text.trim() + "\r\n");
@@ -456,8 +504,9 @@ public class NewDialog extends JFrame {
 
     private void encode() {
         String text = base64Text.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         try {
             text = BaseEncoding.base64().encode(text.getBytes());
             base64Text.setText(text);
@@ -472,8 +521,9 @@ public class NewDialog extends JFrame {
 
     private void decode() {
         String text = base64Text.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         try {
             text = new String(BaseEncoding.base64().decode(text));
             base64Text.setText(text);
@@ -488,8 +538,9 @@ public class NewDialog extends JFrame {
 
     private void sqlFormat() {
         String text = sqlText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         text = SqlFormat.format(text);
         if (null == text) {
             msgLabel.setText("sql format error!");
@@ -501,29 +552,31 @@ public class NewDialog extends JFrame {
     }
 
     private void zhToUnicode() {
-        String text = unicodeText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        String text = encodeText.getText();
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         String result = UnicodeUtil.unicodeEncode(text);
         if (null == result) {
             msgLabel.setText("unicode encode error!");
             return;
         }
-        unicodeText.setText(result);
+        encodeText.setText(result);
         msgLabel.setText("unicode encode!");
         msgLabel.setToolTipText("unicode encode!");
     }
 
     private void unicodeToZh() {
-        String text = unicodeText.getText();
-        if (null == text || "".equalsIgnoreCase(text))
+        String text = encodeText.getText();
+        if (null == text || "".equalsIgnoreCase(text)) {
             return;
+        }
         String result = UnicodeUtil.unicodeDecode(text);
         if (null == result) {
             msgLabel.setText("unicode decode error!");
             return;
         }
-        unicodeText.setText(result);
+        encodeText.setText(result);
         msgLabel.setText("unicode decode!");
         msgLabel.setToolTipText("unicode decode!");
     }
@@ -536,7 +589,7 @@ public class NewDialog extends JFrame {
         Matcher m = TranslateUtil.p.matcher(text.trim());
         String translateType = m.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
         try {
-            GTResult result = TranslateUtil.translate(text, translateType);
+            GTResult result = BDTransApiUtil.translate(text, translateType);
 
             tranOutText.setText(null == result ? "未知翻译" : result.getSentences().get(0).getTrans());
         } catch (Exception e) {
@@ -570,14 +623,15 @@ public class NewDialog extends JFrame {
     private RSyntaxTextArea createArea(String type) {
         RSyntaxTextArea area = new RSyntaxTextArea();
         area.setDocument(new MaxLengthDocument(5000000));
-        if (JSON.equalsIgnoreCase(type))
+        if (JSON.equalsIgnoreCase(type)) {
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        else if (XML.equalsIgnoreCase(type))
+        } else if (XML.equalsIgnoreCase(type)) {
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
-        else if (HTML.equalsIgnoreCase(type))
+        } else if (HTML.equalsIgnoreCase(type)) {
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
-        else if (SQL.equalsIgnoreCase(type))
+        } else if (SQL.equalsIgnoreCase(type)) {
             area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_SQL);
+        }
         area.setCodeFoldingEnabled(true);
         area.setAntiAliasingEnabled(true);
         area.setAutoscrolls(true);
@@ -608,6 +662,7 @@ public class NewDialog extends JFrame {
             maxChars = max;
         }
 
+        @Override
         public void insertString(int offset, String s, AttributeSet a) throws BadLocationException {
             try {
                 if (getLength() + s.length() > maxChars) {

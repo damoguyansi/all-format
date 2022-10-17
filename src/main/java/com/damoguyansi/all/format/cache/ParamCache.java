@@ -1,7 +1,7 @@
 package com.damoguyansi.all.format.cache;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 
 import java.io.*;
 
@@ -14,16 +14,17 @@ import java.io.*;
 public class ParamCache {
     private static final String BASE_DIR = System.getProperty("java.io.tmpdir");
     private static final String CACHE_FILE_NAME = "allformat.json";
-    private JsonObject paramObj = null;
+    private JSONObject paramObj = null;
 
     public ParamCache() {
         File file = new File(BASE_DIR, CACHE_FILE_NAME);
         if (file.exists()) {
             String params = readFile(file);
-            if (null != params && !"".equals(params))
-                paramObj = JsonParser.parseString(params).getAsJsonObject();
-            else
-                paramObj = new JsonObject();
+            if (null != params && !"".equals(params)) {
+                paramObj = JSONUtil.parseObj(params);
+            } else {
+                paramObj = new JSONObject();
+            }
         }
     }
 
@@ -49,15 +50,14 @@ public class ParamCache {
     }
 
     public void close() {
-        if (null == paramObj)
+        if (null == paramObj) {
             return;
+        }
 
         try {
             File writeName = new File(BASE_DIR, CACHE_FILE_NAME);
             writeName.createNewFile();
-            try (FileWriter writer = new FileWriter(writeName);
-                 BufferedWriter out = new BufferedWriter(writer)
-            ) {
+            try (FileWriter writer = new FileWriter(writeName); BufferedWriter out = new BufferedWriter(writer)) {
                 out.write(paramObj.toString());
                 out.flush();
             }
@@ -69,25 +69,7 @@ public class ParamCache {
     public Boolean readAsBoolean(CacheName cacheName) {
         try {
             if (null != paramObj && null != paramObj.get(cacheName.getName())) {
-                return Boolean.parseBoolean(paramObj.get(cacheName.getName()).toString());
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + ":" + BASE_DIR + "/" + CACHE_FILE_NAME);
-        }
-        return null;
-    }
-
-    public Integer readAsInteger(CacheName cacheName) {
-        if (null != paramObj && null != paramObj.get(cacheName.getName())) {
-            return Integer.parseInt(paramObj.get(cacheName.getName()).toString());
-        }
-        return null;
-    }
-
-    public String readAsString(CacheName cacheName) {
-        try {
-            if (null != paramObj && null != paramObj.get(cacheName.getName())) {
-                return paramObj.get(cacheName.getName()).toString();
+                return paramObj.getBool(cacheName.getName());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + ":" + BASE_DIR + "/" + CACHE_FILE_NAME);
@@ -96,8 +78,9 @@ public class ParamCache {
     }
 
     public void writeByName(CacheName cacheName, String value) {
-        if (null == paramObj)
-            paramObj = new JsonObject();
-        paramObj.addProperty(cacheName.getName(), value);
+        if (null == paramObj) {
+            paramObj = new JSONObject();
+        }
+        paramObj.set(cacheName.getName(), value);
     }
 }

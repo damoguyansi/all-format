@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.util;
 
+import cn.hutool.json.JSONUtil;
 import com.damoguyansi.all.format.translate.bean.GTResult;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.config.RequestConfig;
@@ -43,6 +44,9 @@ public class TranslateUtil {
     private static final RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(5000)
             .setSocketTimeout(5000).setConnectTimeout(5000).build();
 
+    public static void main(String[] args) throws Exception{
+        translate("我爱你",ZH_CN_TO_EN);
+    }
     /**
      * 调用接口,翻译并返回值
      *
@@ -53,8 +57,8 @@ public class TranslateUtil {
      */
     public static GTResult translate(String word, String translateType) throws Exception {
         try {
-            CloseableHttpClient client = HttpClients.createDefault();
             String url = getTranslateUrl(translateType, TkUtil.tk(word), URLEncoder.encode(word, "utf-8"));
+            CloseableHttpClient client = HttpClients.createDefault();
             System.out.println("translate url:" + url);
             HttpGet get = new HttpGet(url);
             get.setConfig(requestConfig);
@@ -65,7 +69,7 @@ public class TranslateUtil {
             if (200 == response.getStatusLine().getStatusCode()) {
                 String responseText = EntityUtils.toString(response.getEntity(), "utf-8");
                 System.out.println("translate result:" + responseText);
-                GTResult translateResult = JsonFormatTool.jsonToObject(responseText, GTResult.class);
+                GTResult translateResult = JSONUtil.toBean(responseText, GTResult.class);
                 return translateResult;
             } else {
                 throw new Exception("Google翻译请求频繁限制！");
