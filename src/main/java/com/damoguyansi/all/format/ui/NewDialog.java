@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.ui;
 
 import cn.hutool.core.util.URLUtil;
+import cn.hutool.json.JSONUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
 import com.damoguyansi.all.format.component.HexConvertPanel;
@@ -96,7 +97,9 @@ public class NewDialog extends JFrame {
         encodeText.setOpaque(false);
         base64Text.setOpaque(false);
         qrcodeText.setOpaque(false);
-        otherBtn.setVisible(false);
+        otherBtn.setText("\u538b\u7f29");
+        otherBtn.setVisible(true);
+
         tranInText.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         tranInText.setLineWrap(true);
         tranInText.setDocument(new MaxLengthDocument(300));
@@ -242,7 +245,9 @@ public class NewDialog extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String tag = tabbedPane1.getTitleAt(tabbedPane1.getSelectedIndex()).trim();
-                if (Base64.equalsIgnoreCase(tag)) {
+                if (JSON.equalsIgnoreCase(tag)) {
+                    jsonCompress();
+                } else if (Base64.equalsIgnoreCase(tag)) {
                     decode();
                 } else if (ENCODE.equalsIgnoreCase(tag)) {
                     unicodeToZh();
@@ -264,7 +269,10 @@ public class NewDialog extends JFrame {
                 urlEncodeBtn.setVisible(false);
                 urlDecodeBtn.setVisible(false);
                 md5Btn.setVisible(false);
-                if (Base64.equalsIgnoreCase(tag)) {
+                if (JSON.equalsIgnoreCase(tag)) {
+                    otherBtn.setText("\u538b\u7f29");
+                    otherBtn.setVisible(true);
+                } else if (Base64.equalsIgnoreCase(tag)) {
                     base64Text.requestFocus();
                     base64Text.grabFocus();
                     otherBtn.setText("\u89e3\u5bc6");
@@ -398,6 +406,16 @@ public class NewDialog extends JFrame {
             jsonText.setText(resStr);
         }
         jsonText.setCaretPosition(0);
+    }
+
+    private void jsonCompress() {
+        jsonOK();
+        String text = jsonText.getText();
+        if (null == text || "".equals(text)) {
+            return;
+        }
+        jsonText.setText(JSONUtil.parse(text).toString());
+        msgLabel.setText("json compress!");
     }
 
     private void xmlOK() {
