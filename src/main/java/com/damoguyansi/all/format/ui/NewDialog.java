@@ -128,7 +128,7 @@ public class NewDialog extends JFrame {
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
-        this.setMinimumSize(new Dimension(705, 410));
+        this.setMinimumSize(new Dimension(700, 410));
 
         jsonText.requestFocus();
         jsonText.grabFocus();
