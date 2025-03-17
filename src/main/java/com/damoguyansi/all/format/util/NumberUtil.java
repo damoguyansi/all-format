@@ -61,6 +61,6 @@ public class NumberUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(scale2Decimal("w",32));
+        System.out.println(scale2Decimal("w", 32));
     }
 }

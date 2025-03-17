@@ -11,6 +11,18 @@
   
 
 ### 版本说明
+<!-- Plugin description -->
+## [1.4.1] - 2025-03-17
+### Fixed
+- 修复了高版本中底部按钮隐藏的问题。
+
+### Changed
+- 升级插件依赖版本以支持最新的 IntelliJ IDEA 功能和特性。
+<!-- Plugin description end -->
+版本1.4.1
+>
+* Optimize the display of forms(优化窗体显示).
+
 版本1.4.0
 >
 * 更换Google翻译为百度翻译.

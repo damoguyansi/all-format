@@ -1,6 +1,6 @@
 package com.damoguyansi.all.format.translate.component;
 
-import com.intellij.ide.IdeTooltipManager;
+import com.damoguyansi.all.format.util.ColorUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
@@ -31,7 +31,7 @@ public class TranslateBalloonBuilder implements BalloonBuilder {
 
     private final JComponent myContent;
 
-    private Color myBorder = IdeTooltipManager.getInstance().getBorderColor(true);
+    private Color myBorder = UIManager.getColor("ToolTip.border");
     @Nullable
     private Insets myBorderInsets = null;
     private Color myFill = MessageType.INFO.getPopupBackground();
@@ -55,7 +55,7 @@ public class TranslateBalloonBuilder implements BalloonBuilder {
     private boolean myDialogMode;
     private String myTitle;
     private Insets myContentInsets = JBUI.insets(2);
-    private boolean myShadow = UIUtil.isUnderDarcula();
+    private boolean myShadow = ColorUtil.isDarcula();
     private boolean mySmallVariant = false;
 
     private Balloon.Layer myLayer;

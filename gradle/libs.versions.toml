@@ -1,0 +1,25 @@
+[versions]
+# libraries
+jsoup = "1.19.1"
+zxing = "3.5.3"
+rsyntaxtextarea = "3.5.4"
+hutool = "5.8.36"
+
+# plugins
+kotlin = "1.9.24"
+changelog = "2.2.0"
+gradleIntelliJPlugin = "1.17.3"
+
+[libraries]
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
+zxingcore = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+zxingjavase = { group = "com.google.zxing", name = "javase", version.ref = "zxing" }
+rsyntaxtextarea = { group = "com.fifesoft", name = "rsyntaxtextarea", version.ref = "rsyntaxtextarea" }
+hutoolhttp = { group = "cn.hutool", name = "hutool-http", version.ref = "hutool" }
+hutooljson = { group = "cn.hutool", name = "hutool-json", version.ref = "hutool" }
+hutoolcrypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
+gradleIntelliJPlugin = { id = "org.jetbrains.intellij", version.ref = "gradleIntelliJPlugin" }

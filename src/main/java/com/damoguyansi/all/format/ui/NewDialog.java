@@ -119,6 +119,10 @@ public class NewDialog extends JFrame {
 
         if (true == isDarcula) {
             tabbedPane1.setForeground(new Color(213, 212, 212));
+            Color backgroundColor = Color.DARK_GRAY;
+
+            // 设置 JFrame 背景颜色
+            this.getContentPane().setBackground(backgroundColor);
         }
     }
 
@@ -128,7 +132,7 @@ public class NewDialog extends JFrame {
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();
         this.setVisible(true);
-        this.setMinimumSize(new Dimension(700, 410));
+//        this.setMinimumSize(new Dimension(700, 410));
 
         jsonText.requestFocus();
         jsonText.grabFocus();
