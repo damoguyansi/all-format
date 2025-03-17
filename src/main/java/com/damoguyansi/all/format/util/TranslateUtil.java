@@ -44,9 +44,10 @@ public class TranslateUtil {
     private static final RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(5000)
             .setSocketTimeout(5000).setConnectTimeout(5000).build();
 
-    public static void main(String[] args) throws Exception{
-        translate("我爱你",ZH_CN_TO_EN);
+    public static void main(String[] args) throws Exception {
+        translate("我爱你", ZH_CN_TO_EN);
     }
+
     /**
      * 调用接口,翻译并返回值
      *

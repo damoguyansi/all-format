@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.translate.action;
 
+import cn.hutool.core.util.StrUtil;
 import com.damoguyansi.all.format.translate.bean.GTResult;
 import com.damoguyansi.all.format.translate.component.BalloonManager;
 import com.damoguyansi.all.format.translate.component.TranslateBalloon;
@@ -20,7 +21,6 @@ import com.intellij.openapi.ui.popup.BalloonBuilder;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.util.ui.JBUI;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -59,10 +59,10 @@ public class GoogleTranslateAction extends AnAction {
             selectionModel = editor.getSelectionModel();
             String selectedText = selectionModel.getSelectedText();
 
-            if (StringUtils.isEmpty(selectedText)) {
+            if (StrUtil.isEmpty(selectedText)) {
                 selectedText = getSelectText();
             }
-            if (StringUtils.isEmpty(selectedText)) {
+            if (StrUtil.isEmpty(selectedText)) {
                 return;
             }
             NoticeUtil.init(this.getClass().getSimpleName(), 1);

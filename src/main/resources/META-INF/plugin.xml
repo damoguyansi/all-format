@@ -2,9 +2,7 @@
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
     <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.4.0</version>
-
-    <depends>com.intellij.modules.java</depends>
+    <version>1.4.1</version>
 
     <description>
         <![CDATA[
@@ -37,6 +35,10 @@
     <change-notes>
         <![CDATA[
         <p>
+            1.4.1
+            <ul>
+                <li>Optimize the display of forms(优化窗体显示).</li>
+            </ul>
             1.4.0
             <ul>
                 <li>Change Google Translation to Baidu Translation(更换Google翻译为百度翻译).</li>
@@ -75,7 +77,7 @@
         ]]>
     </change-notes>
 
-    <idea-version since-build="193"/>
+    <idea-version since-build="241"/>
     <application-components></application-components>
     <project-components></project-components>
 
@@ -87,16 +89,21 @@
     <actions>
         <action id="AllFormat"
                 class="com.damoguyansi.all.format.FormatAction"
-                text="AllFormat">
+                text="AllFormat"
+                icon="AllFormatIcons.Logo">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt f"/>
         </action>
-        <action id="run.damoguyansi.AllFormat"
-                class="com.damoguyansi.all.format.FormatAction"
-                text="AllFormat"
-                description="AllFormat" icon="/icons/AllFormat.png">
-            <add-to-group group-id="ToolbarRunGroup" anchor="after" relative-to-action="Stop"/>
-        </action>
+
+        <group id="TranslationNavBarToolBar" text="Translation Navigation Bar Actions">
+            <separator/>
+            <reference ref="AllFormat"/>
+            <separator/>
+
+            <!--suppress PluginXmlValidity -->
+            <add-to-group group-id="NavBarToolBar" relative-to-action="RunAnything" anchor="before"/>
+        </group>
+
         <action id="run.damoguyansi.GoogleTranslateAction"
                 class="com.damoguyansi.all.format.translate.action.GoogleTranslateAction"
                 text="Translate"
