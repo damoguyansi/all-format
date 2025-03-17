@@ -201,23 +201,30 @@
                   </component>
                 </children>
               </scrollpane>
-              <grid id="2eddd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="5" bottom="0" right="20"/>
+              <scrollpane id="40076">
                 <constraints>
                   <tabbedpane title="HexConvert"/>
                 </constraints>
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <nested-form id="1d963" form-file="com/damoguyansi/all/format/component/HexConvertPanel.form" binding="hexConvertPanel1" default-binding="true">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                        <preferred-size width="200" height="200"/>
-                      </grid>
-                    </constraints>
-                  </nested-form>
+                  <grid id="2eddd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="5" bottom="0" right="20"/>
+                    <constraints/>
+                    <properties/>
+                    <border type="empty"/>
+                    <children>
+                      <nested-form id="1d963" form-file="com/damoguyansi/all/format/component/HexConvertPanel.form" binding="hexConvertPanel1" default-binding="true">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <preferred-size width="200" height="200"/>
+                          </grid>
+                        </constraints>
+                      </nested-form>
+                    </children>
+                  </grid>
                 </children>
-              </grid>
+              </scrollpane>
               <grid id="746f2" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
