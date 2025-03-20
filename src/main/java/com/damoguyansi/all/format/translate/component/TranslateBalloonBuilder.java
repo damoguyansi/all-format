@@ -9,9 +9,7 @@ import com.intellij.openapi.ui.popup.JBPopupListener;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.ui.BalloonImpl;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,9 +19,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class TranslateBalloonBuilder implements BalloonBuilder {
-    private static final Map<Disposable, List<Balloon>> DEFAULT_STORAGE = ContainerUtil.createWeakMap();
+    private static final Map<Disposable, List<Balloon>> DEFAULT_STORAGE = new WeakHashMap<>();
     @Nullable
     private final Map<Disposable, List<Balloon>> myStorage;
     @Nullable
@@ -72,7 +71,9 @@ public class TranslateBalloonBuilder implements BalloonBuilder {
     public TranslateBalloonBuilder(@Nullable Map<Disposable, List<Balloon>> storage, @NotNull final JComponent content) {
         myStorage = storage;
         myContent = content;
-        if (UIUtil.isClientPropertyTrue(myContent, BalloonImpl.FORCED_NO_SHADOW)) {
+
+        Object value = myContent.getClientProperty(BalloonImpl.FORCED_NO_SHADOW);
+        if (Boolean.TRUE.equals(value)) {
             myShadow = false;
         }
     }

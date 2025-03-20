@@ -9,6 +9,7 @@ import com.damoguyansi.all.format.util.NoticeUtil;
 import com.damoguyansi.all.format.util.TranslateUtil;
 import com.damoguyansi.all.format.util.WordUtil;
 import com.intellij.codeInsight.editorActions.SelectWordUtil;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -38,6 +39,12 @@ public class GoogleTranslateAction extends AnAction {
     public static Editor editor;
     public static Project project;
     public static SelectionModel selectionModel;
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT; // 选择后台线程，适合翻译请求
+        // 或 return ActionUpdateThread.EDT; // 如果只涉及 UI 更新
+    }
 
     @Override
     public void update(AnActionEvent e) {

@@ -15,13 +15,15 @@ kotlin {
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
-fun dateValue(pattern: String): String = LocalDate.now(ZoneId.of("Asia/Shanghai")).format(DateTimeFormatter.ofPattern(pattern))
+fun dateValue(pattern: String): String =
+    LocalDate.now(ZoneId.of("Asia/Shanghai")).format(DateTimeFormatter.ofPattern(pattern))
 
 group = properties("pluginGroup").get()
 version = properties("pluginMajorVersion").get();
 
 repositories {
     mavenCentral()
+    maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
 }
 
 dependencies {
@@ -29,9 +31,8 @@ dependencies {
     implementation(libs.zxingcore)
     implementation(libs.zxingjavase)
     implementation(libs.rsyntaxtextarea)
-    implementation(libs.hutoolhttp)
-    implementation(libs.hutooljson)
-    implementation(libs.hutoolcrypto)
+    implementation(libs.hutool)
+    implementation(libs.jdom2)
 }
 intellij {
     pluginName = properties("pluginName")
@@ -48,8 +49,55 @@ changelog {
 
 tasks {
     patchPluginXml {
+        version = properties("pluginMajorVersion")
         sinceBuild = properties("pluginSinceBuild")
         untilBuild = properties("pluginUntilBuild")
+        pluginDescription = projectDir.resolve("DESCRIPTION.md").readText()
+        changeNotes = provider {
+            val markdownText = projectDir.resolve("CHANGELOG.md").readText()
+            val lines = markdownText.split("\n")
+            var htmlContent = ""
+            var inList = false
+
+            for (line in lines) {
+                when {
+                    line.matches(Regex("^# (.+)$")) -> {
+                        if (inList) htmlContent += "</ul>"
+                        htmlContent += "<h1>${line.removePrefix("# ")}</h1>"
+                        inList = false
+                    }
+                    line.matches(Regex("^## (.+)$")) -> {
+                        if (inList) htmlContent += "</ul>"
+                        htmlContent += "<h2>${line.removePrefix("## ")}</h2>"
+                        inList = false
+                    }
+                    line.matches(Regex("^### (.+)$")) -> {
+                        if (inList) htmlContent += "</ul>"
+                        htmlContent += "<h3>${line.removePrefix("### ")}</h3>"
+                        inList = false
+                    }
+                    line.matches(Regex("^- (.+)$")) -> {
+                        if (!inList) {
+                            htmlContent += "<ul>"
+                            inList = true
+                        }
+                        htmlContent += "<li>${line.removePrefix("- ")}</li>"
+                    }
+                    inList && (line.isBlank() || line.matches(Regex("^#.+|^##.+|^###.+"))) -> {
+                        htmlContent += "</ul>"
+                        inList = false
+                        if (line.isNotBlank()) htmlContent += "<br>"
+                    }
+                    else -> {
+                        if (inList) htmlContent += "</ul>"
+                        inList = false
+                        htmlContent += if (line.isBlank()) "<br>" else "$line<br>"
+                    }
+                }
+            }
+            if (inList) htmlContent += "</ul>"
+            htmlContent
+        }
     }
     listProductsReleases {
         sinceVersion = "2024.1"
