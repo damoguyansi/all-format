@@ -4,6 +4,7 @@ jsoup = "1.19.1"
 zxing = "3.5.3"
 rsyntaxtextarea = "3.5.4"
 hutool = "5.8.36"
+jdom2 = "2.0.6.1"
 
 # plugins
 kotlin = "1.9.24"
@@ -15,9 +16,8 @@ jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 zxingcore = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 zxingjavase = { group = "com.google.zxing", name = "javase", version.ref = "zxing" }
 rsyntaxtextarea = { group = "com.fifesoft", name = "rsyntaxtextarea", version.ref = "rsyntaxtextarea" }
-hutoolhttp = { group = "cn.hutool", name = "hutool-http", version.ref = "hutool" }
-hutooljson = { group = "cn.hutool", name = "hutool-json", version.ref = "hutool" }
-hutoolcrypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
+hutool = { group = "cn.hutool", name = "hutool-all", version.ref = "hutool" }
+jdom2 = { group = "org.jdom", name = "jdom2", version.ref = "jdom2" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

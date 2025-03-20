@@ -127,7 +127,7 @@ public class NewDialog extends JFrame {
     }
 
     private void showMainDia() {
-        this.setSize(782, 410);
+        this.setSize(820, 410);
         this.setLocationRelativeTo(null);
         this.setTitle("AllFormat (damoguyansi@163.com)");
         this.initCacheParam();

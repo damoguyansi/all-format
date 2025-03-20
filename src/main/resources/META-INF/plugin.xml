@@ -1,83 +1,8 @@
 <idea-plugin require-restart="false">
     <id>com.damoguyansi.all-format</id>
     <name>All Format</name>
-    <vendor email="damoguyansi@163.com">damoguyansi</vendor>
-    <version>1.4.1</version>
+    <vendor email="damoguyansi@163.com" url="https://github.com/damoguyansi/all-format">damoguyansi</vendor>
 
-    <description>
-        <![CDATA[
-        AllFormat is a full-featured formatting plug-in that allows developers to format any data. It is easy to read software, Chinese and English translation, etc. It will continue to update and add new features.
-        (AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，中英文翻译等，会持续更新增加新功,也欢迎提出新功能！)<br>
-        <h3>Features:</h3>
-            <ul>
-                <li>Chinese English translation(中英文翻译)。</li>
-                <li>Format JSON string(格式化JSON字符串)。</li>
-                <li>Format log print string according to curly brackets, small brackets and commas for easy reading(格式化日志打印字符串，按大括号小括号逗号进行格式化，方便阅读)。</li>
-                <li>Format HTML text(格式化HTML文本)。</li>
-                <li>Format SQL statement(格式化SQL语句)。</li>
-                <li>MD5 value generation(MD5值生成)。</li>
-                <li>QR code generation and identification of QR code pictures(二维码生成，识别二维码图片)。</li>
-                <li>Base64 value generation and decryption(Base64值生成与解密)。</li>
-                <li>Unicode value generation and conversion(Unicode值生成与转换)。</li>
-                <li>2. 4, 8, 10, hex conversion(2、4、8、10、16进制相互转换)。</li>
-            </ul>
-        </h3>
-        all-format,json formatting,html formatting,MySql formatting,xml formatting,MD5 generated,QRCode generated,二维码生成,Unicode conversion,Base64 conversion,translation.<br/>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_d47f335d-3139-40b7-89d1-d53bedc87dc3' width='600'/>
-        <br/>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_e095ad5b-6b14-4d14-9f82-2c8e628af585' width='600'/>
-        <br/>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_ec49ac84-4232-4949-86df-c55ee8da8af2' width='600'/>
-        <br/>
-        <img src='https://plugins.jetbrains.com/files/10962/screenshot_6aad5ec6-66bf-496b-9aac-841bc2e239fd'/>
-        ]]>
-    </description>
-    <change-notes>
-        <![CDATA[
-        <p>
-            1.4.1
-            <ul>
-                <li>Optimize the display of forms(优化窗体显示).</li>
-            </ul>
-            1.4.0
-            <ul>
-                <li>Change Google Translation to Baidu Translation(更换Google翻译为百度翻译).</li>
-                <li>Add URL encoding and URL decoding(新增加URL编码、URL解码).</li>
-                <li>Integrate Md5, Unicode and Url codes into one panel(融合Md5、Unicode、Url编码到一个panel).</li>
-            </ul>
-            1.3.0
-            <ul>
-                <li>Solve the problem of inaccessible Google translation address（解决Google翻译地址不通问题）.</li>
-            </ul>
-            1.2.0
-            <ul>
-                <li>增加2进制、8进制、10进制、16进制、32进制转换.</li>
-                <li>UI界面调整变化,暗黑主题标签字体颜色调整.</li>
-                <li>优化翻译板块，多词一起翻译.</li>
-                <li>增加选中单词Ctrl+Alt+U进行气泡翻译</li>
-            </ul>
-            1.1.2
-            <ul>
-                <li>增加中英文翻译模块.</li>
-                <li>优化关闭窗口速度.</li>
-                <li>增加二维码复制粘贴功能.</li>
-                <li>修改二维码容器.</li>
-                <li>去除上传二维码图片.</li>
-            </ul>
-            1.1.1
-            <ul>
-                <li>新增加关于项目连接.</li>
-                <li>优化黑暗主题内容背景颜色.</li>
-                <li>优化SQL格式化.</li>
-                <li>修改默认窗体大小.</li>
-                <li>增加上传二维码图片识别.</li>
-                <li>增加置顶、换行设置缓存.</li>
-            </ul>
-        </p>
-        ]]>
-    </change-notes>
-
-    <idea-version since-build="241"/>
     <application-components></application-components>
     <project-components></project-components>
 
@@ -92,15 +17,14 @@
                 text="AllFormat"
                 icon="AllFormatIcons.Logo">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt f"/>
+            <add-to-group group-id="MainToolbarRight" relative-to-action="SearchEverywhere" anchor="before"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt F"/>
         </action>
 
-        <group id="TranslationNavBarToolBar" text="Translation Navigation Bar Actions">
+        <group id="AllFormatTranslationNavBarToolBar" text="Translation Navigation Bar Actions">
             <separator/>
             <reference ref="AllFormat"/>
             <separator/>
-
-            <!--suppress PluginXmlValidity -->
             <add-to-group group-id="NavBarToolBar" relative-to-action="RunAnything" anchor="before"/>
         </group>
 
