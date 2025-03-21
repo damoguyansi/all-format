@@ -22,7 +22,7 @@ public class TranslateDialog extends JFrame {
     private JCheckBox wrapLinesCheckBox;
     private JTextArea encodeText;
     private JPanel jsonPanel;
-    private JPanel xmlPanel;
+//    private JPanel xmlPanel;
     private JPanel htmlPanel;
     private JPanel sqlPanel;
     private JScrollPane qrCodePanel;
@@ -202,10 +202,6 @@ public class TranslateDialog extends JFrame {
         return jsonPanel;
     }
 
-    public JPanel getXmlPanel() {
-        return xmlPanel;
-    }
-
     public JPanel getHtmlPanel() {
         return htmlPanel;
     }
@@ -269,10 +265,6 @@ public class TranslateDialog extends JFrame {
 
     void setJsonPanel(JPanel jsonPanel) {
         this.jsonPanel = jsonPanel;
-    }
-
-    void setXmlPanel(JPanel xmlPanel) {
-        this.xmlPanel = xmlPanel;
     }
 
     void setHtmlPanel(JPanel htmlPanel) {

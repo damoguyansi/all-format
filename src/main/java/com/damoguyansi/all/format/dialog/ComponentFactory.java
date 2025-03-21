@@ -83,7 +83,6 @@ public class ComponentFactory {
         RSyntaxTextArea xmlText = createArea(Constants.XML);
         RTextScrollPane xmlSp = new RTextScrollPane(xmlText);
         xmlSp.setBorder(new EmptyBorder(0, 0, 0, 0));
-        dialog.getXmlPanel().add(xmlSp);
         dialog.setXmlText(xmlText);
 
         RSyntaxTextArea htmlText = createArea(Constants.HTML);
