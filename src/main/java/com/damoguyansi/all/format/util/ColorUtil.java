@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.util;
 
 import com.intellij.ide.ui.LafManager;
+import com.intellij.ui.JBColor;
 
 import java.awt.*;
 
@@ -17,9 +18,7 @@ public class ColorUtil {
     private static final String ENTRY_TRANS_COLOR_DARCULA = "#FFC66D";
 
     public static boolean isDarcula() {
-        LafManager lafManager = LafManager.getInstance();
-        String feel = lafManager.getCurrentUIThemeLookAndFeel().getName();
-        return feel.contains("Darcula") || feel.contains("Dark");
+        return !JBColor.isBright();
     }
 
     public static String transColor() {
