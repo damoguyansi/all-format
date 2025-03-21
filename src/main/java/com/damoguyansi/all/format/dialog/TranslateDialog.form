@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.damoguyansi.all.format.ui.NewDialog">
-  <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.damoguyansi.all.format.dialog.TranslateDialog">
+  <grid id="27dc6" binding="centerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
       <xy x="20" y="20" width="871" height="515"/>
@@ -18,10 +18,12 @@
         <children>
           <hspacer id="75a4a">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="20" height="11"/>
+              </grid>
             </constraints>
           </hspacer>
-          <component id="2a6ae" class="javax.swing.JLabel" binding="msgLabel">
+          <component id="2a6ae" class="javax.swing.JLabel" binding="statusLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <minimum-size width="170" height="-1"/>
@@ -32,7 +34,7 @@
               <text value="点击按钮进行格式化"/>
             </properties>
           </component>
-          <component id="26a29" class="javax.swing.JButton" binding="otherBtn">
+          <component id="26a29" class="javax.swing.JButton" binding="utilityButton">
             <constraints>
               <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <minimum-size width="60" height="23"/>
@@ -43,7 +45,7 @@
               <text value="解密"/>
             </properties>
           </component>
-          <component id="72471" class="javax.swing.JCheckBox" binding="topCheckBox">
+          <component id="72471" class="javax.swing.JCheckBox" binding="alwaysOnTopCheckBox">
             <constraints>
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -52,7 +54,7 @@
               <text value="置顶"/>
             </properties>
           </component>
-          <component id="acdcc" class="javax.swing.JCheckBox" binding="newLineCheckBox">
+          <component id="acdcc" class="javax.swing.JCheckBox" binding="wrapLinesCheckBox">
             <constraints>
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -61,7 +63,7 @@
               <text value="换行"/>
             </properties>
           </component>
-          <component id="e3a3c" class="javax.swing.JLabel" binding="zczzLable">
+          <component id="e3a3c" class="javax.swing.JLabel" binding="sponsorLabel">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -70,7 +72,7 @@
               <text value="加Star支持一下"/>
             </properties>
           </component>
-          <component id="683e" class="javax.swing.JButton" binding="exeBtn">
+          <component id="683e" class="javax.swing.JButton" binding="formatButton">
             <constraints>
               <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -78,7 +80,7 @@
               <text value="格式化"/>
             </properties>
           </component>
-          <component id="dddfe" class="javax.swing.JButton" binding="urlDecodeBtn">
+          <component id="dddfe" class="javax.swing.JButton" binding="urlDecodeButton">
             <constraints>
               <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -86,7 +88,7 @@
               <text value="Url解码"/>
             </properties>
           </component>
-          <component id="e795e" class="javax.swing.JButton" binding="urlEncodeBtn">
+          <component id="e795e" class="javax.swing.JButton" binding="urlEncodeButton">
             <constraints>
               <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -94,7 +96,7 @@
               <text value="Url编码"/>
             </properties>
           </component>
-          <component id="e68f5" class="javax.swing.JButton" binding="md5Btn">
+          <component id="e68f5" class="javax.swing.JButton" binding="md5Button">
             <constraints>
               <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -112,7 +114,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <tabbedpane id="6ac5b" binding="tabbedPane1" default-binding="true">
+          <tabbedpane id="6ac5b" binding="tabbedPane">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -124,7 +126,7 @@
               <color color="-15197926"/>
             </border>
             <children>
-              <grid id="bd060" binding="jsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+              <grid id="bd060" binding="jsonPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <tabbedpane title=" JSON "/>
                 </constraints>
@@ -156,14 +158,14 @@
                 <border type="none"/>
                 <children/>
               </grid>
-              <scrollpane id="8073c" binding="qrcodePanel">
+              <scrollpane id="8073c" binding="qrCodePanel">
                 <constraints>
                   <tabbedpane title="QRCode"/>
                 </constraints>
                 <properties/>
                 <border type="empty"/>
                 <children>
-                  <component id="a77c2" class="com.damoguyansi.all.format.component.ImageTextPane" binding="qrcodeText">
+                  <component id="a77c2" class="com.damoguyansi.all.format.component.ImageTextPane" binding="qrCodeText">
                     <constraints/>
                     <properties>
                       <background color="-460552"/>
@@ -214,7 +216,7 @@
                     <properties/>
                     <border type="empty"/>
                     <children>
-                      <nested-form id="1d963" form-file="com/damoguyansi/all/format/component/HexConvertPanel.form" binding="hexConvertPanel1" default-binding="true">
+                      <nested-form id="1d963" form-file="com/damoguyansi/all/format/component/HexConvertPanel.form" binding="hexConvertPanel">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="200" height="200"/>
@@ -240,7 +242,7 @@
                     <properties/>
                     <border type="empty"/>
                     <children>
-                      <component id="e6f46" class="javax.swing.JTextArea" binding="tranInText">
+                      <component id="e6f46" class="javax.swing.JTextArea" binding="translateInput">
                         <constraints/>
                         <properties>
                           <lineWrap value="false"/>
@@ -249,7 +251,7 @@
                       </component>
                     </children>
                   </scrollpane>
-                  <scrollpane id="96d1e" binding="tranOutPane">
+                  <scrollpane id="96d1e" binding="translateOutputPane">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -258,7 +260,7 @@
                       <color color="-16777216"/>
                     </border>
                     <children>
-                      <component id="e3db4" class="javax.swing.JTextArea" binding="tranOutText">
+                      <component id="e3db4" class="javax.swing.JTextArea" binding="translateOutput">
                         <constraints/>
                         <properties>
                           <lineWrap value="false"/>

@@ -1,14 +1,14 @@
-package com.damoguyansi.all.format.ui;
+package com.damoguyansi.all.format.component;
 
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.cache.ParamCache;
-import com.damoguyansi.all.format.component.HexConvertPanel;
-import com.damoguyansi.all.format.component.ImageLabel;
+import com.damoguyansi.all.format.constant.Constants;
 import com.damoguyansi.all.format.event.TextPanelMouseListener;
-import com.damoguyansi.all.format.translate.baidu.BDTransApiUtil;
-import com.damoguyansi.all.format.translate.bean.GTResult;
+import com.damoguyansi.all.format.translate.TransApiFactory;
+import com.damoguyansi.all.format.translate.bean.ApiCode;
+import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -26,8 +26,7 @@ import java.net.URI;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
-public class NewDialog extends JFrame {
-    private final static String CODE_GITHUB_URL = "https://github.com/damoguyansi/all-format";
+public class OldTranslateDialog extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel contentPane;
     private JButton exeBtn;
@@ -76,7 +75,7 @@ public class NewDialog extends JFrame {
 
     private TextPanelMouseListener tpml = null;
 
-    public NewDialog(boolean isDarcula) {
+    public OldTranslateDialog(boolean isDarcula) {
         this.isDarcula = isDarcula;
 
         pc = new ParamCache();
@@ -326,7 +325,7 @@ public class NewDialog extends JFrame {
                     public void run() {
                         try {
                             Desktop desktop = Desktop.getDesktop();
-                            desktop.browse(new URI(CODE_GITHUB_URL));
+                            desktop.browse(new URI(Constants.CODE_GITHUB_URL));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -611,7 +610,7 @@ public class NewDialog extends JFrame {
         Matcher m = TranslateUtil.p.matcher(text.trim());
         String translateType = m.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
         try {
-            GTResult result = BDTransApiUtil.translate(text, translateType);
+            TransResult result = TransApiFactory.createApi(ApiCode.BAIDU).translate(text, translateType);
 
             tranOutText.setText(null == result ? "未知翻译" : result.getSentences().get(0).getTrans());
         } catch (Exception e) {

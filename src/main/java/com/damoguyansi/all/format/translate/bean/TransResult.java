@@ -4,14 +4,15 @@ import com.damoguyansi.all.format.util.CollUtil;
 import com.damoguyansi.all.format.util.ColorUtil;
 import com.damoguyansi.all.format.util.HtmlUtil;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * google翻译结果
+ * 翻译结果
  *
  * @author damoguyansi
  */
-public class GTResult {
+public class TransResult implements Serializable {
 
     private String src;
     private List<SentencesBean> sentences;

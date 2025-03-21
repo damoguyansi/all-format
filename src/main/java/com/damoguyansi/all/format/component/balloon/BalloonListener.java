@@ -1,4 +1,4 @@
-package com.damoguyansi.all.format.translate.component;
+package com.damoguyansi.all.format.component.balloon;
 
 import com.intellij.openapi.ui.popup.JBPopupListener;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;

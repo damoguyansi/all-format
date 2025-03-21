@@ -1,7 +1,8 @@
-package com.damoguyansi.all.format.translate.component;
+package com.damoguyansi.all.format.component.balloon;
 
-import com.damoguyansi.all.format.translate.baidu.BDTransApiUtil;
-import com.damoguyansi.all.format.translate.bean.GTResult;
+import com.damoguyansi.all.format.translate.TransApiFactory;
+import com.damoguyansi.all.format.translate.bean.ApiCode;
+import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.util.NoticeUtil;
 import com.intellij.ide.IdeTooltipManager;
 import com.intellij.openapi.Disposable;
@@ -75,8 +76,8 @@ public class TranslateBalloon implements Disposable {
     public void showTranslate() {
         String resultStr = "";
         try {
-            GTResult gtResult = BDTransApiUtil.translate(selectText, translateType);
-            resultStr = gtResult.toString();
+            TransResult transResult = TransApiFactory.createApi(ApiCode.BAIDU).translate(selectText, translateType);
+            resultStr = transResult.toString();
         } catch (Exception e) {
             resultStr = e.getMessage();
             e.printStackTrace();

@@ -3,7 +3,7 @@ package com.damoguyansi.all.format.translate.baidu;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BDTransRequest {
+public class BaiDuTransRequest {
 
     // 翻译源语种, 默认为中文
     private String from = "zh";

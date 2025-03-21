@@ -1,6 +1,6 @@
 package com.damoguyansi.all.format.translate.baidu;
 
-public class BDTransResult {
+public class BaiDuTransResult {
 
     // 原文
     private String src;

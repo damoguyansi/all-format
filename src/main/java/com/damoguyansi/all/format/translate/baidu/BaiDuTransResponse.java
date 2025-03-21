@@ -2,7 +2,7 @@ package com.damoguyansi.all.format.translate.baidu;
 
 import java.util.List;
 
-public class BDTransResponse {
+public class BaiDuTransResponse {
 
     // 原文语种
     private String from;
@@ -11,7 +11,7 @@ public class BDTransResponse {
     private String to;
 
     // 翻译结果
-    private List<BDTransResult> trans_result;
+    private List<BaiDuTransResult> trans_result;
 
     // 错误编码, 当报错时才有值
     private String error_code;
@@ -35,11 +35,11 @@ public class BDTransResponse {
         this.to = to;
     }
 
-    public List<BDTransResult> getTrans_result() {
+    public List<BaiDuTransResult> getTrans_result() {
         return trans_result;
     }
 
-    public void setTrans_result(List<BDTransResult> trans_result) {
+    public void setTrans_result(List<BaiDuTransResult> trans_result) {
         this.trans_result = trans_result;
     }
 

@@ -1,6 +1,6 @@
-package com.damoguyansi.all.format.translate.thread;
+package com.damoguyansi.all.format.translate;
 
-import com.damoguyansi.all.format.translate.component.TranslateBalloon;
+import com.damoguyansi.all.format.component.balloon.TranslateBalloon;
 
 public class TranslateBalloonThread extends Thread {
     private TranslateBalloon translateBalloon = null;
