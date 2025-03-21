@@ -1,10 +1,10 @@
-package com.damoguyansi.all.format.translate.action;
+package com.damoguyansi.all.format.action;
 
 import cn.hutool.core.util.StrUtil;
-import com.damoguyansi.all.format.translate.bean.GTResult;
-import com.damoguyansi.all.format.translate.component.BalloonManager;
-import com.damoguyansi.all.format.translate.component.TranslateBalloon;
-import com.damoguyansi.all.format.translate.thread.TranslateBalloonThread;
+import com.damoguyansi.all.format.component.balloon.BalloonManager;
+import com.damoguyansi.all.format.component.balloon.TranslateBalloon;
+import com.damoguyansi.all.format.translate.bean.TransResult;
+import com.damoguyansi.all.format.translate.TranslateBalloonThread;
 import com.damoguyansi.all.format.util.NoticeUtil;
 import com.damoguyansi.all.format.util.TranslateUtil;
 import com.damoguyansi.all.format.util.WordUtil;
@@ -30,11 +30,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * Google翻译
+ * 翻译
  *
  * @author damoguyansi
  */
-public class GoogleTranslateAction extends AnAction {
+public class TranslateAction extends AnAction {
 
     public static Editor editor;
     public static Project project;
@@ -105,13 +105,9 @@ public class GoogleTranslateAction extends AnAction {
         TranslateBalloon translateBalloon = new TranslateBalloon(selectText, translateType);
         Balloon balloon = translateBalloon.createBalloon();
 
-        ApplicationManager.getApplication().invokeLater((Runnable) new Runnable() {
-            @Override
-            public void run() {
-                balloon.show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
-            }
+        ApplicationManager.getApplication().invokeLater(() -> {
+            balloon.show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
         });
-
         TranslateBalloonThread tbt = new TranslateBalloonThread(translateBalloon);
         tbt.start();
     }
@@ -122,7 +118,7 @@ public class GoogleTranslateAction extends AnAction {
      * @param result
      * @param translateType
      */
-    protected void showPopupBalloon(GTResult result, String translateType) {
+    protected void showPopupBalloon(TransResult result, String translateType) {
         ApplicationManager.getApplication().invokeLater((Runnable) new Runnable() {
             @Override
             public void run() {

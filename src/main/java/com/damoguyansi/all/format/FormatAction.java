@@ -1,6 +1,6 @@
 package com.damoguyansi.all.format;
 
-import com.damoguyansi.all.format.ui.NewDialog;
+import com.damoguyansi.all.format.dialog.TranslateDialog;
 import com.intellij.ide.ui.LafManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -15,6 +15,6 @@ public class FormatAction extends AnAction {
         Project project = e.getProject();
         if (project == null) return;
 
-        NewDialog dialog = new NewDialog(LafManager.getInstance().getCurrentUIThemeLookAndFeel().isDark());
+        TranslateDialog dialog = new TranslateDialog(LafManager.getInstance().getCurrentUIThemeLookAndFeel().isDark());
     }
 }

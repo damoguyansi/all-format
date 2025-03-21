@@ -1,7 +1,7 @@
 package com.damoguyansi.all.format.util;
 
 import cn.hutool.json.JSONUtil;
-import com.damoguyansi.all.format.translate.bean.GTResult;
+import com.damoguyansi.all.format.translate.bean.TransResult;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -56,7 +56,7 @@ public class TranslateUtil {
      * @return
      * @throws Exception
      */
-    public static GTResult translate(String word, String translateType) throws Exception {
+    public static TransResult translate(String word, String translateType) throws Exception {
         try {
             String url = getTranslateUrl(translateType, TkUtil.tk(word), URLEncoder.encode(word, "utf-8"));
             CloseableHttpClient client = HttpClients.createDefault();
@@ -70,7 +70,7 @@ public class TranslateUtil {
             if (200 == response.getStatusLine().getStatusCode()) {
                 String responseText = EntityUtils.toString(response.getEntity(), "utf-8");
                 System.out.println("translate result:" + responseText);
-                GTResult translateResult = JSONUtil.toBean(responseText, GTResult.class);
+                TransResult translateResult = JSONUtil.toBean(responseText, TransResult.class);
                 return translateResult;
             } else {
                 throw new Exception("Google翻译请求频繁限制！");

@@ -3,7 +3,8 @@ package com.damoguyansi.all.format.translate.baidu;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
-import com.damoguyansi.all.format.translate.bean.GTResult;
+import com.damoguyansi.all.format.translate.TransApiInterface;
+import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.util.TranslateUtil;
 
 import java.util.Collections;
@@ -14,12 +15,13 @@ import java.util.List;
  *
  * @author damoguyansi
  */
-public class BDTransApiUtil {
+public class BaiDuTransApi implements TransApiInterface {
     private static final String TRANS_API_HOST = "https://api.fanyi.baidu.com/api/trans/vip/translate";
     private static final String APPID = "20180808000192639";
     private static final String SECURITYKEY = "H1lJ3ZYj6YMtyx_j5CGu";
 
-    public static GTResult translate(String word, String translateType) throws Exception {
+    @Override
+    public TransResult translate(String word, String translateType) throws Exception {
         long salt = System.currentTimeMillis();
 
         String from = "auto";
@@ -34,7 +36,7 @@ public class BDTransApiUtil {
 
         String src = APPID + word + salt + SECURITYKEY; // 加密前的原文
         String sign = SecureUtil.md5(src);
-        BDTransRequest request = new BDTransRequest();
+        BaiDuTransRequest request = new BaiDuTransRequest();
         request.setFrom(from);
         request.setTo(to);
         request.setAppid(APPID);
@@ -43,18 +45,18 @@ public class BDTransApiUtil {
         request.setSign(sign);
         try {
             String result = HttpUtil.get(TRANS_API_HOST, request.toMap());
-            BDTransResponse response = JSONUtil.toBean(result, BDTransResponse.class);
+            BaiDuTransResponse response = JSONUtil.toBean(result, BaiDuTransResponse.class);
             if (response.getError_code() != null) {
                 throw new Exception("翻译报错-错误码:" + response.getError_code() + ",错误原因:" + response.getError_msg());
             }
 
-            List<BDTransResult> transResults = response.getTrans_result();
+            List<BaiDuTransResult> transResults = response.getTrans_result();
             System.out.println(JSONUtil.toJsonPrettyStr(transResults));
 
             if (null != transResults && transResults.size() > 0) {
                 String dist = transResults.get(0).getDst();
-                GTResult gt = new GTResult();
-                GTResult.SentencesBean sentencesBean = new GTResult.SentencesBean();
+                TransResult gt = new TransResult();
+                TransResult.SentencesBean sentencesBean = new TransResult.SentencesBean();
                 sentencesBean.setTrans(dist);
                 sentencesBean.setOrig(word);
                 gt.setSrc(word);

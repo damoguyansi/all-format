@@ -1,5 +1,7 @@
 package com.damoguyansi.all.format.util;
 
+import com.damoguyansi.all.format.constant.Constants;
+
 /**
  * desc:
  *
@@ -10,7 +12,7 @@ public class MapFormat {
     private static String getLevelStr(int level) {
         StringBuffer levelStr = new StringBuffer();
         for (int levelI = 0; levelI < level; levelI++) {
-            levelStr.append(Constant.PER_SPACE);
+            levelStr.append(Constants.PER_SPACE);
         }
         return levelStr.toString();
     }

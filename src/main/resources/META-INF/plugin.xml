@@ -7,8 +7,8 @@
     <project-components></project-components>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.damoguyansi.all.format.translate.component.BalloonManager"/>
-        <applicationService serviceImplementation="com.damoguyansi.all.format.translate.component.BalloonManager"/>
+        <projectService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
+        <applicationService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
     </extensions>
 
     <actions>
@@ -21,15 +21,15 @@
             <keyboard-shortcut keymap="$default" first-keystroke="alt F"/>
         </action>
 
-        <group id="AllFormatTranslationNavBarToolBar" text="Translation Navigation Bar Actions">
+        <group id="run.damoguyansi.TranslationNavBarToolBar" text="Translation Navigation Bar Actions">
             <separator/>
             <reference ref="AllFormat"/>
             <separator/>
             <add-to-group group-id="NavBarToolBar" relative-to-action="RunAnything" anchor="before"/>
         </group>
 
-        <action id="run.damoguyansi.GoogleTranslateAction"
-                class="com.damoguyansi.all.format.translate.action.GoogleTranslateAction"
+        <action id="run.damoguyansi.TranslateAction"
+                class="com.damoguyansi.all.format.action.TranslateAction"
                 text="Translate"
                 description="Translate">
             <keyboard-shortcut keymap="$default" first-keystroke="control alt U"/>

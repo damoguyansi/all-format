@@ -1,4 +1,4 @@
-package com.damoguyansi.all.format.translate.component;
+package com.damoguyansi.all.format.component.balloon;
 
 import com.damoguyansi.all.format.util.ColorUtil;
 import com.intellij.openapi.Disposable;
