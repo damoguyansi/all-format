@@ -1,6 +1,6 @@
 # AllFormat Plugin Changelog
 
-## [1.4.1] (2025/03/18)
+## [1.4.1] (2025/03/21)
 - Optimize the display of forms (优化窗体显示)
 - Bug fixes.
 - Bug 修复
