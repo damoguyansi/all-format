@@ -6,6 +6,8 @@
     <application-components></application-components>
     <project-components></project-components>
 
+    <depends>com.intellij.modules.platform</depends>
+
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
         <applicationService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
