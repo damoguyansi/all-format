@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.component.balloon;
 
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.IconManager;
 import com.intellij.util.ui.AnimatedIcon;
 
@@ -16,9 +17,9 @@ public final class ProcessIcon extends AnimatedIcon {
     static {
         ICONS = new Icon[9];
         for (int i = 0; i < 9; i++) {
-            Icon icon = IconManager.getInstance().getIcon("/icons/spinner/step_" + i + ".svg", ProcessIcon.class);
+            Icon icon = IconLoader.getIcon("/icons/spinner/step_" + i + ".svg", ProcessIcon.class);
             ICONS[i] = icon;
         }
-        STEP_PASSIVE = IconManager.getInstance().getIcon("/icons/spinner/step_passive.svg", ProcessIcon.class);
+        STEP_PASSIVE = IconLoader.getIcon("/icons/spinner/step_passive.svg", ProcessIcon.class);
     }
 }
