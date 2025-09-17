@@ -6,57 +6,10 @@
 这是一款开发者辅助工具，方便开发者格式化格种数据，方便阅读调式，如：格式化JSON、XML、HTML,生成MD5、QRCODE二维码、转换Base64、Unicode等，中英文翻译.
 
   [github](https://github.com/damoguyansi/all-format)
+
+  [gitee](https://gitee.com/qgl/all-format)
   
   [jetbrains](https://plugins.jetbrains.com/plugin/10962-all-format)
-  
-
-### 版本说明
-<!-- Plugin description -->
-## [1.4.1] - 2025-03-17
-### Fixed
-- 修复了高版本中底部按钮隐藏的问题。
-
-### Changed
-- 升级插件依赖版本以支持最新的 IntelliJ IDEA 功能和特性。
-<!-- Plugin description end -->
-版本1.4.1
->
-* Optimize the display of forms(优化窗体显示).
-
-版本1.4.0
->
-* 更换Google翻译为百度翻译.
-* 新增加URL编码、URL解码.
-* 融合Md5、Unicode、Url编码到一个panel.
-
-版本1.3.0
->
-* 解决Google翻译地址不通问题.
-
-版本1.2.0
->
-* 增加2进制、8进制、10进制、16进制、32进制转换.
-* UI界面调整变化,暗黑主题标签字体颜色调整.
-* 优化翻译板块，多词一起翻译.
-* 增加选中单词Ctrl+Alt+U进行气泡翻译.
-
-版本1.1.2
->
-* 增加中英文翻译模块.
-* 优化关闭窗口速度.
-* 增加二维码复制粘贴功能.
-* 修改二维码容器.
-* 去除上传二维码图片.
-
-版本1.1.1
-> 
-* 新增加关于项目连接.
-* 优化黑暗主题内容背景颜色.
-* 优化SQL格式化.
-* 修改默认窗体大小.
-* 增加上传二维码图片识别.
-* 增加置顶、换行设置缓存.
-
 
 ### 安装方法   
 方法1:
