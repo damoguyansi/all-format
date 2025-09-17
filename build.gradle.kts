@@ -1,4 +1,7 @@
 import org.apache.tools.ant.filters.EscapeUnicode
+import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
+import org.intellij.markdown.html.HtmlGenerator
+import org.intellij.markdown.parser.MarkdownParser
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -33,6 +36,7 @@ dependencies {
     implementation(libs.rsyntaxtextarea)
     implementation(libs.hutool)
     implementation(libs.jdom2)
+    implementation(libs.markdown)
 }
 intellij {
     pluginName = properties("pluginName")
@@ -52,7 +56,14 @@ tasks {
         version = properties("pluginMajorVersion")
         sinceBuild = properties("pluginSinceBuild")
         untilBuild = properties("pluginUntilBuild")
-        pluginDescription = projectDir.resolve("DESCRIPTION.md").readText()
+
+        val flavour = CommonMarkFlavourDescriptor()
+        val parser = MarkdownParser(flavour)
+        val markdownText = projectDir.resolve("DESCRIPTION.md").readText()
+        val parsedTree = parser.buildMarkdownTreeFromString(markdownText)
+        val html = HtmlGenerator(markdownText, parsedTree, flavour).generateHtml()
+        pluginDescription.set(html)
+
         changeNotes = provider {
             val markdownText = projectDir.resolve("CHANGELOG.md").readText()
             val lines = markdownText.split("\n")
