@@ -13,6 +13,9 @@ import java.io.IOException;
  * @author damoguyansi
  */
 public class ClipboardUtil {
+    private static final com.intellij.openapi.diagnostic.Logger LOG =
+            com.intellij.openapi.diagnostic.Logger.getInstance(ClipboardUtil.class);
+
 
     /**
      * 从剪切板获得文字。
@@ -29,7 +32,7 @@ public class ClipboardUtil {
                 try {
                     ret = (String) clipTf.getTransferData(DataFlavor.stringFlavor);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOG.warn(e);
                 }
             }
         }
@@ -100,7 +103,7 @@ public class ClipboardUtil {
                 jTextPane.insertComponent(label);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn(e);
         }
     }
 }

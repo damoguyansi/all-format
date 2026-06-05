@@ -11,6 +11,15 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
         <applicationService serviceImplementation="com.damoguyansi.all.format.component.balloon.BalloonManager"/>
+        <applicationService serviceImplementation="com.damoguyansi.all.format.settings.AppSettings"/>
+        <applicationConfigurable parentId="tools"
+                                 instance="com.damoguyansi.all.format.settings.AppSettingsConfigurable"
+                                 id="com.damoguyansi.all.format.settings.AppSettingsConfigurable"
+                                 displayName="AllFormat"/>
+        <toolWindow id="AllFormat"
+                    anchor="right"
+                    icon="AllFormatIcons.Logo"
+                    factoryClass="com.damoguyansi.all.format.toolwindow.AllFormatToolWindowFactory"/>
     </extensions>
 
     <actions>

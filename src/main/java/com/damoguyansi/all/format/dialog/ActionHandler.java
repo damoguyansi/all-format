@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.net.URI;
 
 public class ActionHandler {
+
     private final TranslateDialog dialog;
     private TextPanelMouseListener textPanelMouseListener;
 
@@ -25,7 +26,9 @@ public class ActionHandler {
         registerUrlEncodingListeners();
         registerSponsorLabelListener();
         registerTextPanelListeners();
-        registerWindowListeners();
+        if (!dialog.isEmbedded()) {
+            registerWindowListeners();
+        }
     }
 
     private void registerFormatButtonListener() {
@@ -39,26 +42,11 @@ public class ActionHandler {
                 case Constants.XML:
                     FormatOperations.formatXml(dialog.getXmlText(), dialog.getStatusLabel());
                     break;
-                case Constants.HTML:
-                    FormatOperations.formatHtml(dialog.getHtmlText(), dialog.getStatusLabel());
-                    break;
-                case Constants.SQL:
-                    FormatOperations.formatSql(dialog.getSqlText(), dialog.getStatusLabel());
-                    break;
-                case Constants.QRCODE:
-                    UtilityOperations.createQrCode(dialog.getQrCodeText(), dialog.getStatusLabel());
-                    break;
                 case Constants.BASE64:
                     UtilityOperations.encodeBase64(dialog.getBase64Text(), dialog.getStatusLabel());
                     break;
                 case Constants.ENCODE:
                     UtilityOperations.encodeUnicode(dialog.getEncodeText(), dialog.getStatusLabel());
-                    break;
-                case Constants.HEX_CONVERT:
-                    dialog.getHexConvertPanel().setValue();
-                    break;
-                case Constants.TRANSLATE:
-                    UtilityOperations.translate(dialog.getTranslateInput(), dialog.getTranslateOutput());
                     break;
             }
         });
@@ -78,9 +66,6 @@ public class ActionHandler {
                 case Constants.ENCODE:
                     UtilityOperations.decodeUnicode(dialog.getEncodeText(), dialog.getStatusLabel());
                     break;
-                case Constants.QRCODE:
-                    UtilityOperations.decodeQrCode(dialog.getQrCodeText(), dialog.getStatusLabel());
-                    break;
             }
         });
     }
@@ -99,6 +84,16 @@ public class ActionHandler {
             dialog.getUrlDecodeButton().setVisible(false);
             dialog.getMd5Button().setVisible(false);
 
+            // 独立工具标签页自带按钮，隐藏底部共享控件
+            if (com.damoguyansi.all.format.tools.ToolRegistry.isTool(selectedTab)) {
+                dialog.getFormatButton().setVisible(false);
+                dialog.getUtilityButton().setVisible(false);
+                dialog.getWrapLinesCheckBox().setVisible(false);
+                dialog.getStatusLabel().setText("");
+                return;
+            }
+            dialog.getFormatButton().setVisible(true);
+
             switch (selectedTab) {
                 case Constants.JSON:
                     dialog.getUtilityButton().setText("\u538b\u7f29");
@@ -110,16 +105,6 @@ public class ActionHandler {
                     dialog.getUtilityButton().setVisible(true);
                     dialog.getFormatButton().setText("\u52a0\u5bc6");
                     break;
-                case Constants.QRCODE:
-                    dialog.getFormatButton().setText("\u751f\u6210");
-                    dialog.getUtilityButton().setText("\u89e3\u6790");
-                    dialog.getUtilityButton().setVisible(true);
-                    dialog.getQrCodeText().requestFocus();
-                    break;
-                case Constants.SQL:
-                    dialog.getFormatButton().setText("\u7f8e\u5316");
-                    dialog.getSqlText().requestFocus();
-                    break;
                 case Constants.ENCODE:
                     dialog.getFormatButton().setText("\u4e2d\u8f6cU");
                     dialog.getUtilityButton().setText("U\u8f6c\u4e2d");
@@ -128,19 +113,6 @@ public class ActionHandler {
                     dialog.getUrlDecodeButton().setVisible(true);
                     dialog.getMd5Button().setVisible(true);
                     dialog.getEncodeText().requestFocus();
-                    break;
-                case Constants.TRANSLATE:
-                    dialog.getFormatButton().setText("\u7ffb\u8bd1");
-                    dialog.getUtilityButton().setVisible(false);
-                    dialog.getWrapLinesCheckBox().setVisible(false);
-                    dialog.getTranslateInput().requestFocus();
-                    dialog.getStatusLabel().setForeground(Color.RED);
-                    dialog.getStatusLabel().setText("选中单词Ctrl+Alt+U 翻译!");
-                    break;
-                case Constants.HEX_CONVERT:
-                    dialog.getHexConvertPanel().setFocus();
-                    dialog.getWrapLinesCheckBox().setVisible(false);
-                    dialog.getFormatButton().setText("\u8f6c\u6362");
                     break;
             }
         });

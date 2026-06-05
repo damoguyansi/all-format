@@ -45,7 +45,6 @@ public class TransResult implements Serializable {
     public static class SentencesBean {
         private String trans;
         private String orig;
-        private int backend;
         private String translit;
         private String srcTranslit;
 
@@ -63,14 +62,6 @@ public class TransResult implements Serializable {
 
         public void setOrig(String orig) {
             this.orig = orig;
-        }
-
-        public int getBackend() {
-            return backend;
-        }
-
-        public void setBackend(int backend) {
-            this.backend = backend;
         }
 
         public String getTranslit() {
@@ -92,7 +83,6 @@ public class TransResult implements Serializable {
 
     public static class DictBean {
         private String pos;
-        private int posEnum;
         private List<EntryBean> entry;
 
         public String getPos() {
@@ -144,81 +134,51 @@ public class TransResult implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<div class='content'>");
+        StringBuilder sb = new StringBuilder("<div class='content'>");
 
-        //sentences部分,form
+        // 原文、译文、发音（音标/转写）
         sb.append("<div class='sentences'>");
-        for (SentencesBean sen : this.getSentences()) {
-            if (null != sen.getOrig()) {
-                sb.append(div(16, "#EE6305", true));
-                sb.append(HtmlUtil.escape(sen.getOrig())).append("</div>");
-                sb.append(div(16, ColorUtil.transColor()));
-                sb.append(HtmlUtil.escape(sen.getTrans())).append("</div>");
+        for (SentencesBean sen : getSentences()) {
+            if (sen.getOrig() == null) continue;
+            sb.append(line(16, "#EE6305", true, HtmlUtil.escape(sen.getOrig())));
+            if (sen.getSrcTranslit() != null && !sen.getSrcTranslit().isEmpty()) {
+                sb.append(line(12, ColorUtil.entryTransColor(), false, "[" + HtmlUtil.escape(sen.getSrcTranslit()) + "]"));
+            }
+            sb.append(line(16, ColorUtil.transColor(), false, HtmlUtil.escape(sen.getTrans())));
+            if (sen.getTranslit() != null && !sen.getTranslit().isEmpty()) {
+                sb.append(line(12, ColorUtil.entryTransColor(), false, "[" + HtmlUtil.escape(sen.getTranslit()) + "]"));
             }
         }
         sb.append("</div>");
 
-        //dict部分
-        sb.append("<div class='dicts' style='margin-top:10px;'>");
-        if (null != this.getDict()) {
-            for (DictBean dict : this.getDict()) {
-                //pos部分
-                sb.append("<div class='dict-item'>");//form,#A945BA,
-                sb.append("    " + div("dict-item-pos", 12, ColorUtil.posColor(), true)).append(dict.getPos()).append("</div>");
-                //entry部分
-                sb.append("    <div class='entrys' style='margin-left:10px;'>");
-                int entryIndex = 0;
+        // 词典：按词性归类的其它释义
+        if (getDict() != null && !getDict().isEmpty()) {
+            sb.append("<div class='dicts' style='margin-top:10px;'>");
+            for (DictBean dict : getDict()) {
+                sb.append("<div class='dict-item'>");
+                sb.append(line(12, ColorUtil.posColor(), true, HtmlUtil.escape(dict.getPos())));
+                sb.append("<div class='entrys' style='margin-left:10px;'>");
+                int idx = 0;
                 for (DictBean.EntryBean entry : dict.getEntry()) {
-                    if (entryIndex >= 3) break;
-                    sb.append("    <div class='entry-item' style='margin-bottom:7px;>'");
-                    sb.append("        " + div("entry-item-word", 11, ColorUtil.entryColor())).append(entry.getWord()).append("</div>");
-                    sb.append("        " + div("entry-item-translation", 10, ColorUtil.entryTransColor(), true)).append(CollUtil.join(entry.getReverseTranslation(), " ")).append("</div>");
-                    sb.append("    </div>");
-                    entryIndex++;
+                    if (idx++ >= 3) break;
+                    sb.append("<div class='entry-item' style='margin-bottom:7px;'>");
+                    sb.append(line(11, ColorUtil.entryColor(), false, HtmlUtil.escape(entry.getWord())));
+                    if (entry.getReverseTranslation() != null && !entry.getReverseTranslation().isEmpty()) {
+                        sb.append(line(10, ColorUtil.entryTransColor(), true,
+                                HtmlUtil.escape(CollUtil.join(entry.getReverseTranslation(), " "))));
+                    }
+                    sb.append("</div>");
                 }
-                sb.append("    </div>");
-                sb.append("</div>");
+                sb.append("</div></div>");
             }
+            sb.append("</div>");
         }
-        sb.append("</div>");
 
-        sb.append("</div>");
-        System.out.println(sb.toString());
-        return sb.toString();
+        return sb.append("</div>").toString();
     }
 
-    private String div(String className, int fontSize, String color, Boolean xieTi) {
-        StringBuilder sb = new StringBuilder("<div class='" + className + "' style='");
-        sb.append("font-size:" + fontSize + "px;");
-        sb.append("color:" + color + ";");
-        if (true == xieTi) sb.append("font-style:italic;");
-        sb.append("'>");
-        return sb.toString();
-    }
-
-    private String div(String className, int fontSize, String color) {
-        StringBuilder sb = new StringBuilder("<div class='" + className + "' style='");
-        sb.append("font-size:" + fontSize + "px;");
-        sb.append("color:" + color + ";");
-        sb.append("'>");
-        return sb.toString();
-    }
-
-    private String div(int fontSize, String color, Boolean xieTi) {
-        StringBuilder sb = new StringBuilder("<div style='");
-        sb.append("font-size:" + fontSize + "px;");
-        sb.append("color:" + color + ";");
-        if (true == xieTi) sb.append("font-style:italic;");
-        sb.append("'>");
-        return sb.toString();
-    }
-
-    private String div(int fontSize, String color) {
-        StringBuilder sb = new StringBuilder("<div style='");
-        sb.append("font-size:" + fontSize + "px;");
-        sb.append("color:" + color + ";");
-        sb.append("'>");
-        return sb.toString();
+    private String line(int fontSize, String color, boolean italic, String text) {
+        return "<div style='font-size:" + fontSize + "px;color:" + color + ";"
+                + (italic ? "font-style:italic;" : "") + "'>" + text + "</div>";
     }
 }

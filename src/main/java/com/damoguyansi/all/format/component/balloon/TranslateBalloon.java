@@ -1,7 +1,6 @@
 package com.damoguyansi.all.format.component.balloon;
 
-import com.damoguyansi.all.format.translate.TransApiFactory;
-import com.damoguyansi.all.format.translate.bean.ApiCode;
+import com.damoguyansi.all.format.translate.TranslationService;
 import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.util.NoticeUtil;
 import com.intellij.ide.IdeTooltipManager;
@@ -21,6 +20,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TranslateBalloon implements Disposable {
+    private static final com.intellij.openapi.diagnostic.Logger LOG =
+            com.intellij.openapi.diagnostic.Logger.getInstance(TranslateBalloon.class);
+
     private final String PANEL_PROCESSING = "processing";
     private final String PANEL_TRANSLATION = "translation";
 
@@ -76,11 +78,11 @@ public class TranslateBalloon implements Disposable {
     public void showTranslate() {
         String resultStr = "";
         try {
-            TransResult transResult = TransApiFactory.createApi(ApiCode.BAIDU).translate(selectText, translateType);
+            TransResult transResult = TranslationService.translate(selectText, translateType);
             resultStr = transResult.toString();
         } catch (Exception e) {
             resultStr = e.getMessage();
-            e.printStackTrace();
+            LOG.warn("translate failed", e);
         }
         initTranslatePane(resultStr);
         NoticeUtil.info(translateType, resultStr);
@@ -93,7 +95,7 @@ public class TranslateBalloon implements Disposable {
                     if (!balloon.isDisposed())
                         balloon.revalidate();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOG.warn(e);
                 }
             }
         }, 200);

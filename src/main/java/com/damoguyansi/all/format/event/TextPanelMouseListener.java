@@ -135,11 +135,12 @@ public class TextPanelMouseListener extends MouseAdapter {
             if (optType == 1) {
                 textPane.copy();
             } else if (optType == 2) {
-                if (5 != tabbedPane.getSelectedIndex()) {
+                // 仅二维码面板（JTextPane）走图片粘贴，其余文本框走普通粘贴
+                if (textPane instanceof JTextPane) {
+                    ClipboardUtil.pasteClipboardContent((JTextPane) textPane);
+                } else {
                     textPane.paste();
-                    return;
                 }
-                ClipboardUtil.pasteClipboardContent((JTextPane) textPane);
             } else if (optType == 3) {
                 textPane.selectAll();
             } else if (optType == 4) {

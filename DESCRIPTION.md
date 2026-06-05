@@ -1,24 +1,41 @@
-# AllFormat
+# AllFormat — Developer Toolbox & Translator
 
-AllFormat is a full-featured formatting plug-in that allows developers to format any data. It is easy to read software, Chinese and English translation, etc. It will continue to update and add new features.  
-(AllFormat 是一个全功能格式化插件，让开发者进行任何数据格式化，方便阅读的软件，中英文翻译等，会持续更新增加新功，也欢迎提出新功能！)
+**AllFormat** is an all-in-one developer toolbox that lives in a dockable tool window inside your JetBrains IDE. Format, encode/decode, generate, convert and translate — without leaving the editor or reaching for an online site. Flat, compact and theme-aware.
 
-## Features
+一站式开发者工具箱：格式化、编解码、生成、转换、翻译，全部集成在 JetBrains IDE 的可停靠工具窗口里，无需切到浏览器或在线网站。界面扁平紧凑、自动跟随 IDE 主题。
 
-- Chinese English translation (中英文翻译)
-- Format JSON string (格式化JSON字符串)
-- Format log print string according to curly brackets, small brackets and commas for easy reading (格式化日志打印字符串，按大括号小括号逗号进行格式化，方便阅读)
-- Format HTML text (格式化HTML文本)
-- Format SQL statement (格式化SQL语句)
-- MD5 value generation (MD5值生成)
-- QR code generation and identification of QR code pictures (二维码生成，识别二维码图片)
-- Base64 value generation and decryption (Base64值生成与解密)
-- Unicode value generation and conversion (Unicode值生成与转换)
-- 2, 4, 8, 10, hex conversion (2、4、8、10、16进制相互转换)
+## Why AllFormat (为什么选择 AllFormat)
+
+- **Everything in one panel** — a single dockable Tool Window with tabs for every common task. (所有功能集中在一个可停靠工具窗口)
+- **Built-in translator with dictionary** — auto-detects Chinese/English, shows pronunciation/phonetics and dictionary meanings, plus an in-editor balloon. No other toolbox does this. (内置带词典的翻译，自动中英识别、显示发音/音标与释义，还有编辑器内气泡翻译)
+- **Fast & private** — most tools run fully offline; uses the IntelliJ Platform SDK; no telemetry. (大多数工具完全离线、使用平台 SDK、无遥测)
+
+## Features (功能)
+
+### Translation (翻译)
+- Auto Chinese ⇄ English detection, pronunciation/phonetics and part-of-speech dictionary meanings (自动中英识别、发音/音标、按词性的词典释义)
+- In-editor balloon translation: select text and press **Ctrl+Alt+U** (编辑器内选中文本 **Ctrl+Alt+U** 气泡翻译)
+- Type-to-translate in the tool window (工具窗口内输入即译)
+
+### Format & Convert (格式化与转换)
+- JSON formatter / minifier with syntax highlighting (JSON 格式化 / 压缩，语法高亮)
+- JSON ⇄ YAML ⇄ Properties conversion (JSON ⇄ YAML ⇄ Properties 互转)
+- Text Diff (line-level compare) (文本对比)
+
+### Encode / Decode / Hash (编解码与哈希)
+- Base64 encode / decode (Base64 编解码)
+- Unicode encode / decode, URL encode / decode, MD5 (Unicode、URL 编解码、MD5)
+- Hash: MD5, SHA-1, SHA-256, SHA-512, HMAC-SHA256 (哈希全家桶)
+
+### Generate (生成)
+- QR code: generate, decode, and paste an image straight from the clipboard (二维码生成、识别、剪贴板粘贴图片)
+- Timestamp ⇄ date converter (with timezone) (时间戳 ⇄ 日期，含时区)
+- UUID / Snowflake ID generator (UUID / 雪花 ID 生成)
+- Random password generator (随机密码生成)
 
 ## Keywords
 
-all-format, json formatting, html formatting, MySql formatting, xml formatting, MD5 generated, QRCode generated, 二维码生成, Unicode conversion, Base64 conversion, translation
+developer tools, dev toolbox, devtools, formatter, JSON formatter, JSON minify, JSON to YAML, YAML to JSON, properties to yaml, Base64 encode decode, URL encode, Unicode converter, MD5, SHA256, HMAC, hash generator, UUID generator, snowflake id, timestamp converter, password generator, QR code generator, QR code reader, text diff, translate, translator, English Chinese translation, 翻译, 开发者工具箱, 格式化, 二维码, JSON 转 YAML
 
 ## Screenshots
 

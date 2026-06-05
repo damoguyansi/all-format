@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 /**
  * 翻译
@@ -88,9 +87,7 @@ public class TranslateAction extends AnAction {
     }
 
     protected void doTranslate(String selectText) {
-        Matcher m = TranslateUtil.p.matcher(selectText.trim());
-        String translateType = m.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
-
+        String translateType = TranslateUtil.detectType(selectText.trim());
         showPopupBalloons(selectText, translateType);
     }
 

@@ -1,48 +1,46 @@
-# all-format
+# AllFormat — Developer Toolbox & Translator for JetBrains IDEs
 
-**写在前头:本插件只适用 Intellij IDEA和android studio  工具**  
+[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/10962-all-format.svg)](https://plugins.jetbrains.com/plugin/10962-all-format)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/10962-all-format.svg)](https://plugins.jetbrains.com/plugin/10962-all-format)
 
+**AllFormat** is an all-in-one developer toolbox that lives in a dockable tool window inside IntelliJ IDEA, Android Studio and other JetBrains IDEs. Format, encode/decode, generate, convert and translate — all without leaving the editor.
 
-这是一款开发者辅助工具，方便开发者格式化格种数据，方便阅读调式，如：格式化JSON、XML、HTML,生成MD5、QRCODE二维码、转换Base64、Unicode等，中英文翻译.
+一站式开发者工具箱，集成在 JetBrains IDE 的可停靠工具窗口中：格式化、编解码、生成、转换、翻译，一站搞定，无需离开编辑器。
 
-  [github](https://github.com/damoguyansi/all-format)
+> Links: [GitHub](https://github.com/damoguyansi/all-format) · [Gitee](https://gitee.com/qgl/all-format) · [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/10962-all-format)
 
-  [gitee](https://gitee.com/qgl/all-format)
-  
-  [jetbrains](https://plugins.jetbrains.com/plugin/10962-all-format)
+## Features
 
-### 安装方法   
-方法1:
-~~~
-1.Intellij IDEA 
- File->Settings..->Plugins-->Browse repositores..搜索：All format
-2.安装插件,重启idea
-~~~
+- **Translation** — auto Chinese ⇄ English detection, pronunciation/phonetics, dictionary meanings; in-editor balloon (`Ctrl+Alt+U`) and type-to-translate.
+- **Format & Convert** — JSON format/minify with highlighting; JSON ⇄ YAML ⇄ Properties; text Diff.
+- **Encode / Hash** — Base64, Unicode, URL, MD5; MD5 / SHA-1 / SHA-256 / SHA-512 / HMAC-SHA256.
+- **Generate** — QR code (generate / decode / paste image), timestamp ⇄ date, UUID / Snowflake ID, random password.
 
-方法2: [下载地址](https://plugins.jetbrains.com/plugin/10962-all-format/versions)
-~~~
-     1.下载 com.damoguyansi.all-format-x.x.x.zip 
-     2.Intellij IDEA  File->Settings..->Plugins
-       --> install plugin from disk..
-       导入下载的 com.damoguyansi.all-format-x.x.x.zip
-     3重启 Intellij IDEA .
-~~~
+## Install
 
-### 使用方法
-1. 使用右上角图标打开窗口.  
-![Generate快捷键.png](https://plugins.jetbrains.com/files/10962/screenshot_23730.png)
- 
-2. 使用 All Fommat 的快捷键.  
-打开窗口： Alt + f  
-选中翻译： Ctrl + Alt + U
+**From Marketplace:** `Settings → Plugins → Marketplace`, search **All Format**, install.
 
+**From disk:** download `All-Format-x.x.x.zip` from the [versions page](https://plugins.jetbrains.com/plugin/10962-all-format/versions), then `Settings → Plugins → ⚙ → Install Plugin from Disk…`.
 
-### 使用截图
-![allformat1.png](https://plugins.jetbrains.com/files/10962/screenshot_d47f335d-3139-40b7-89d1-d53bedc87dc3)
-![allformat2.png](https://plugins.jetbrains.com/files/10962/screenshot_e095ad5b-6b14-4d14-9f82-2c8e628af585)
-![allformat3.png](https://plugins.jetbrains.com/files/10962/screenshot_ec49ac84-4232-4949-86df-c55ee8da8af2)
-![allformat4.png](https://plugins.jetbrains.com/files/10962/screenshot_6aad5ec6-66bf-496b-9aac-841bc2e239fd)
+## Usage
 
-### 特别鸣谢
-- 感谢 [YiiGuxing](https://github.com/YiiGuxing/TranslationPlugin) 大佬提供的翻译插件（参考部分代码）
+- Open the tool window: toolbar icon or **Alt + F**
+- Translate selection in the editor: **Ctrl + Alt + U**
 
+## Compatibility
+
+JetBrains IDEs build **2024.2 – 2025.2** (IntelliJ IDEA, Android Studio, etc.).
+
+## Screenshots
+
+![AllFormat 1](https://plugins.jetbrains.com/files/10962/screenshot_d47f335d-3139-40b7-89d1-d53bedc87dc3)
+![AllFormat 2](https://plugins.jetbrains.com/files/10962/screenshot_e095ad5b-6b14-4d14-9f82-2c8e628af585)
+![AllFormat 3](https://plugins.jetbrains.com/files/10962/screenshot_ec49ac84-4232-4949-86df-c55ee8da8af2)
+
+## Acknowledgements
+
+- Thanks to [YiiGuxing/TranslationPlugin](https://github.com/YiiGuxing/TranslationPlugin) for translation-plugin inspiration (referenced parts of the approach).
+
+## License
+
+See [LICENSE](LICENSE).

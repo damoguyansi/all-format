@@ -12,6 +12,8 @@ import java.io.*;
  * @date 2020.11.24
  */
 public class ParamCache {
+    private static final com.intellij.openapi.diagnostic.Logger LOG =
+            com.intellij.openapi.diagnostic.Logger.getInstance(ParamCache.class);
     private static final String BASE_DIR = System.getProperty("java.io.tmpdir");
     private static final String CACHE_FILE_NAME = "allformat.json";
     private JSONObject paramObj = null;
@@ -36,15 +38,13 @@ public class ParamCache {
             FileInputStream in = new FileInputStream(file);
             in.read(filecontent);
             in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.warn(e);
         }
         try {
             return new String(filecontent, encoding);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOG.warn(e);
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class ParamCache {
                 out.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.warn(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class ParamCache {
                 return paramObj.getBool(cacheName.getName());
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage() + ":" + BASE_DIR + "/" + CACHE_FILE_NAME);
+            LOG.warn(e);
         }
         return null;
     }

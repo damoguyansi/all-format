@@ -1,70 +1,14 @@
 package com.damoguyansi.all.format.dialog;
 
-import com.damoguyansi.all.format.component.ImageLabel;
-import com.damoguyansi.all.format.translate.TransApiFactory;
-import com.damoguyansi.all.format.translate.bean.ApiCode;
-import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import cn.hutool.core.util.URLUtil;
 
 import javax.swing.*;
 import javax.swing.text.*;
-import java.awt.image.BufferedImage;
 import java.util.Locale;
-import java.util.regex.Matcher;
 
 public class UtilityOperations {
-
-    public static void createQrCode(JTextPane qrCodeText, JLabel statusLabel) {
-        String text = getTrimmedText(qrCodeText);
-        if (text == null) return;
-
-        try {
-            qrCodeText.setText(text + "\r\n");
-            qrCodeText.setCaretPosition(qrCodeText.getStyledDocument().getLength());
-            BufferedImage bufferedImage = QrCodeCreateUtil.createQrCode(text, 250);
-            ImageIcon imageIcon = new ImageIcon(bufferedImage);
-            ImageLabel label = new ImageLabel(qrCodeText, imageIcon);
-            qrCodeText.insertComponent(label);
-            statusLabel.setText("qrcode create!");
-        } catch (Exception e) {
-            String error = "qrcode create exception [" + e.getMessage() + "]";
-            statusLabel.setText(error);
-            statusLabel.setToolTipText(error);
-        }
-    }
-
-    public static void decodeQrCode(JTextPane qrCodeText, JLabel statusLabel) {
-        try {
-            StringBuilder results = new StringBuilder();
-            StyledDocument doc = (StyledDocument) qrCodeText.getDocument();
-            for (int i = 0; i < doc.getLength(); i++) {
-                Element elem = doc.getCharacterElement(i);
-                AttributeSet as = elem.getAttributes();
-                if (as.containsAttribute(javax.swing.text.AbstractDocument.ElementNameAttribute, 
-                    StyleConstants.ComponentElementName)) {
-                    if (StyleConstants.getComponent(as) instanceof JLabel) {
-                        ImageLabel myLabel = (ImageLabel) StyleConstants.getComponent(as);
-                        ImageIcon imageIcon = myLabel.getImageIcon();
-                        results.append(QrCodeCreateUtil.decode(imageIcon.getImage())).append("\r\n");
-                    }
-                }
-            }
-            
-            if (results.length() == 0) {
-                statusLabel.setText("未解析到图片内容");
-                statusLabel.setToolTipText(statusLabel.getText());
-            } else {
-                qrCodeText.setCaretPosition(qrCodeText.getStyledDocument().getLength());
-                qrCodeText.setText(results.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            statusLabel.setText("未解析到图片内容");
-            statusLabel.setToolTipText(statusLabel.getText());
-        }
-    }
 
     public static void encodeBase64(JTextArea base64Text, JLabel statusLabel) {
         String text = base64Text.getText();
@@ -155,27 +99,6 @@ public class UtilityOperations {
             statusLabel.setText(error);
             statusLabel.setToolTipText(error);
         }
-    }
-
-    public static void translate(JTextArea inputText, JTextArea outputText) {
-        String text = getTrimmedText(inputText);
-        if (text == null) return;
-
-        Matcher matcher = TranslateUtil.p.matcher(text);
-        String translateType = matcher.find() ? TranslateUtil.ZH_CN_TO_EN : TranslateUtil.EN_TO_ZH_CN;
-        
-        try {
-            TransResult result = TransApiFactory.createApi(ApiCode.BAIDU).translate(text, translateType);
-            outputText.setText(result == null ? "未知翻译" : result.getSentences().get(0).getTrans());
-        } catch (Exception e) {
-            outputText.setText("未知");
-        }
-    }
-
-    private static String getTrimmedText(JTextComponent textComponent) {
-        String text = textComponent.getText();
-        if (isEmpty(text)) return null;
-        return text.trim();
     }
 
     private static boolean isEmpty(String text) {

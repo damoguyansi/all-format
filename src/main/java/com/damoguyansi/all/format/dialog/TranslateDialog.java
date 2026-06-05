@@ -46,24 +46,32 @@ public class TranslateDialog extends JFrame {
     // Dependencies
     public final ParamCache cache;
     private final boolean isDarkTheme;
+    private final boolean embedded;
     private final ComponentFactory componentFactory;
     private final ActionHandler actionHandler;
 
+    /** 仅构建面板供 ToolWindow 嵌入（不再有独立窗口）。 */
     public TranslateDialog(boolean isDarkTheme) {
         this.isDarkTheme = isDarkTheme;
+        this.embedded = true;
         this.cache = new ParamCache();
         this.componentFactory = new ComponentFactory(this, isDarkTheme);
         this.actionHandler = new ActionHandler(this);
 
         initializeUI();
         setupEventListeners();
-        displayMainWindow();
+        componentFactory.loadCachedParameters();
+        // 工具窗口里「置顶」无意义，隐藏之
+        getAlwaysOnTopCheckBox().setVisible(false);
         setClipboardContent();
+    }
+
+    public boolean isEmbedded() {
+        return embedded;
     }
 
     private void initializeUI() {
         setContentPane(centerPanel);
-        getRootPane().setDefaultButton(formatButton);
         componentFactory.initializeComponents();
     }
 
@@ -71,32 +79,27 @@ public class TranslateDialog extends JFrame {
         actionHandler.registerListeners();
     }
 
-    private void displayMainWindow() {
-        setSize(820, 410);
-        setLocationRelativeTo(null);
-        setTitle("AllFormat (damoguyansi@163.com)");
-        componentFactory.loadCachedParameters();
-        setVisible(true);
-        jsonText.requestFocus();
-        jsonText.grabFocus();
-    }
-
     private void setClipboardContent() {
+        if (!com.damoguyansi.all.format.settings.AppSettings.getInstance().isSmartClipboard()) {
+            return;
+        }
         String clipText = ClipboardUtil.getSysClipboardText();
         if (clipText == null || clipText.isEmpty()) {
-            try {
-                tabbedPane.setSelectedIndex(4);
-                ClipboardUtil.pasteClipboardContent(qrCodeText);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            clipText = clipText.trim();
-            if (clipText.startsWith("http:") || clipText.startsWith("https:")) {
-                tabbedPane.setSelectedIndex(6);
-                encodeText.setText(clipText);
-            } else {
-                jsonText.setText(clipText);
+            return;
+        }
+        clipText = clipText.trim();
+        if (clipText.startsWith("http:") || clipText.startsWith("https:")) {
+            selectTab(Constants.ENCODE);
+        } else if (clipText.startsWith("{") || clipText.startsWith("[")) {
+            selectTab(Constants.JSON);
+        }
+    }
+
+    private void selectTab(String title) {
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if (title.equals(tabbedPane.getTitleAt(i).trim())) {
+                tabbedPane.setSelectedIndex(i);
+                return;
             }
         }
     }

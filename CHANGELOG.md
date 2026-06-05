@@ -1,5 +1,24 @@
 # AllFormat Plugin Changelog
 
+## [2.0.0] (2026/06/05)
+A major rewrite — AllFormat is now a dockable, all-in-one developer toolbox. (重大版本：AllFormat 全面重构为可停靠的一体化开发者工具箱)
+
+### Highlights (亮点)
+- Lives in a dockable **Tool Window** (no more popup dialog); compact, flat, follows the IDE theme (改为可停靠**工具窗口**，移除弹框；紧凑扁平、跟随 IDE 主题)
+- **Translation rebuilt** on Microsoft Translator via the platform HTTP SDK: auto language detection, pronunciation/phonetics and dictionary meanings, in-editor **Ctrl+Alt+U** balloon, and type-to-translate (基于平台 HTTP SDK 用微软翻译重构：自动识别语种、发音/音标与词典释义、编辑器内 **Ctrl+Alt+U** 气泡、输入即译)
+
+### New tools (新增工具)
+- JSON format/minify · Base64 · Unicode/URL/MD5 · QR code (generate / decode / paste image) (JSON 格式化压缩、Base64、Unicode/URL/MD5、二维码生成识别与粘贴图片)
+- Generator: timestamp ⇄ date, UUID / Snowflake ID, random password (生成器：时间戳⇄日期、UUID/雪花 ID、随机密码)
+- Hash: MD5 / SHA-1 / SHA-256 / SHA-512 / HMAC-SHA256 (哈希全家桶)
+- JSON ⇄ YAML ⇄ Properties conversion (JSON⇄YAML⇄Properties 互转)
+- Text Diff (line-level) (文本对比)
+
+### Quality (工程质量)
+- Removed legacy popup, Google/Baidu engines and dead code; logging uses the platform Logger (移除旧弹框、Google/百度引擎与死代码；统一平台日志)
+- Settings page (auto-translate delay, smart clipboard); wrapping toolbars so buttons never clip in narrow windows (设置页 + 自动换行工具栏)
+- IDE compatibility bound to 2024.2–2025.2 (兼容 2024.2–2025.2)
+
 ## [1.4.2] (2025/09/17)
 - Bug fixes.
 - Bug 修复

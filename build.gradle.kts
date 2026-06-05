@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.hutool)
     implementation(libs.jdom2)
     implementation(libs.markdown)
+    implementation(libs.snakeyaml)
 }
 intellij {
     pluginName = properties("pluginName")
@@ -52,6 +53,11 @@ changelog {
 }
 
 tasks {
+    // 搜索选项索引需启动无头 IDE，在部分本地环境不稳定；按 JetBrains 建议关闭。
+    buildSearchableOptions {
+        enabled = false
+    }
+
     patchPluginXml {
         version = properties("pluginMajorVersion")
         sinceBuild = properties("pluginSinceBuild")

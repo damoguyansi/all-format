@@ -2,7 +2,8 @@ package com.damoguyansi.all.format.dialog;
 
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.constant.Constants;
-import com.damoguyansi.all.format.util.ClipboardUtil;
+import com.intellij.ui.JBColor;
+import com.intellij.util.ui.JBUI;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -14,6 +15,9 @@ import java.awt.*;
 import java.io.IOException;
 
 public class ComponentFactory {
+    private static final com.intellij.openapi.diagnostic.Logger LOG =
+            com.intellij.openapi.diagnostic.Logger.getInstance(ComponentFactory.class);
+
     private final TranslateDialog dialog;
     private final boolean isDarkTheme;
 
@@ -26,7 +30,22 @@ public class ComponentFactory {
         setupTextComponents();
         configureButtons();
         createSyntaxTextAreas();
+        removeRetiredTabs();
+        com.damoguyansi.all.format.tools.ToolRegistry.install(dialog.getTabbedPane());
         applyTheme();
+    }
+
+    /** 移除已下线或被重构的标签页（HTML/SQL/HexConvert 以及表单内的旧 QRCode/Translate）。 */
+    private void removeRetiredTabs() {
+        JTabbedPane pane = dialog.getTabbedPane();
+        java.util.Set<String> retired = new java.util.HashSet<>(java.util.Arrays.asList(
+                Constants.JSON, Constants.HTML, Constants.SQL, Constants.HEX_CONVERT,
+                Constants.QRCODE, Constants.BASE64, Constants.ENCODE, Constants.TRANSLATE));
+        for (int i = pane.getTabCount() - 1; i >= 0; i--) {
+            if (retired.contains(pane.getTitleAt(i).trim())) {
+                pane.removeTabAt(i);
+            }
+        }
     }
 
     public void loadCachedParameters() {
@@ -63,14 +82,16 @@ public class ComponentFactory {
     }
 
     private void configureButtons() {
-        dialog.getUtilityButton().setText("\u538b\u7f29"); // Compress
-        dialog.getUtilityButton().setVisible(true);
-        
-        dialog.getSponsorLabel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        // \u6240\u6709\u529f\u80fd\u5df2\u8fc1\u79fb\u5230\u5404\u81ea\u7684\u5de5\u5177\u6807\u7b7e\u9875\uff0c\u65e7\u7684\u5e95\u90e8\u5171\u4eab\u63a7\u4ef6\u4e0d\u518d\u4f7f\u7528\uff0c\u7edf\u4e00\u9690\u85cf
+        dialog.getFormatButton().setVisible(false);
+        dialog.getUtilityButton().setVisible(false);
+        dialog.getWrapLinesCheckBox().setVisible(false);
         dialog.getUrlEncodeButton().setVisible(false);
         dialog.getUrlDecodeButton().setVisible(false);
         dialog.getMd5Button().setVisible(false);
+        dialog.getAlwaysOnTopCheckBox().setVisible(false);
+        dialog.getSponsorLabel().setVisible(false);
+        dialog.getStatusLabel().setText("");
     }
 
     private void createSyntaxTextAreas() {
@@ -99,11 +120,12 @@ public class ComponentFactory {
     }
 
     private void applyTheme() {
+        // 跟随 IDE 主题的扁平化背景，而非硬编码颜色
+        Color paneBg = JBUI.CurrentTheme.CustomFrameDecorations.paneBackground();
+        dialog.getContentPane().setBackground(paneBg);
+        dialog.getTabbedPane().setForeground(JBColor.foreground());
+
         if (isDarkTheme) {
-            dialog.getTabbedPane().setForeground(new Color(213, 212, 212));
-            Color backgroundColor = Color.DARK_GRAY;
-            dialog.getContentPane().setBackground(backgroundColor);
-            
             applyDarkTheme(dialog.getJsonText());
             applyDarkTheme(dialog.getXmlText());
             applyDarkTheme(dialog.getHtmlText());
@@ -147,7 +169,7 @@ public class ComponentFactory {
                 "/org/fife/ui/rsyntaxtextarea/themes/dark.xml"));
             theme.apply(area);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.warn("apply dark theme failed", e);
         }
     }
 
@@ -182,7 +204,7 @@ public class ComponentFactory {
                 }
                 super.insertString(offset, s, a);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                LOG.warn(e);
             }
         }
     }
