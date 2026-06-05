@@ -39,10 +39,10 @@ developer tools, dev toolbox, devtools, formatter, JSON formatter, JSON minify, 
 
 ## Screenshots
 
-![Screenshot 1](https://plugins.jetbrains.com/files/10962/screenshot_d47f335d-3139-40b7-89d1-d53bedc87dc3)
+![Screenshot 1](https://plugins.jetbrains.com/files/10962/screenshot_fe5aba3c-06a3-42fd-b42b-5cf4c3796de7)
 
-![Screenshot 2](https://plugins.jetbrains.com/files/10962/screenshot_e095ad5b-6b14-4d14-9f82-2c8e628af585)
+![Screenshot 2](https://plugins.jetbrains.com/files/10962/screenshot_6aad5ec6-66bf-496b-9aac-841bc2e239fd)
 
-![Screenshot 3](https://plugins.jetbrains.com/files/10962/screenshot_ec49ac84-4232-4949-86df-c55ee8da8af2)
+![Screenshot 3](https://plugins.jetbrains.com/files/10962/screenshot_2de51248-9c16-485e-8aea-e0a31bf02eb4)
 
-![Screenshot 4](https://plugins.jetbrains.com/files/10962/screenshot_6aad5ec6-66bf-496b-9aac-841bc2e239fd)
+![Screenshot 4](https://plugins.jetbrains.com/files/10962/screenshot_a1fa150f-62d8-4fd7-be7e-a4c04cea6206)
