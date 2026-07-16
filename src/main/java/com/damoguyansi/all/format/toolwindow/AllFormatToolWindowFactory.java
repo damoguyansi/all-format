@@ -17,8 +17,9 @@ import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Locale;
 import java.util.function.Consumer;
 
 /**
@@ -31,40 +32,47 @@ public class AllFormatToolWindowFactory implements ToolWindowFactory, DumbAware 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         JPanel root = new JPanel(new BorderLayout());
-        AtomicReference<TranslateDialog> activeDialog = new AtomicReference<>();
-        render(root, activeDialog, -1);
+        TranslateDialog dialog = new TranslateDialog(ColorUtil.isDarcula());
+        root.add(dialog.getCenterPanel(), BorderLayout.CENTER);
+        root.add(footer(language -> {
+            AppSettings settings = AppSettings.getInstance();
+            I18n.Language previous = I18n.resolveLanguage(settings.getLanguage(), Locale.getDefault());
+            settings.setLanguage(language);
+            I18n.Language current = I18n.resolveLanguage(language, Locale.getDefault());
+            relocalize(root, previous, current);
+            root.revalidate();
+            root.repaint();
+        }), BorderLayout.SOUTH);
 
         Content content = ContentFactory.getInstance().createContent(root, "", false);
-        content.setDisposer(() -> {
-            TranslateDialog dialog = activeDialog.get();
-            if (dialog != null) {
-                dialog.dispose();
-            }
-        });
+        content.setDisposer(dialog::dispose);
         toolWindow.getContentManager().addContent(content);
     }
 
-    private void render(JPanel root, AtomicReference<TranslateDialog> activeDialog, int selectedIndex) {
-        TranslateDialog previous = activeDialog.get();
-        TranslateDialog dialog = new TranslateDialog(ColorUtil.isDarcula());
-        activeDialog.set(dialog);
-
-        if (selectedIndex >= 0 && selectedIndex < dialog.getTabbedPane().getTabCount()) {
-            dialog.getTabbedPane().setSelectedIndex(selectedIndex);
+    private void relocalize(Component component, I18n.Language from, I18n.Language to) {
+        if (component instanceof AbstractButton) {
+            AbstractButton button = (AbstractButton) component;
+            button.setText(I18n.translateUiText(button.getText(), from, to));
+        } else if (component instanceof JLabel) {
+            JLabel label = (JLabel) component;
+            label.setText(I18n.translateUiText(label.getText(), from, to));
         }
-
-        root.removeAll();
-        root.add(dialog.getCenterPanel(), BorderLayout.CENTER);
-        root.add(footer(language -> {
-            int index = dialog.getTabbedPane().getSelectedIndex();
-            AppSettings.getInstance().setLanguage(language);
-            render(root, activeDialog, index);
-        }), BorderLayout.SOUTH);
-        root.revalidate();
-        root.repaint();
-
-        if (previous != null) {
-            previous.dispose();
+        if (component instanceof JComponent) {
+            JComponent swingComponent = (JComponent) component;
+            swingComponent.setToolTipText(I18n.translateUiText(swingComponent.getToolTipText(), from, to));
+            Object textKey = swingComponent.getClientProperty(I18n.UI_TEXT_KEY);
+            if (textKey instanceof String && component instanceof JTextComponent) {
+                JTextComponent textComponent = (JTextComponent) component;
+                String previousText = I18n.message(from, (String) textKey);
+                if (previousText.equals(textComponent.getText())) {
+                    textComponent.setText(I18n.message(to, (String) textKey));
+                }
+            }
+        }
+        if (component instanceof Container) {
+            for (Component child : ((Container) component).getComponents()) {
+                relocalize(child, from, to);
+            }
         }
     }
 

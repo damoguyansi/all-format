@@ -52,6 +52,7 @@ public class GeneratorToolPanel extends AbstractToolPanel {
                 Stream.generate(() -> password(true)).limit(5).collect(Collectors.joining("\n"))));
 
         input.setText(I18n.message("generator.inputHint"));
+        input.putClientProperty(I18n.UI_TEXT_KEY, "generator.inputHint");
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.damoguyansi.all.format.i18n;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,13 +29,23 @@ class I18nTest {
 
     @Test
     void englishAndChineseBundlesHaveTheSameKeys() {
-        ResourceBundle english = ResourceBundle.getBundle("messages.AllFormatBundle", Locale.ENGLISH);
-        ResourceBundle chinese = ResourceBundle.getBundle("messages.AllFormatBundle", Locale.SIMPLIFIED_CHINESE);
+        var english = I18n.bundle(I18n.Language.ENGLISH);
+        var chinese = I18n.bundle(I18n.Language.ZH_CN);
 
         assertEquals(english.keySet(), chinese.keySet());
+        assertEquals("Language:", english.getString("footer.language"));
+        assertEquals("语言：", chinese.getString("footer.language"));
         english.keySet().forEach(key -> {
             assertFalse(english.getString(key).isBlank(), key + " is blank in English");
             assertFalse(chinese.getString(key).isBlank(), key + " is blank in Chinese");
         });
+    }
+
+    @Test
+    void translatesStaticUiTextWithoutChangingSurroundingLayoutWhitespace() {
+        assertEquals("  密码长度：", I18n.translateUiText(
+                "  Password length:", I18n.Language.ENGLISH, I18n.Language.ZH_CN));
+        assertEquals("Unchanged", I18n.translateUiText(
+                "Unchanged", I18n.Language.ENGLISH, I18n.Language.ZH_CN));
     }
 }
