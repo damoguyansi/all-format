@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.component;
 
 import com.damoguyansi.all.format.event.NumberTextField;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.AsciiUtil;
 import com.damoguyansi.all.format.util.NumberUtil;
 
@@ -89,7 +90,7 @@ public class HexConvertPanel extends JPanel {
         if (t >= 0 && t <= 127) {
             asciiText.setText(AsciiUtil.getAscii(t));
         } else {
-            asciiText.setText("无");
+            asciiText.setText(I18n.message("common.none"));
         }
     }
 
@@ -113,27 +114,12 @@ public class HexConvertPanel extends JPanel {
             valueText.setText("");
             clear();
             JRadioButton button = (JRadioButton) e.getSource();
-            String text = button.getText();
             if (button.isSelected()) {
-                switch (text) {
-                    case "2进制":
-                        valueText.setDocument(twoNumberDoc);
-                        break;
-                    case "8进制":
-                        valueText.setDocument(eightNumberDoc);
-                        break;
-                    case "10进制":
-                        valueText.setDocument(tenNumberDoc);
-                        break;
-                    case "16进制":
-                        valueText.setDocument(sixteenNumberDoc);
-                        break;
-                    case "32进制":
-                        valueText.setDocument(thirtyTwoNumberDoc);
-                        break;
-                    default:
-                        break;
-                }
+                if (button == twoRadioButton) valueText.setDocument(twoNumberDoc);
+                else if (button == eightRadioButton) valueText.setDocument(eightNumberDoc);
+                else if (button == tenRadioButton) valueText.setDocument(tenNumberDoc);
+                else if (button == sixteenRadioButton) valueText.setDocument(sixteenNumberDoc);
+                else if (button == thirtyTwoRadioButton) valueText.setDocument(thirtyTwoNumberDoc);
             }
         }
     }

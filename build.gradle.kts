@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.jdom2)
     implementation(libs.markdown)
     implementation(libs.snakeyaml)
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
 }
 intellij {
     pluginName = properties("pluginName")
@@ -53,6 +54,9 @@ changelog {
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
     // 搜索选项索引需启动无头 IDE，在部分本地环境不稳定；按 JetBrains 建议关闭。
     buildSearchableOptions {
         enabled = false

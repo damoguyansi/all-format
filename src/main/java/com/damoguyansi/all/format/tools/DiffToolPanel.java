@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.tools;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextArea;
@@ -25,8 +26,8 @@ public class DiffToolPanel extends JPanel implements ToolPanel {
         setBorder(JBUI.Borders.empty(8));
 
         JPanel bar = ToolUi.toolbar();
-        bar.add(ToolUi.primaryButton("对比", this::compare));
-        JBLabel hint = new JBLabel("左右两段文本按行对比（- 左侧独有 / + 右侧独有）");
+        bar.add(ToolUi.primaryButton(I18n.message("diff.compare"), this::compare));
+        JBLabel hint = new JBLabel(I18n.message("diff.hint"));
         hint.setForeground(JBUI.CurrentTheme.Label.disabledForeground());
         bar.add(hint);
         add(bar, BorderLayout.NORTH);
@@ -62,7 +63,7 @@ public class DiffToolPanel extends JPanel implements ToolPanel {
         String[] b = right.getText().split("\n", -1);
         List<String> diff = lcsDiff(a, b);
         if (diff.isEmpty()) {
-            output.setText("两段文本完全相同");
+            output.setText(I18n.message("diff.identical"));
         } else {
             output.setText(String.join("\n", diff));
         }

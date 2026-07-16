@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.tools;
 
 import cn.hutool.core.util.IdUtil;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 
@@ -31,25 +32,26 @@ public class GeneratorToolPanel extends AbstractToolPanel {
 
     public GeneratorToolPanel() {
         // 时间戳
-        addButton("当前时间戳", () -> {
+        addButton(I18n.message("generator.currentTimestamp"), () -> {
             long ms = System.currentTimeMillis();
             output.setText(ms + "  (ms)\n" + (ms / 1000) + "  (s)");
         });
-        addButton("时间戳→日期", this::tsToDate);
-        addButton("日期→时间戳", this::dateToTs);
+        addButton(I18n.message("generator.timestampToDate"), this::tsToDate);
+        addButton(I18n.message("generator.dateToTimestamp"), this::dateToTs);
         // UUID
         addButton("UUID", () -> output.setText(UUID.randomUUID().toString()));
-        addButton("UUID 无横线", () -> output.setText(UUID.randomUUID().toString().replace("-", "")));
-        addButton("雪花 ID", () -> output.setText(IdUtil.getSnowflakeNextIdStr()));
+        addButton(I18n.message("generator.uuidNoHyphens"),
+                () -> output.setText(UUID.randomUUID().toString().replace("-", "")));
+        addButton(I18n.message("generator.snowflakeId"), () -> output.setText(IdUtil.getSnowflakeNextIdStr()));
         // 密码
-        addControl(new JBLabel("  密码长度："));
+        addControl(new JBLabel("  " + I18n.message("generator.passwordLength")));
         addControl(pwdLen);
-        addButton("随机密码", () -> output.setText(password(false)));
-        addButton("强密码(含符号)", () -> output.setText(password(true)));
-        addButton("批量密码×5", () -> output.setText(
+        addButton(I18n.message("generator.randomPassword"), () -> output.setText(password(false)));
+        addButton(I18n.message("generator.strongPassword"), () -> output.setText(password(true)));
+        addButton(I18n.message("generator.batchPasswords"), () -> output.setText(
                 Stream.generate(() -> password(true)).limit(5).collect(Collectors.joining("\n"))));
 
-        input.setText("时间戳转换：在此输入时间戳（秒/毫秒）或日期 yyyy-MM-dd HH:mm:ss");
+        input.setText(I18n.message("generator.inputHint"));
     }
 
     @Override

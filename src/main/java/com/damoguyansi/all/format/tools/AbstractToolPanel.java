@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.tools;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextArea;
 import com.intellij.util.ui.JBUI;
@@ -49,7 +50,7 @@ public abstract class AbstractToolPanel extends JPanel implements ToolPanel {
             try {
                 action.run();
             } catch (Exception ex) {
-                output.setText("出错：" + ex.getMessage());
+                output.setText(I18n.message("common.error", ex.getMessage()));
             }
         }));
     }

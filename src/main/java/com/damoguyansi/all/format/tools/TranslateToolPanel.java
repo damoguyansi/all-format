@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.tools;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.settings.AppSettings;
 import com.damoguyansi.all.format.translate.TranslationService;
 import com.damoguyansi.all.format.translate.bean.TransResult;
@@ -31,10 +32,10 @@ public class TranslateToolPanel extends JPanel implements ToolPanel {
         setBorder(JBUI.Borders.empty(8));
 
         JPanel bar = ToolUi.toolbar();
-        JBLabel hint = new JBLabel("自动识别中/英 · 编辑器中选中 Ctrl+Alt+U 气泡翻译");
+        JBLabel hint = new JBLabel(I18n.message("translate.hint"));
         hint.setForeground(JBUI.CurrentTheme.Label.disabledForeground());
-        bar.add(ToolUi.primaryButton("翻译", this::translate));
-        bar.add(ToolUi.button("清空", this::clear));
+        bar.add(ToolUi.primaryButton(I18n.message("translate.action"), this::translate));
+        bar.add(ToolUi.button(I18n.message("common.clear"), this::clear));
         bar.add(hint);
         add(bar, BorderLayout.NORTH);
 
@@ -96,7 +97,7 @@ public class TranslateToolPanel extends JPanel implements ToolPanel {
         if (text.isEmpty()) {
             return;
         }
-        setHtml("翻译中…", true);
+        setHtml(I18n.message("translate.loading"), true);
         ApplicationManager.getApplication().executeOnPooledThread(() -> {
             String html;
             boolean muted = false;
@@ -104,7 +105,7 @@ public class TranslateToolPanel extends JPanel implements ToolPanel {
                 TransResult result = TranslationService.translate(text);
                 html = result.toString();
             } catch (Exception e) {
-                html = "翻译失败：" + e.getMessage();
+                html = I18n.message("translate.failed", e.getMessage());
                 muted = true;
             }
             String finalHtml = html;

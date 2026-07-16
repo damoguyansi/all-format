@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.translate;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.translate.bean.TransResult;
 import com.damoguyansi.all.format.translate.microsoft.MicrosoftTransApi;
 import com.damoguyansi.all.format.util.TranslateUtil;
@@ -28,7 +29,7 @@ public final class TranslationService {
     public static TransResult translate(String word, String translateType) throws Exception {
         TransResult result = ENGINE.translate(word, translateType);
         if (result == null || result.getSentences() == null || result.getSentences().isEmpty()) {
-            throw new Exception("翻译失败：无结果");
+            throw new Exception(I18n.message("translate.noResult"));
         }
         return result;
     }

@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.event;
 
 import com.damoguyansi.all.format.component.ImageLabel;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.ClipboardUtil;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -98,10 +99,10 @@ public class TextPanelMouseListener extends MouseAdapter {
 
     private void menuItemInit(MouseEvent e) {
         JPopupMenu popMenu = new JPopupMenu();
-        JMenuItem mtCopy = new JMenuItem("\u590d\u5236");
-        JMenuItem mtPaste = new JMenuItem("\u7c98\u5e16");
-        JMenuItem mtSelAll = new JMenuItem("\u5168\u9009");
-        JMenuItem mtClean = new JMenuItem("\u6e05\u7a7a");
+        JMenuItem mtCopy = new JMenuItem(I18n.message("common.copy"));
+        JMenuItem mtPaste = new JMenuItem(I18n.message("common.paste"));
+        JMenuItem mtSelAll = new JMenuItem(I18n.message("common.selectAll"));
+        JMenuItem mtClean = new JMenuItem(I18n.message("common.clear"));
 
         popMenu.add(mtCopy);
         popMenu.add(mtPaste);

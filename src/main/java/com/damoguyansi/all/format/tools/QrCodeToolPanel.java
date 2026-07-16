@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.tools;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.ClipboardUtil;
 import com.damoguyansi.all.format.util.QrCodeCreateUtil;
 import com.intellij.ui.components.JBLabel;
@@ -33,15 +34,15 @@ public class QrCodeToolPanel extends JPanel implements ToolPanel {
         setBorder(JBUI.Borders.empty(8));
 
         JPanel bar = ToolUi.toolbar();
-        bar.add(new JBLabel("内容："));
+        bar.add(new JBLabel(I18n.message("qrcode.content")));
         bar.add(textField);
-        bar.add(ToolUi.primaryButton("生成", this::generate));
-        bar.add(ToolUi.button("粘贴图片", this::pasteImage));
-        bar.add(ToolUi.button("识别", this::decode));
+        bar.add(ToolUi.primaryButton(I18n.message("qrcode.generate"), this::generate));
+        bar.add(ToolUi.button(I18n.message("qrcode.pasteImage"), this::pasteImage));
+        bar.add(ToolUi.button(I18n.message("qrcode.decode"), this::decode));
         add(bar, BorderLayout.NORTH);
 
         preview.setVerticalAlignment(SwingConstants.CENTER);
-        preview.setText("在此生成二维码，或 Ctrl/Cmd+V 粘贴图片");
+        preview.setText(I18n.message("qrcode.previewHint"));
         preview.setForeground(JBUI.CurrentTheme.Label.disabledForeground());
         add(new JBScrollPane(preview), BorderLayout.CENTER);
 
@@ -70,15 +71,15 @@ public class QrCodeToolPanel extends JPanel implements ToolPanel {
     private void generate() {
         String text = textField.getText() == null ? "" : textField.getText().trim();
         if (text.isEmpty()) {
-            result.setText("请输入内容");
+            result.setText(I18n.message("qrcode.enterContent"));
             return;
         }
         try {
             currentImage = QrCodeCreateUtil.createQrCode(text, QR_SIZE);
             showImage(currentImage);
-            result.setText("已生成");
+            result.setText(I18n.message("qrcode.generated"));
         } catch (Exception e) {
-            result.setText("生成失败：" + e.getMessage());
+            result.setText(I18n.message("qrcode.generateFailed", e.getMessage()));
         }
     }
 
@@ -86,27 +87,27 @@ public class QrCodeToolPanel extends JPanel implements ToolPanel {
         try {
             Image image = ClipboardUtil.getImageFromClipboard();
             if (image == null) {
-                result.setText("剪贴板没有图片");
+                result.setText(I18n.message("qrcode.noClipboardImage"));
                 return;
             }
             currentImage = QrCodeCreateUtil.toBufferedImage(image);
             showImage(currentImage);
-            result.setText("已粘贴，点击「识别」解析");
+            result.setText(I18n.message("qrcode.pasted"));
         } catch (Exception e) {
-            result.setText("粘贴失败：" + e.getMessage());
+            result.setText(I18n.message("qrcode.pasteFailed", e.getMessage()));
         }
     }
 
     private void decode() {
         if (currentImage == null) {
-            result.setText("请先生成或粘贴二维码");
+            result.setText(I18n.message("qrcode.noImage"));
             return;
         }
         try {
             String text = QrCodeCreateUtil.decodeImg(currentImage);
-            result.setText(text == null || text.isEmpty() ? "未识别到二维码" : text);
+            result.setText(text == null || text.isEmpty() ? I18n.message("qrcode.notFound") : text);
         } catch (Exception e) {
-            result.setText("识别失败：" + e.getMessage());
+            result.setText(I18n.message("qrcode.decodeFailed", e.getMessage()));
         }
     }
 

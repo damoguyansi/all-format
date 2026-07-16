@@ -2,6 +2,7 @@ package com.damoguyansi.all.format.dialog;
 
 import com.damoguyansi.all.format.cache.CacheName;
 import com.damoguyansi.all.format.constant.Constants;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -196,9 +197,9 @@ public class ComponentFactory {
             try {
                 if (getLength() + s.length() > maxChars) {
                     Toolkit.getDefaultToolkit().beep();
-                    JOptionPane.showMessageDialog(dialog, 
-                        "内容过长，最大" + maxChars + "个字符!", 
-                        "提示", 
+                    JOptionPane.showMessageDialog(dialog,
+                        I18n.message("component.contentTooLong", maxChars),
+                        I18n.message("component.warning"),
                         JOptionPane.WARNING_MESSAGE);
                     return;
                 }

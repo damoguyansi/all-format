@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.component;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.ClipboardUtil;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ public class ImageLabel extends JLabel implements MouseListener {
 
     private void menuItemInit(MouseEvent e) {
         JPopupMenu popMenu = new JPopupMenu();
-        JMenuItem mtCopy = new JMenuItem("\u590d\u5236");
+        JMenuItem mtCopy = new JMenuItem(I18n.message("common.copy"));
         popMenu.add(mtCopy);
         mtCopy.addActionListener(new ImageLabelMenuItemActionListener(1));
         popMenu.show(e.getComponent(), e.getX(), e.getY());

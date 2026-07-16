@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.settings;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
@@ -18,6 +19,7 @@ public class AppSettingsConfigurable implements Configurable {
 
     private JSpinner autoTranslateDelaySpinner;
     private JBCheckBox smartClipboardBox;
+    private JComboBox<I18n.Language> languageBox;
 
     @Override
     public @Nls(capitalization = Nls.Capitalization.Title) String getDisplayName() {
@@ -27,10 +29,21 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public @Nullable JComponent createComponent() {
         autoTranslateDelaySpinner = new JSpinner(new SpinnerNumberModel(700, 0, 5000, 100));
-        smartClipboardBox = new JBCheckBox("打开时根据剪贴板内容自动跳到对应标签页");
+        smartClipboardBox = new JBCheckBox(I18n.message("settings.smartClipboard"));
+        languageBox = new JComboBox<>(I18n.Language.values());
+        languageBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                                    boolean isSelected, boolean cellHasFocus) {
+                return super.getListCellRendererComponent(list,
+                        value instanceof I18n.Language ? I18n.languageName((I18n.Language) value) : value,
+                        index, isSelected, cellHasFocus);
+            }
+        });
 
         JComponent panel = FormBuilder.createFormBuilder()
-                .addLabeledComponent(new JBLabel("自动翻译防抖（毫秒，0 关闭）："), autoTranslateDelaySpinner, 1, false)
+                .addLabeledComponent(new JBLabel(I18n.message("settings.language")), languageBox, 1, false)
+                .addLabeledComponent(new JBLabel(I18n.message("settings.autoTranslateDelay")), autoTranslateDelaySpinner, 1, false)
                 .addComponent(smartClipboardBox, 1)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
@@ -43,7 +56,8 @@ public class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         AppSettings s = AppSettings.getInstance();
         return ((Integer) autoTranslateDelaySpinner.getValue()) != s.getAutoTranslateDelay()
-                || smartClipboardBox.isSelected() != s.isSmartClipboard();
+                || smartClipboardBox.isSelected() != s.isSmartClipboard()
+                || languageBox.getSelectedItem() != s.getLanguage();
     }
 
     @Override
@@ -51,6 +65,7 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettings s = AppSettings.getInstance();
         s.setAutoTranslateDelay((Integer) autoTranslateDelaySpinner.getValue());
         s.setSmartClipboard(smartClipboardBox.isSelected());
+        s.setLanguage((I18n.Language) languageBox.getSelectedItem());
     }
 
     @Override
@@ -58,5 +73,6 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettings s = AppSettings.getInstance();
         autoTranslateDelaySpinner.setValue(s.getAutoTranslateDelay());
         smartClipboardBox.setSelected(s.isSmartClipboard());
+        languageBox.setSelectedItem(s.getLanguage());
     }
 }

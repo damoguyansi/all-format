@@ -1,6 +1,7 @@
 package com.damoguyansi.all.format.tools;
 
 import com.damoguyansi.all.format.dialog.FormatOperations;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.ui.JBUI;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -32,10 +33,10 @@ public class JsonToolPanel extends JPanel implements ToolPanel {
         applyTheme();
 
         JPanel bar = ToolUi.toolbar();
-        bar.add(ToolUi.primaryButton("格式化", () -> FormatOperations.formatJson(editor, status)));
-        bar.add(ToolUi.button("压缩", () -> FormatOperations.compressJson(editor, status)));
-        bar.add(ToolUi.button("复制", this::copy));
-        JCheckBox wrap = new JCheckBox("换行");
+        bar.add(ToolUi.primaryButton(I18n.message("json.format"), () -> FormatOperations.formatJson(editor, status)));
+        bar.add(ToolUi.button(I18n.message("json.compress"), () -> FormatOperations.compressJson(editor, status)));
+        bar.add(ToolUi.button(I18n.message("common.copy"), this::copy));
+        JCheckBox wrap = new JCheckBox(I18n.message("json.wrap"));
         wrap.setFocusPainted(false);
         wrap.addActionListener(e -> editor.setLineWrap(wrap.isSelected()));
         bar.add(wrap);
@@ -59,7 +60,7 @@ public class JsonToolPanel extends JPanel implements ToolPanel {
     private void copy() {
         Toolkit.getDefaultToolkit().getSystemClipboard()
                 .setContents(new StringSelection(editor.getText()), null);
-        status.setText("已复制");
+        status.setText(I18n.message("json.copied"));
     }
 
     private void applyTheme() {

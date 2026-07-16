@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.damoguyansi.all.format.translate.TransApiInterface;
 import com.damoguyansi.all.format.translate.bean.TransResult;
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.TranslateUtil;
 import com.intellij.util.io.HttpRequests;
 
@@ -59,10 +60,12 @@ public class MicrosoftTransApi implements TransApiInterface {
         String resp = post(String.format(TRANSLATE_URL, from, to), token, body);
 
         JSONArray arr = JSONUtil.parseArray(resp);
-        if (arr.isEmpty()) throw new Exception("微软翻译无结果");
+        if (arr.isEmpty()) throw new Exception(I18n.message("translate.microsoftNoResult"));
 
         JSONArray translations = arr.getJSONObject(0).getJSONArray("translations");
-        if (translations == null || translations.isEmpty()) throw new Exception("微软翻译无结果");
+        if (translations == null || translations.isEmpty()) {
+            throw new Exception(I18n.message("translate.microsoftNoResult"));
+        }
 
         JSONObject t0 = translations.getJSONObject(0);
         TransResult.SentencesBean bean = new TransResult.SentencesBean();
@@ -144,7 +147,7 @@ public class MicrosoftTransApi implements TransApiInterface {
                     .readTimeout(TIMEOUT)
                     .readString();
             if (fresh == null || fresh.isEmpty()) {
-                throw new Exception("微软翻译鉴权失败");
+                throw new Exception(I18n.message("translate.microsoftAuthFailed"));
             }
             cachedToken = fresh.trim();
             tokenTime = now;

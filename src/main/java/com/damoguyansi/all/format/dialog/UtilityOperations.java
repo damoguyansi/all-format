@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.dialog;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.damoguyansi.all.format.util.*;
 import com.google.common.io.BaseEncoding;
 import cn.hutool.core.util.URLUtil;
@@ -17,10 +18,11 @@ public class UtilityOperations {
         try {
             String encoded = BaseEncoding.base64().encode(text.getBytes());
             base64Text.setText(encoded);
-            statusLabel.setText("base64 encode!");
-            statusLabel.setToolTipText("base64 encode!");
+            String success = I18n.message("status.encodeSuccess", "Base64");
+            statusLabel.setText(success);
+            statusLabel.setToolTipText(success);
         } catch (Exception e) {
-            String error = "base64 encode exception [" + e.getMessage() + "]";
+            String error = I18n.message("status.operationFailed", "Base64", e.getMessage());
             statusLabel.setText(error);
             statusLabel.setToolTipText(error);
         }
@@ -33,10 +35,11 @@ public class UtilityOperations {
         try {
             String decoded = new String(BaseEncoding.base64().decode(text));
             base64Text.setText(decoded);
-            statusLabel.setText("base64 decode!");
-            statusLabel.setToolTipText("base64 decode!");
+            String success = I18n.message("status.decodeSuccess", "Base64");
+            statusLabel.setText(success);
+            statusLabel.setToolTipText(success);
         } catch (Exception e) {
-            String error = "base64 decode exception [" + e.getMessage() + "]";
+            String error = I18n.message("status.operationFailed", "Base64", e.getMessage());
             statusLabel.setText(error);
             statusLabel.setToolTipText(error);
         }
@@ -48,12 +51,13 @@ public class UtilityOperations {
 
         String result = UnicodeUtil.unicodeEncode(text);
         if (result == null) {
-            statusLabel.setText("unicode encode error!");
+            statusLabel.setText(I18n.message("status.operationFailed", "Unicode", ""));
             return;
         }
         encodeText.setText(result);
-        statusLabel.setText("unicode encode!");
-        statusLabel.setToolTipText("unicode encode!");
+        String success = I18n.message("status.encodeSuccess", "Unicode");
+        statusLabel.setText(success);
+        statusLabel.setToolTipText(success);
     }
 
     public static void decodeUnicode(JTextArea encodeText, JLabel statusLabel) {
@@ -62,12 +66,13 @@ public class UtilityOperations {
 
         String result = UnicodeUtil.unicodeDecode(text);
         if (result == null) {
-            statusLabel.setText("unicode decode error!");
+            statusLabel.setText(I18n.message("status.operationFailed", "Unicode", ""));
             return;
         }
         encodeText.setText(result);
-        statusLabel.setText("unicode decode!");
-        statusLabel.setToolTipText("unicode decode!");
+        String success = I18n.message("status.decodeSuccess", "Unicode");
+        statusLabel.setText(success);
+        statusLabel.setToolTipText(success);
     }
 
     public static void encodeUrl(JTextArea encodeText, JLabel statusLabel) {
@@ -75,7 +80,7 @@ public class UtilityOperations {
         if (isEmpty(text)) return;
 
         encodeText.setText(URLUtil.encode(text));
-        statusLabel.setText("url encode success!");
+        statusLabel.setText(I18n.message("status.encodeSuccess", "URL"));
     }
 
     public static void decodeUrl(JTextArea encodeText, JLabel statusLabel) {
@@ -83,7 +88,7 @@ public class UtilityOperations {
         if (isEmpty(text)) return;
 
         encodeText.setText(URLUtil.decode(text));
-        statusLabel.setText("url decode success!");
+        statusLabel.setText(I18n.message("status.decodeSuccess", "URL"));
     }
 
     public static void generateMd5(JTextArea encodeText, JLabel statusLabel) {
@@ -93,9 +98,9 @@ public class UtilityOperations {
         try {
             String md5 = MD5Util.md5(text).toUpperCase(Locale.ROOT);
             encodeText.setText(md5);
-            statusLabel.setText("md5 success!");
+            statusLabel.setText(I18n.message("status.formatSuccess", "MD5"));
         } catch (Throwable t) {
-            String error = "md5 error [" + t.getMessage() + "]";
+            String error = I18n.message("status.operationFailed", "MD5", t.getMessage());
             statusLabel.setText(error);
             statusLabel.setToolTipText(error);
         }

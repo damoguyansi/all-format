@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.settings;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Service;
@@ -21,6 +22,8 @@ public final class AppSettings implements PersistentStateComponent<AppSettings.S
         public int autoTranslateDelay = 700;
         /** 打开时根据剪贴板内容自动跳到对应 Tab。 */
         public boolean smartClipboard = true;
+        /** 显示语言。AUTO 表示跟随系统语言。 */
+        public I18n.Language language = I18n.Language.AUTO;
     }
 
     private State state = new State();
@@ -53,5 +56,13 @@ public final class AppSettings implements PersistentStateComponent<AppSettings.S
 
     public void setSmartClipboard(boolean smartClipboard) {
         state.smartClipboard = smartClipboard;
+    }
+
+    public I18n.Language getLanguage() {
+        return state.language == null ? I18n.Language.AUTO : state.language;
+    }
+
+    public void setLanguage(I18n.Language language) {
+        state.language = language == null ? I18n.Language.AUTO : language;
     }
 }

@@ -1,5 +1,6 @@
 package com.damoguyansi.all.format.util;
 
+import com.damoguyansi.all.format.i18n.I18n;
 import com.intellij.notification.*;
 import com.intellij.openapi.ui.Messages;
 
@@ -39,7 +40,10 @@ public class NoticeUtil {
      */
     public static void info(final String opeName, final String text) {
         if (NoticeUtil.LEVEL == 1) {
-            Notifications.Bus.notify(new Notification(NoticeUtil.NAME, NoticeUtil.NAME + (opeName.equals(TranslateUtil.ZH_CN_TO_EN) ? " 中译英 " : " 英译中 ") + " [INFO]", text, NotificationType.INFORMATION));
+            String direction = I18n.message(opeName.equals(TranslateUtil.ZH_CN_TO_EN)
+                    ? "translate.zhToEn" : "translate.enToZh");
+            Notifications.Bus.notify(new Notification(NoticeUtil.NAME,
+                    NoticeUtil.NAME + " " + direction + " [INFO]", text, NotificationType.INFORMATION));
         }
     }
 
@@ -51,7 +55,7 @@ public class NoticeUtil {
     public static void error(final String text) {
         Messages.showMessageDialog(
                 text,
-                "错误",
+                I18n.message("notice.errorTitle"),
                 Messages.getInformationIcon()
         );
     }
@@ -64,7 +68,7 @@ public class NoticeUtil {
     public static void error(Throwable throwable) {
         Messages.showMessageDialog(
                 getStackTrace(throwable),
-                "错误",
+                I18n.message("notice.errorTitle"),
                 Messages.getInformationIcon()
         );
     }
