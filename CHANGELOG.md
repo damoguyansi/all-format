@@ -1,5 +1,14 @@
 # AllFormat Plugin Changelog
 
+## [2.0.1] (2026/07/17)
+
+### Internationalization (国际化)
+- Added complete Chinese and English interfaces with automatic system-language detection and a persistent manual switch. (新增完整中英文界面，支持自动识别系统语言和持久化手动切换)
+- Language switching now updates the interface immediately while preserving the active tab, input, output, and QR code preview. (切换语言即时生效，并保留当前标签、输入、输出和二维码预览)
+
+### Quality (工程质量)
+- Added tests for locale detection, explicit language selection, resource completeness, and in-place UI translation. (新增语言识别、显式语言选择、资源完整性和界面原位翻译测试)
+
 ## [2.0.0] (2026/06/05)
 A major rewrite — AllFormat is now a dockable, all-in-one developer toolbox. (重大版本：AllFormat 全面重构为可停靠的一体化开发者工具箱)
 
